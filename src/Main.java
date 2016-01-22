@@ -108,7 +108,7 @@ public class Main
             {
                 // bitString is assumed to be entirely 1's and 0's, but...
                 String bitString = encodedFile.getBinaryString(inputString.charAt(i));
-                // As a precaution, each bit is checked. Malformed bits are ignored.
+                // As precaution, each bit is checked. Malformed bits are ignored.
                 for (int j = 0; j < bitString.length(); j++)
                 {
                     if (bitString.charAt(j) == '1')
