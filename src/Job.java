@@ -3,8 +3,7 @@ import java.util.Date;
 
 public class Job
 {
-    // public static final int MAX_VOLUNTEER_NUM = 30;
-    // Is this true for all instances of this object?
+    public static final int MAX_VOLUNTEER_NUM = 30;
     public static final int MAX_JOB_LENGTH = 48;
 
     // These are intentionally left at package visibility

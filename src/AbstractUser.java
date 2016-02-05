@@ -1,6 +1,5 @@
 public class AbstractUser implements User
 {
-
     String lastName;
     String firstName;
     String email;
