@@ -1,4 +1,6 @@
-public class AbstractUser implements User
+import java.io.Serializable;
+
+public class AbstractUser implements User, Serializable
 {
     String lastName;
     String firstName;

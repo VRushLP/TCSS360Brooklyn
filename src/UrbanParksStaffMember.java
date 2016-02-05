@@ -1,4 +1,4 @@
-public class UrbanParkStaffMember extends AbstractUser
+public class UrbanParksStaffMember extends AbstractUser
 {
 
     public Volunteer searchVolunteer(String lastName)

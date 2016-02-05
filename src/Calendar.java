@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class Calendar
+public class Calendar implements Serializable
 {
     public static final int MAX_JOBS = 30;
     public static final int MAX_WEEKLY_JOBS = 5;
@@ -13,7 +14,7 @@ public class Calendar
 
     public Calendar()
     {
-        //Example of making new List out of a Collection
+        // Example of making new List out of a Collection
         masterJobList = new ArrayList<>();
     }
 
