@@ -1,8 +1,7 @@
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
-public class Job implements Serializable
+public class Job
 {
     public static final int MAX_VOLUNTEER_NUM = 30;
     public static final int MAX_JOB_LENGTH = 48;
@@ -13,4 +12,7 @@ public class Job implements Serializable
     Date startDate;
     String jobTitle;
     String jobDescription;
+
+    // Left out workCategory enum. We should talk about how we would use it
+    // before we implement it.
 }
