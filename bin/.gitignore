@@ -1,10 +1,2 @@
-/AbstractUser.class
-/Calendar.class
-/Job.class
-/Park.class
-/ParkManager.class
-/ParkManagerDriver.class
-/UrbanParkStaffMember.class
-/UrbanParksDriver.class
-/User.class
-/Volunteer.class
+/ParkManagerTest.class
+/VolunteerTest.class
