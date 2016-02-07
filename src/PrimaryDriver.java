@@ -38,7 +38,7 @@ public class PrimaryDriver
             String UserType = splitLine[splitLine.length - 1];
 
             /*
-             * So this bullshit: Here, the loginList map is getting something
+             * Here, the loginList map is getting something
              * put into it. The thing that is put is a userName, which is simply
              * a String, and an AbstractUser of the type read in from the file.
              * The problem with this approach is that it assumes well-formed
