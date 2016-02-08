@@ -13,7 +13,7 @@ public class Calendar
 
     public Calendar()
     {
-        //Example of making new List out of a Collection
+        // Example of making new List out of a Collection
         masterJobList = new ArrayList<>();
     }
 
@@ -21,4 +21,15 @@ public class Calendar
     {
         return masterJobList;
     }
+
+    public void addJob(Job theJob)
+    {
+        masterJobList.add(theJob);
+    }
+
+    public void removeJob(Job theJob)
+    {
+        masterJobList.remove(theJob);
+    }
+
 }
