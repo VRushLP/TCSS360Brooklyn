@@ -64,5 +64,5 @@ public class Job
     	jobDetails.append("\n");
     	return jobDetails.toString();
     }
-    
 }
+
