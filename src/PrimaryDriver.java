@@ -94,7 +94,7 @@ public class PrimaryDriver
         {
             ParkManagerDriver.run(currentUser, in);
         }
-        else if (currentUser instanceof UrbanParksStaffMember)
+        else if (currentUser instanceof UrbanParkStaffMember)
         {
             System.out.println("The user was an instance of "
                     + currentUser.getClass() + "!");
