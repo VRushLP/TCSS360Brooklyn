@@ -1,10 +1,20 @@
 import java.io.Serializable;
 
-public class AbstractUser implements User, Serializable
+public abstract class AbstractUser implements User, Serializable
 {
     String lastName;
     String firstName;
     String email;
+
+    public AbstractUser()
+    {
+
+    }
+
+    public AbstractUser(String email)
+    {
+
+    }
 
     @Override
     public void viewJob(Job theJob)
@@ -16,5 +26,11 @@ public class AbstractUser implements User, Serializable
     public void viewAllJobs(Calendar theCalendar)
     {
         // TODO
+    }
+
+    @Override
+    public String toString()
+    {
+        return email;
     }
 }
