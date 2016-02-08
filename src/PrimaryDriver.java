@@ -58,7 +58,6 @@ public class PrimaryDriver
                     loginList.get(userName).email = userName;
                 }
             }
-
         }
         catch (FileNotFoundException e)
         {
