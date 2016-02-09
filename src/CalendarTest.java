@@ -22,16 +22,19 @@ public class CalendarTest
         fail("Not yet implemented");
     }
     
+    @Test
     public void testAddJobWhenMax30Jobs()
     {
         fail("Not yet implemented");
     }
     
+    @Test
     public void testAddJobsWhenMaxWeeklyJobs()
     {
         fail("Not yet implemented");
     }
     
+    @Test
     public void testMaxDateFromToday()
     {
         fail("Not yet implemented");
