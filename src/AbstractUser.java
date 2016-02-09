@@ -6,7 +6,7 @@ public abstract class AbstractUser implements User, Serializable
     String firstName;
     String email;
 
-    public AbstractUser()
+    public AbstractUser(String myEmail, String myFirstName, String myLastName)
     {
 
     }
