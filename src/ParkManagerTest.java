@@ -1,14 +1,23 @@
 import static org.junit.Assert.*;
 
+
 import org.junit.Before;
 import org.junit.Test;
 
 public class ParkManagerTest {
+    
+    ParkManager joblessParkManager;
 
 	@Before
 	public void setUp() {
 		// Park manager with no job
-		// ParkManager joblessParkManager = new ParkManager();
+		joblessParkManager = new ParkManager("beth@uw.edu", "B", "E", 
+		        new Park("Wood", joblessParkManager));
+	}
+	
+	@Test
+	public void testGetParks() {
+	    
 	}
 
 	@Test
