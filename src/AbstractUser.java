@@ -26,7 +26,6 @@ public abstract class AbstractUser implements User, Serializable
         System.out.println(theJob.toString());
     }
 
-    @Override
     public void viewAllJobs(UrbanParkCalendar theCalendar)
     {
         ArrayList<Job> allJobs = (ArrayList<Job>) theCalendar.getJobList();

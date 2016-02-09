@@ -59,6 +59,7 @@ public class PrimaryDriver
                 {
                     String className = UserType;
                     Class<?> cl = Class.forName(className);
+                    @SuppressWarnings("unchecked")
                     Constructor<AbstractUser> constructor = (Constructor<AbstractUser>) cl
                             .getConstructor(String.class);
                     AbstractUser currentUser = (AbstractUser) constructor
