@@ -1,18 +1,39 @@
 import java.util.Collections;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 public class ParkManager extends AbstractUser
 {
-    //Collections<myParks> managedParks;
-    private List<String> myParks;
-    
-    public ParkManager(String myEmail, String myFirstName, String myLastName, List<String> myParks){
-        super(myEmail, myFirstName, myLastName);
-        this.myParks = new ArrayList<String>(myParks);
+    // Collections<myParks> managedParks;
+    private Collection<Park> myParks;
+
+    public ParkManager(String theEmail)
+    {
+        super(theEmail);
     }
-    
-    public List<String> getParks() {
-        return Collections.unmodifiableList(myParks);
+
+    public ParkManager(String theEmail, String theFirstName, String theLastName)
+    {
+        super(theEmail, theFirstName, theLastName);
+    }
+
+    public ParkManager(String theEmail, String theFirstName, String theLastName,
+            Park thePark)
+    {
+        super(theEmail, theFirstName, theLastName);
+        this.myParks = new ArrayList<Park>();
+        myParks.add(thePark);
+    }
+
+    public ParkManager(String theEmail, String theFirstName, String theLastName,
+            Collection<Park> theParks)
+    {
+        super(theEmail, theFirstName, theLastName);
+        this.myParks = new ArrayList<Park>(theParks);
+    }
+
+    public Collection<Park> getParks()
+    {
+        return Collections.unmodifiableCollection(myParks);
     }
 }

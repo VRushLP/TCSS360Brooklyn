@@ -1,20 +1,21 @@
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
-public class Calendar
+public class UrbanParkCalendar
 {
     public static final int MAX_JOBS = 30;
     public static final int MAX_WEEKLY_JOBS = 5;
     public static final int MAX_DATE_FROM_TODAY = 90;
-    // Current date should not be here. It should be checked every time we
-    // instantiate a calendar object, or read one in from a file.
 
     Collection<Job> masterJobList;
+    Date currentDate;
 
-    public Calendar()
+    public UrbanParkCalendar()
     {
         // Example of making new List out of a Collection
         masterJobList = new ArrayList<>();
+        currentDate = new Date();
     }
 
     public Collection<Job> getJobList()
