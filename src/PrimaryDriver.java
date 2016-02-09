@@ -3,7 +3,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -39,8 +39,12 @@ public class PrimaryDriver
             {
                 // System.out.println(nextLine);
                 String[] splitLine = nextLine.split(",");
-                String userName = splitLine[0];
-                String UserType = splitLine[splitLine.length - 1];
+                if (splitLine.length != 4)
+                    continue;
+                String currentEmail = splitLine[0];
+                String currentFirstName = splitLine[1];
+                String currentLastName = splitLine[2];
+                String UserType = splitLine[3];
 
                 /*
                  * Here, the loginList map is getting something put into it. The
@@ -51,11 +55,19 @@ public class PrimaryDriver
                  * break hilariously badly. This is just a temporary solution:
                  * Eventually we will be moving to ObjectReaders anyway.
                  */
-                if (!loginList.containsKey(userName))
+                if (!loginList.containsKey(currentEmail))
                 {
-                    loginList.put(userName, (AbstractUser) Class
-                            .forName(UserType).newInstance());
-                    loginList.get(userName).email = userName;
+                    String className = UserType;
+                    Class<?> cl = Class.forName(className);
+                    Constructor<AbstractUser> constructor = (Constructor<AbstractUser>) cl
+                            .getConstructor(String.class);
+                    AbstractUser currentUser = (AbstractUser) constructor
+                            .newInstance(currentEmail);
+
+                    currentUser.firstName = currentFirstName;
+                    currentUser.lastName = currentLastName;
+
+                    loginList.put(currentEmail, currentUser);
                 }
             }
         }
@@ -92,7 +104,7 @@ public class PrimaryDriver
 
         if (currentUser instanceof ParkManager)
         {
-            ParkManagerDriver.run(currentUser, in);
+            ParkManagerDriver.run((ParkManager) currentUser, in);
         }
         else if (currentUser instanceof UrbanParkStaffMember)
         {

@@ -7,6 +7,16 @@ public class ParkManager extends AbstractUser
     // Collections<myParks> managedParks;
     private Collection<Park> myParks;
 
+    public ParkManager(String theEmail)
+    {
+        super(theEmail);
+    }
+
+    public ParkManager(String theEmail, String theFirstName, String theLastName)
+    {
+        super(theEmail, theFirstName, theLastName);
+    }
+
     public ParkManager(String theEmail, String theFirstName, String theLastName,
             Park thePark)
     {
