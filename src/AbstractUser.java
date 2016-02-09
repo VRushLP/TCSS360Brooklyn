@@ -7,20 +7,23 @@ public abstract class AbstractUser implements User, Serializable
     String firstName;
     String email;
 
-    public AbstractUser(String myEmail, String myFirstName, String myLastName)
+    public AbstractUser(String theEmail)
     {
-
+        this.email = theEmail;
     }
 
-    public AbstractUser(String email)
+    public AbstractUser(String theEmail, String theFirstName,
+            String theLastName)
     {
-        this.email = email;
+        this(theEmail);
+        this.firstName = theFirstName;
+        this.lastName = theLastName;
     }
 
     @Override
     public void viewJob(Job theJob)
     {
-        // TODO
+        System.out.println(theJob.toString());
     }
 
     @Override
@@ -37,7 +40,15 @@ public abstract class AbstractUser implements User, Serializable
     @Override
     public String toString()
     {
-        return email;
+        StringBuilder abstractUserString = new StringBuilder();
+        abstractUserString.append("E-mail: ");
+        abstractUserString.append(email);
+        abstractUserString.append(" Name: ");
+        abstractUserString.append(lastName);
+        abstractUserString.append(", ");
+        abstractUserString.append(firstName);
+
+        return abstractUserString.toString();
     }
 
     /**
