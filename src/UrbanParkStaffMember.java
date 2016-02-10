@@ -3,6 +3,8 @@ import java.util.Collection;
 
 public class UrbanParkStaffMember extends AbstractUser
 {
+    private static final long serialVersionUID = -5534126442323868632L;
+
     public UrbanParkStaffMember(String theEmail)
     {
         super(theEmail);
@@ -23,11 +25,12 @@ public class UrbanParkStaffMember extends AbstractUser
 
         for (Job job : masterJobList)
         {
-            ArrayList<Volunteer> jobVolunteers = (ArrayList<Volunteer>) job.volunteerList;
+            ArrayList<Volunteer> jobVolunteers = (ArrayList<Volunteer>) job
+                    .getVolunteers();
 
             for (Volunteer v : jobVolunteers)
             {
-                if (v.lastName.equals(theLastName))
+                if (v.getLastName().equals(theLastName))
                 {
                     returnable.add(v);
                 }

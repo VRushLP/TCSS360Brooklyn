@@ -1,11 +1,7 @@
 import static org.junit.Assert.*;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 
 public class CalendarTest
 {
@@ -13,7 +9,7 @@ public class CalendarTest
     @BeforeClass
     public static void setUpBeforeClass() throws Exception
     {
-        
+
     }
 
     @Test
@@ -21,23 +17,23 @@ public class CalendarTest
     {
         fail("Not yet implemented");
     }
-    
+
     @Test
     public void testAddJobWhenMax30Jobs()
     {
         fail("Not yet implemented");
     }
-    
+
     @Test
     public void testAddJobsWhenMaxWeeklyJobs()
     {
         fail("Not yet implemented");
     }
-    
+
     @Test
     public void testMaxDateFromToday()
     {
         fail("Not yet implemented");
     }
-    
+
 }

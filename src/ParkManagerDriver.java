@@ -4,10 +4,11 @@ public class ParkManagerDriver
 {
     static String input;
     static int choice;
+    static String[] parsedInput;
 
     public static void run(ParkManager theCurrentUser, Scanner in)
     {
-        System.out.println("Welcome " + theCurrentUser.email);
+        System.out.println("Welcome " + theCurrentUser.getEmail());
 
         while (choice != 5)
         {
@@ -20,7 +21,18 @@ public class ParkManagerDriver
             System.out.println("5. Exit");
 
             input = in.nextLine();
-            choice = Integer.parseInt(input.substring(0, 1));
+            parsedInput = input.split(" ");
+
+            try
+            {
+                choice = Integer.parseInt(parsedInput[0].substring(0,
+                        parsedInput[0].length()));
+                // TODO catch NumberFormatExceptions here.
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
 
             switch (choice)
             {

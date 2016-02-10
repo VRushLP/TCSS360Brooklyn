@@ -3,17 +3,17 @@ import java.util.ArrayList;
 
 public abstract class AbstractUser implements User, Serializable
 {
-    String lastName;
-    String firstName;
-    String email;
+    private static final long serialVersionUID = -483510211432682135L;
+    private String lastName;
+    private String firstName;
+    private String email;
 
     public AbstractUser(String theEmail)
     {
         this.email = theEmail;
     }
 
-    public AbstractUser(String theEmail, String theFirstName,
-            String theLastName)
+    public AbstractUser(String theEmail, String theFirstName, String theLastName)
     {
         this(theEmail);
         this.firstName = theFirstName;
@@ -50,14 +50,6 @@ public abstract class AbstractUser implements User, Serializable
         return abstractUserString.toString();
     }
 
-    /**
-     * Returns if an object is equal to another object. Should work for all
-     * kinds of AbstractUser.
-     * 
-     * @param o
-     *            The object compared.
-     * @return True if the objects are equal, false otherwise.
-     */
     @Override
     public boolean equals(Object o)
     {
@@ -69,7 +61,36 @@ public abstract class AbstractUser implements User, Serializable
                     && firstName.equals(comparison.firstName)
                     && lastName.equals(comparison.lastName);
         }
-
         return false;
+    }
+
+    public String getLastName()
+    {
+        return lastName;
+    }
+
+    public void setLastName(String theLastName)
+    {
+        this.lastName = theLastName;
+    }
+
+    public String getFirstName()
+    {
+        return firstName;
+    }
+
+    public void setFirstName(String theFirstName)
+    {
+        this.firstName = theFirstName;
+    }
+
+    public String getEmail()
+    {
+        return email;
+    }
+
+    public void setEmail(String theEmail)
+    {
+        this.email = theEmail;
     }
 }

@@ -1,41 +1,31 @@
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 
 public class Job implements Serializable
 {
+    private static final long serialVersionUID = 8218272151272583884L;
     public static final int MAX_VOLUNTEER_NUM = 30;
     public static final int MAX_JOB_LENGTH = 2; // 2 days
 
     // These are intentionally left at package visibility
-    Collection<Volunteer> volunteerList;
-    Park associatedPark;
-    int maxVolunteers;
-    Date startDate;
-    Date endDate;
-    String jobTitle;
-    String jobDescription;
+    private Collection<Volunteer> volunteers;
+    private Park associatedPark;
+    private int maxVolunteers;
 
-    /**
-     * Creates a job.
-     * 
-     * @param thePark
-     *            - the name of the Park holding the job.
-     * @param theMaxVolunteers
-     *            - the maximum volunteers needed.
-     * @param theStartDate
-     *            - the start date of the job.
-     * @param theJobTitle
-     *            - the title of the job.
-     * @param theJobDescription
-     *            - a description of job details.
-     */
-    Job(Park thePark, int theMaxVolunteers, Date theStartDate, Date theEndDate,
-            String theJobTitle, String theJobDescription)
+    private Date startDate;
+    private Date endDate;
+
+    private String jobTitle;
+    private String jobDescription;
+
+    public Job(Park thePark, int theMaxVolunteers, Date theStartDate,
+            Date theEndDate, String theJobTitle, String theJobDescription)
     {
         // volunteer list starts empty
-        volunteerList = new ArrayList<Volunteer>();
+        volunteers = new ArrayList<>();
         associatedPark = thePark;
         maxVolunteers = theMaxVolunteers;
         startDate = theStartDate;
@@ -44,18 +34,10 @@ public class Job implements Serializable
         jobDescription = theJobDescription;
     }
 
-    Job getJob()
-    {
-        return this; // are we just returning this instance?
-    }
-
-    // Left out workCategory enum. We should talk about how we would use it
-    // before we implement it.
-
     @Override
     public String toString()
     {
-        // early version of to string to help in testing
+        // TODO change this for more long term use.
         StringBuilder jobDetails = new StringBuilder();
         jobDetails.append("Job: ");
         jobDetails.append(jobTitle);
@@ -64,7 +46,7 @@ public class Job implements Serializable
         jobDetails.append("\nVolunteers Needed: ");
         jobDetails.append(maxVolunteers);
         jobDetails.append("\nVolunteers Signed up: ");
-        jobDetails.append(volunteerList.size());
+        jobDetails.append(volunteers.size());
         jobDetails.append("\nStart Date: ");
         jobDetails.append(startDate);
         jobDetails.append("\nEnd Date: ");
@@ -73,9 +55,90 @@ public class Job implements Serializable
         return jobDetails.toString();
     }
 
+    public boolean addVolunteer(Volunteer theVolunteer)
+    {
+        if (volunteers.size() < maxVolunteers)
+        {
+            volunteers.add(theVolunteer);
+            return true;
+        }
+        return false;
+    }
+
+    public int getMaxVolunteers()
+    {
+        return maxVolunteers;
+    }
+
+    public void setMaxVolunteers(int maxVolunteers)
+    {
+        this.maxVolunteers = maxVolunteers;
+    }
+
+    public Date getStartDate()
+    {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate)
+    {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate()
+    {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate)
+    {
+        this.endDate = endDate;
+    }
+
+    public String getJobTitle()
+    {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle)
+    {
+        this.jobTitle = jobTitle;
+    }
+
+    public String getJobDescription()
+    {
+        return jobDescription;
+    }
+
+    public void setJobDescription(String jobDescription)
+    {
+        this.jobDescription = jobDescription;
+    }
+
+    public Collection<Volunteer> getVolunteers()
+    {
+        return Collections.unmodifiableCollection(volunteers);
+    }
+
+    public Park getAssociatedPark()
+    {
+        return associatedPark;
+    }
+
     @Override
     public boolean equals(Object o)
     {
+        if (o instanceof Job)
+        {
+            Job compare = (Job) o;
+            // Should be the bare minimum to determine if a Job is unique or
+            // not.
+            return jobTitle.equals(compare.jobTitle)
+                    && jobDescription.equals(compare.jobDescription)
+                    && associatedPark.equals(compare.associatedPark)
+                    && startDate.equals(compare.startDate);
+        }
+
         return false;
     }
 }
