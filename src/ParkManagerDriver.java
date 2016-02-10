@@ -5,9 +5,9 @@ public class ParkManagerDriver
     static String input;
     static int choice;
 
-    public static void run(User theCurrentUser, Scanner in)
+    public static void run(ParkManager theCurrentUser, Scanner in)
     {
-        System.out.println("Welcome " + theCurrentUser.toString());
+        System.out.println("Welcome " + theCurrentUser.email);
 
         while (choice != 5)
         {
