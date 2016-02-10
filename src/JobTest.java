@@ -48,10 +48,10 @@ public class JobTest
     @Test
     public void testGetJob()
     {
-        assertFalse(jb.getJob().jobTitle.isEmpty());
-        assertTrue(jb.getJob().associatedPark != null);
-        assertTrue(jb.getJob().startDate != null);
-        assertTrue(jb.getJob().endDate != null);
+        assertFalse(jb.getJobTitle().isEmpty());
+        assertTrue(jb.getAssociatedPark() != null);
+        assertTrue(jb.getStartDate() != null);
+        assertTrue(jb.getEndDate() != null);
     }
 
     /**
@@ -61,7 +61,7 @@ public class JobTest
     @Test
     public void testMaxVol()
     {
-        assertTrue(jb.getJob().maxVolunteers > 0);
+        assertTrue(jb.getMaxVolunteers() > 0);
     }
 
     /**
@@ -90,7 +90,7 @@ public class JobTest
 
         // Get the difference between start date and current date in
         // milliseconds
-        float diff = jb.startDate.getTime() - currentDate.getTime();
+        float diff = jb.getStartDate().getTime() - currentDate.getTime();
 
         // Difference in days
         float diffDays = diff / (24 * 60 * 60 * 1000);
@@ -112,7 +112,7 @@ public class JobTest
 
         // Get the difference between start date and current date in
         // milliseconds
-        float diff = jb.startDate.getTime() - currentDate.getTime();
+        float diff = jb.getStartDate().getTime() - currentDate.getTime();
 
         // Difference in days
         float diffDays = diff / (24 * 60 * 60 * 1000);
@@ -133,7 +133,7 @@ public class JobTest
 
         // Get the difference between start date and current date in
         // milliseconds
-        float diff = jb.endDate.getTime() - currentDate.getTime();
+        float diff = jb.getEndDate().getTime() - currentDate.getTime();
 
         // Difference in days
         float diffDays = diff / (24 * 60 * 60 * 1000);
@@ -148,7 +148,7 @@ public class JobTest
     @Test
     public void testStartEndDate()
     {
-        assertTrue(jb.startDate.compareTo(jb.endDate) < 0);
+        assertTrue(jb.getStartDate().compareTo(jb.getEndDate()) < 0);
     }
 
     /**
@@ -159,11 +159,10 @@ public class JobTest
     public void testStartEndDate2()
     {
         // Get the difference in milliseconds
-        float diff = jb.endDate.getTime() - jb.startDate.getTime();
+        float diff = jb.getEndDate().getTime() - jb.getStartDate().getTime();
 
         // Difference in days
         float diffDays = diff / (24 * 60 * 60 * 1000);
         assertTrue(diffDays <= 2);
     }
-
 }

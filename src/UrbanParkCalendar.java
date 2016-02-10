@@ -1,36 +1,47 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 
-public class UrbanParkCalendar
+public class UrbanParkCalendar implements Serializable
 {
+    private static final long serialVersionUID = -6937747495177492138L;
     public static final int MAX_JOBS = 30;
     public static final int MAX_WEEKLY_JOBS = 5;
     public static final int MAX_DATE_FROM_TODAY = 90;
 
-    Collection<Job> masterJobList;
-    Date currentDate;
+    private static Collection<Job> masterJobCollection;
+    private static Date currentDate;
 
     public UrbanParkCalendar()
     {
-        // Example of making new List out of a Collection
-        masterJobList = new ArrayList<>();
-        currentDate = new Date();
+        masterJobCollection = new ArrayList<>();
+        setDate(new Date());
     }
 
     public Collection<Job> getJobList()
     {
-        return masterJobList;
+        return Collections.unmodifiableCollection(masterJobCollection);
     }
 
     public void addJob(Job theJob)
     {
-        masterJobList.add(theJob);
+        masterJobCollection.add(theJob);
     }
 
-    public void removeJob(Job theJob)
+    public boolean removeJob(Job theJob)
     {
-        masterJobList.remove(theJob);
+        return masterJobCollection.remove(theJob);
     }
 
+    public void setDate(Date theDate)
+    {
+        setDate(theDate);
+    }
+
+    public static Date getCurrentDate()
+    {
+        return currentDate;
+    }
 }
