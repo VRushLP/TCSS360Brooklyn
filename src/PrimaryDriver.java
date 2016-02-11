@@ -98,7 +98,11 @@ public class PrimaryDriver
         // String userName = in.nextLine();
 
         // Hardcoded version for easier running later.
-        String userName = "testPM@doesntexist.net";
+//        String userName = "testPM@doesntexist.net";
+        
+        // Uncomment out the line below to test the Volunteer class
+        // and comment out the line above
+        String userName = "testVolunteer@please.net";
 
         User currentUser = login(userName);
 
@@ -113,8 +117,7 @@ public class PrimaryDriver
         }
         else if (currentUser instanceof Volunteer)
         {
-            System.out.println("The user was an instance of "
-                    + currentUser.getClass() + "!");
+            VolunteerDriver.run((Volunteer) currentUser, in);
         }
         else
         {

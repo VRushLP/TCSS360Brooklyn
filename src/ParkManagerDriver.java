@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ParkManagerDriver
@@ -37,7 +38,7 @@ public class ParkManagerDriver
             switch (choice)
             {
                 case 1:
-                    submitNewJob();
+                    submitNewJob(theCurrentUser);
                     break;
                 case 2:
                     deleteJob();
@@ -58,9 +59,41 @@ public class ParkManagerDriver
         }
     }
 
-    public static void submitNewJob()
+    // Added content in method
+    public static void submitNewJob(ParkManager theCurrentUser)
     {
-        System.out.println("Entered submitNewJob().");
+        System.out.println("Submit job");
+        // Prompt user to enter data
+        // Validate data (helper method)
+        // Add job by calling theCurrentUser.
+        
+        // Get the parks that current park manager manages
+        ArrayList<Park> parks = (ArrayList<Park>) theCurrentUser.getParks();
+        
+        // For testing purposes only
+        Park park = new Park("Gasworks Park", theCurrentUser);
+        ParkManager pm = new ParkManager("pmtest@test.com", "theFirstName",
+                "theLastName", park);
+        
+        
+        
+        
+        // Park manager will be presented with a list of parks he/she manages
+        // Then, the PM will have to choose one of those
+        // After selection, the PM is prompted to type in the job details
+        // After job has been added under this PM, the Calendar needs to be updated also
+        // to reflect precisely that
+        System.out.println("Please select one of the parks you would like to"
+                + "create a job for");
+        System.out.println(park.toString());
+        // Assume that user made a selection
+        System.out.println("Job Location: ");
+        System.out.println("Start Date: ");
+        System.out.println("End Date: ");
+        System.out.println("Description: ");
+        System.out.println("Work Category: ");
+        
+        
     }
 
     public static void deleteJob()
