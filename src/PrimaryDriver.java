@@ -14,10 +14,9 @@ public class PrimaryDriver
     private static final String inputPath = ".\\users.txt";
 
     // Data Structure to store everything in
-    static Map<String, AbstractUser> loginList;
-    static BufferedReader inputFileReader;
+    private static Map<String, AbstractUser> loginList;
+    private static BufferedReader inputFileReader;
 
-    // private constructor to make instantiation harder.
     private PrimaryDriver()
     {
     }
@@ -65,8 +64,8 @@ public class PrimaryDriver
                     AbstractUser currentUser = (AbstractUser) constructor
                             .newInstance(currentEmail);
 
-                    currentUser.firstName = currentFirstName;
-                    currentUser.lastName = currentLastName;
+                    currentUser.setFirstName(currentFirstName);
+                    currentUser.setLastName(currentLastName);
 
                     loginList.put(currentEmail, currentUser);
                 }

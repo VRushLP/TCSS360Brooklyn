@@ -7,6 +7,7 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
+<<<<<<< HEAD
 /**
  * 
  * @author Bethany Eastman
@@ -76,6 +77,41 @@ public class ParkManagerTest
         assertNotEquals(myPark.parksJobList, new ArrayList<Job>());
         myPark.parksJobList.remove(myJob);
         assertEquals(myPark.parksJobList, new ArrayList<Job>());
+=======
+public class ParkManagerTest
+{
+
+    @Before
+    public void setUp()
+    {
+        // Park manager with no job
+        // ParkManager joblessParkManager = new ParkManager();
+    }
+
+    @Test
+    public void testCreateJob()
+    {
+        // try to create a job
+        // make sure details are the same
+        // test park manager can't create job in park they don't manage
+        fail("Not yet implemented");
+    }
+
+    @Test
+    public void testEditJob()
+    {
+        // edit a job
+        // make sure changes work
+        fail("Not yet implemented");
+    }
+
+    @Test
+    public void testRemoveJob()
+    {
+        // put job in park manager list of jobs
+        // make sure job not in calendar
+        fail("Not yet implemented");
+>>>>>>> master
     }
 
     @Test
