@@ -1,5 +1,8 @@
 import static org.junit.Assert.*;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,65 +12,96 @@ import org.junit.Test;
  * @author Bethany Eastman
  * @version 02/09/2016
  */
-public class ParkManagerTest {
-    
+public class ParkManagerTest
+{
+
     ParkManager joblessParkManager;
+    Park myPark;
+    Job myJob;
+    Date endDate;
 
-	@Before
-	public void setUp() {
-		// Park manager with no job
-		joblessParkManager = new ParkManager("beth@uw.edu", "B", "E", 
-		        new Park("Wood", joblessParkManager));
-	}
-	
-	@Test
-	public void testGetParks() {
-	    
-	}
+    @Before
+    public void setUp() throws Exception
+    {
+        // Park manager with no job
+        myPark = new Park("Seattle Park", joblessParkManager);
+        joblessParkManager = new ParkManager("john@uw.edu", "John", "Smith",
+                myPark);
 
-	@Test
-	public void testCreateJob() {
-		// try to create a job
-		// make sure details are the same
-		// test park manager can't create job in park they don't manage
-		fail("Not yet implemented");
-	}
+        String dateStart = "02/22/2016 15:00:00";
+        String dateEnd = "02/24/2016 15:00:00";
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 
-	@Test
-	public void testEditJob() {
-		// edit a job
-		// make sure changes work
-		fail("Not yet implemented");
-	}
+        Date startDate = format.parse(dateStart);
+        endDate = format.parse(dateEnd);
+        
+        
+        myJob = new Job(myPark, 5, startDate, endDate, "Pick up Trash", 
+                "Pick up trash at park");
+    }
 
-	@Test
-	public void testRemoveJob() {
-		// put job in park manager list of jobs
-		// make sure job not in calendar
-		fail("Not yet implemented");
-	}
+    /**
+     * Create new job and make sure it is contained in that park.
+     */
+    @Test
+    public void testCreateJob()
+    {
+        assertTrue(myPark.parksJobList.contains(myJob));
+    }
 
-	@Test
-	public void testViewJob() {
-		// make sure job view is same as expected
-		// for specific job
-		fail("Not yet implemented");
-	}
+    /**
+     * Edit details of job and make sure updated job is contained in jobs 
+     * list for that park.
+     */
+    @Test
+    public void testEditJob()
+    {   
+        myJob.setEndDate(endDate);
+        myJob.setJobDescription("Plant trees in park");
+        myJob.setJobTitle("Plant trees");
+        myJob.setStartDate(endDate);
+        assertTrue(myPark.parksJobList.contains(myJob));
+        assertEquals(myJob, new Job(myPark, 5, endDate, endDate, 
+                "Plant trees", "Plant trees in park"));
+        
+    }
 
-	@Test
-	public void testViewVolunteers() {
-		// test view with no volunteer
-		// test view with one volunteer
-		// test view with some volunteers
-		fail("Not yet implemented");
-	}
+    /**
+     * Remove a job and make sure it is no longer in list
+     * of jobs for a park managers park.
+     */
+    @Test
+    public void testRemoveJob()
+    {
+        assertNotEquals(myPark.parksJobList, new ArrayList<Job>());
+        myPark.parksJobList.remove(myJob);
+        assertEquals(myPark.parksJobList, new ArrayList<Job>());
+    }
 
-	@Test
-	public void testViewAllJobs() {
-		// test view with no job
-		// test view with one job
-		// test view with some jobs
-		fail("Not yet implemented");
-	}
+    @Test
+    public void testViewJob()
+    {
+        // make sure job view is same as expected
+        // for specific job
+        fail("Not yet implemented");
+    }
+
+    @Test
+    public void testViewVolunteers()
+    {
+        // test view with no volunteer
+        // test view with one volunteer
+        // test view with some volunteers
+        fail("Not yet implemented");
+    }
+
+    @Test
+    public void testViewAllJobs()
+    {
+        // test view with no job
+        // test view with one job
+        // test view with some jobs
+        fail("Not yet implemented");
+    }
 
 }

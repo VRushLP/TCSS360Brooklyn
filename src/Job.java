@@ -36,6 +36,8 @@ public class Job implements Serializable
         endDate = theEndDate;
         jobTitle = theJobTitle;
         jobDescription = theJobDescription;
+        
+        associatedPark.parksJobList.add(this);
     }
 
     Job getJob()
@@ -74,12 +76,13 @@ public class Job implements Serializable
 
     void setStartDate(Date theStartDate)
     {
+        startDate = theStartDate;
 
     }
 
     void setEndDate(Date theEndDate)
     {
-
+        endDate = theEndDate;
     }
 
     // Left out workCategory enum. We should talk about how we would use it
