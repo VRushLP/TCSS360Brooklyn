@@ -17,7 +17,8 @@ public class UrbanParkCalendar implements Serializable
     public UrbanParkCalendar()
     {
         masterJobCollection = new ArrayList<>();
-        setDate(new Date());
+        // Throws an exception at this point
+//        setDate(new Date());
     }
 
     public Collection<Job> getJobList()

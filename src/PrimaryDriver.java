@@ -16,6 +16,9 @@ public class PrimaryDriver
     // Data Structure to store everything in
     private static Map<String, AbstractUser> loginList;
     private static BufferedReader inputFileReader;
+    
+    // A calendar field
+    private static UrbanParkCalendar UPCalendar;
 
     private PrimaryDriver()
     {
@@ -29,6 +32,8 @@ public class PrimaryDriver
         // Get all user information from csv file and put it in a map
         loginList = new HashMap<>();
         File inputFile = new File(inputPath);
+        // Initialize Urban Parks Calendar
+        UPCalendar = new UrbanParkCalendar();
         try
         {
             inputFileReader = new BufferedReader(new FileReader(inputFile));
@@ -98,17 +103,17 @@ public class PrimaryDriver
         // String userName = in.nextLine();
 
         // Hardcoded version for easier running later.
-//        String userName = "testPM@doesntexist.net";
+        String userName = "testPM@doesntexist.net";
         
         // Uncomment out the line below to test the Volunteer class
         // and comment out the line above
-        String userName = "testVolunteer@please.net";
+        //String userName = "testVolunteer@please.net";
 
         User currentUser = login(userName);
 
         if (currentUser instanceof ParkManager)
         {
-            ParkManagerDriver.run((ParkManager) currentUser, in);
+            ParkManagerDriver.run((ParkManager) currentUser, in, UPCalendar);
         }
         else if (currentUser instanceof UrbanParkStaffMember)
         {
