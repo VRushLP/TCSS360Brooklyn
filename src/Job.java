@@ -4,11 +4,17 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 
+/**
+ * 
+ * 
+ * @author Bethany Eastman
+ * @version 02/09/2016
+ */
 public class Job implements Serializable
 {
     private static final long serialVersionUID = 8218272151272583884L;
     public static final int MAX_VOLUNTEER_NUM = 30;
-    public static final int MAX_JOB_LENGTH = 2; // 2 days
+    public static final int MAX_JOB_LENGTH = 2;     // 2 days
 
     // These are intentionally left at package visibility
     private Collection<Volunteer> volunteers;
@@ -27,17 +33,18 @@ public class Job implements Serializable
         // volunteer list starts empty
         volunteers = new ArrayList<>();
         associatedPark = thePark;
-        maxVolunteers = theMaxVolunteers;
+        maxVolunteers = theMaxVolunteers;   // check if max volunteers is 30
         startDate = theStartDate;
         endDate = theEndDate;
         jobTitle = theJobTitle;
         jobDescription = theJobDescription;
+        
+        associatedPark.getJobList().add(this);
     }
-
+    
     @Override
     public String toString()
     {
-        // TODO change this for more long term use.
         StringBuilder jobDetails = new StringBuilder();
         jobDetails.append("Job: ");
         jobDetails.append(jobTitle);
