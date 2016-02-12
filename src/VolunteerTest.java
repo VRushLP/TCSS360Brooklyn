@@ -3,13 +3,34 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * 
+ * @author Bethany Eastman
+ * @version 02/09/2016
+ */
 public class VolunteerTest
 {
+
+    Volunteer joblessVolunteer;
+    Volunteer sameVolunteer;
+    // Volunteer maxVolunteer;
 
     @Before
     public void setUp()
     {
-        // Volunteer joblessVolunteer = new Volunteer();
+        joblessVolunteer = new Volunteer("jobless@gmail.com", "John", "Smith");
+        sameVolunteer = new Volunteer("jobless@gmail.com", "John", "Smith");
+    }
+
+    @Test
+    public void testEquals()
+    {
+        assertEquals("Same object should be the same", joblessVolunteer,
+                joblessVolunteer);
+        assertEquals("Different objects with same values should be equal",
+                joblessVolunteer, sameVolunteer);
+        assertNotEquals("Different values shouldn't be equal values",
+                joblessVolunteer, new Volunteer("i@uw.edu", "J.", "S."));
     }
 
     @Test
