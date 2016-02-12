@@ -7,7 +7,6 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
-<<<<<<< HEAD
 /**
  * 
  * @author Bethany Eastman
@@ -47,7 +46,7 @@ public class ParkManagerTest
     @Test
     public void testCreateJob()
     {
-        assertTrue(myPark.parksJobList.contains(myJob));
+        assertTrue(myPark.getJobList().contains(myJob));
     }
 
     /**
@@ -61,7 +60,7 @@ public class ParkManagerTest
         myJob.setJobDescription("Plant trees in park");
         myJob.setJobTitle("Plant trees");
         myJob.setStartDate(endDate);
-        assertTrue(myPark.parksJobList.contains(myJob));
+        assertTrue(myPark.getJobList().contains(myJob));
         assertEquals(myJob, new Job(myPark, 5, endDate, endDate, 
                 "Plant trees", "Plant trees in park"));
         
@@ -74,44 +73,9 @@ public class ParkManagerTest
     @Test
     public void testRemoveJob()
     {
-        assertNotEquals(myPark.parksJobList, new ArrayList<Job>());
-        myPark.parksJobList.remove(myJob);
-        assertEquals(myPark.parksJobList, new ArrayList<Job>());
-=======
-public class ParkManagerTest
-{
-
-    @Before
-    public void setUp()
-    {
-        // Park manager with no job
-        // ParkManager joblessParkManager = new ParkManager();
-    }
-
-    @Test
-    public void testCreateJob()
-    {
-        // try to create a job
-        // make sure details are the same
-        // test park manager can't create job in park they don't manage
-        fail("Not yet implemented");
-    }
-
-    @Test
-    public void testEditJob()
-    {
-        // edit a job
-        // make sure changes work
-        fail("Not yet implemented");
-    }
-
-    @Test
-    public void testRemoveJob()
-    {
-        // put job in park manager list of jobs
-        // make sure job not in calendar
-        fail("Not yet implemented");
->>>>>>> master
+        assertNotEquals(myPark.getJobList(), new ArrayList<Job>());
+        myPark.getJobList().remove(myJob);
+        assertEquals(myPark.getJobList(), new ArrayList<Job>());
     }
 
     @Test
