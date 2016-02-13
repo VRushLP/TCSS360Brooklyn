@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class PrimaryDriver
 {
     // Input file name.
-    private static final String inputPath = ".\\users.txt";
+    private static final String inputPath = "./users.txt";
 
     // Data Structure to store everything in
     private static Map<String, AbstractUser> loginList;
@@ -150,11 +150,11 @@ public class PrimaryDriver
         // String userName = in.nextLine();
 
         // Hardcoded version for easier running later.
-        String userName = "testPM@doesntexist.net";
+//        String userName = "testPM@doesntexist.net";
 
         // Uncomment out the line below to test the Volunteer class
         // and comment out the line above
-        // String userName = "testVolunteer@please.net";
+         String userName = "testVolunteer@please.net";
 
         User currentUser = login(userName);
 

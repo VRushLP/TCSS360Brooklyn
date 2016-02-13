@@ -16,12 +16,19 @@ import java.util.Scanner;
  */
 public class VolunteerDriver
 {
+    
+    // add back for view summary of upcoming jobs
+    // allow user to view details about the job
+    
+    // volunteer only in upcoming jobs, so that volunteers
+    // can not sign up for previous jobs?
+    
     static String input;
     static int choice;
     static String[] parsedInput;
 
     // Input file name.
-    private static final String inputPath = ".\\jobs.txt";
+    private static final String inputPath = "./jobs.txt";
 
     // Data Structure to store everything in
     private static Map<String, Job> jobList;
@@ -55,7 +62,8 @@ public class VolunteerDriver
             switch (choice)
             {
                 case 1:
-                    viewJobs();
+//                    viewJobs();
+                    viewJobs2(in);
                     break;
                 case 2:
                     viewSignedUpJobs();
@@ -75,6 +83,23 @@ public class VolunteerDriver
         System.out.println("Entered viewSignedUpJobs().");
 
     }
+    
+    // work in progress to fix view jobs method
+    public static void viewJobs2(Scanner in) {
+        viewJobs();
+        input = in.nextLine();
+        while (!input.equalsIgnoreCase("b")) { // options to go back
+            // 1. get job at index, print all details of job
+            System.out.println("All details of a job will be printed here");
+            // 2. give option to volunteer for job
+            // 3. if back entered, go back to menu screen
+            System.out.println("Enter b to go back");
+            input = in.nextLine();
+        }
+        
+        
+        // view job details for a specific job
+    }
 
     /**
      * View a summary of all upcoming jobs.
@@ -83,7 +108,7 @@ public class VolunteerDriver
     {
         // a temporary counter for the job, won't be used in the future
         int jobCounter = 0;
-        System.out.println("If would like to view more details about a job,"
+        System.out.println("If would like to view more details about a job, "
                 + "please enter the number of the job. "
                 + "Here is a summary of all upcoming jobs:\n");
 
@@ -124,10 +149,10 @@ public class VolunteerDriver
                 // jobList.put(jobLocation, Job b);
             }
             System.out.println(
-                    "Prompts user to enter a job number to view more details");
+                    "Enter a job number to view more details");
             System.out.println();
             // Call viewJobDetails() method
-            viewJobDetails();
+//            viewJobDetails();
         }
         catch (FileNotFoundException e)
         {
