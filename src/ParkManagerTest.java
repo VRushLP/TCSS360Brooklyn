@@ -34,9 +34,8 @@ public class ParkManagerTest
 
         Date startDate = format.parse(dateStart);
         endDate = format.parse(dateEnd);
-        
-        
-        myJob = new Job(myPark, 5, startDate, endDate, "Pick up Trash", 
+
+        myJob = new Job(myPark, 5, startDate, endDate, "Pick up Trash",
                 "Pick up trash at park");
     }
 
@@ -50,25 +49,25 @@ public class ParkManagerTest
     }
 
     /**
-     * Edit details of job and make sure updated job is contained in jobs 
-     * list for that park.
+     * Edit details of job and make sure updated job is contained in jobs list
+     * for that park.
      */
     @Test
     public void testEditJob()
-    {   
+    {
         myJob.setEndDate(endDate);
         myJob.setJobDescription("Plant trees in park");
         myJob.setJobTitle("Plant trees");
         myJob.setStartDate(endDate);
         assertTrue(myPark.getJobList().contains(myJob));
-        assertEquals(myJob, new Job(myPark, 5, endDate, endDate, 
-                "Plant trees", "Plant trees in park"));
-        
+        assertEquals(myJob, new Job(myPark, 5, endDate, endDate, "Plant trees",
+                "Plant trees in park"));
+
     }
 
     /**
-     * Remove a job and make sure it is no longer in list
-     * of jobs for a park managers park.
+     * Remove a job and make sure it is no longer in list of jobs for a park
+     * managers park.
      */
     @Test
     public void testRemoveJob()
