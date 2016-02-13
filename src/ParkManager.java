@@ -121,9 +121,5 @@ public class ParkManager extends AbstractUser
         j.setJobTitle(jobTitle);
         j.setJobDescription(jobDescription);
         j.setMaxVolunteers(maxVolunteers);
-        
-        ArrayList<Job> jobs = new ArrayList<Job>(uPCalendar.getJobList());
-//        for (int i = 0; i < jobs)
-
     }
 }

@@ -24,10 +24,10 @@ public class ParkManagerDriver
         
         
         // FOR TESTING PURPOSES
-        Park p1 = new Park("Gasworks Park", theCurrentUser);
-        Park p2 = new Park("Ravenna Park", theCurrentUser);
-        theCurrentUser.addParkToJurisdiction(p1);
-        theCurrentUser.addParkToJurisdiction(p2);
+//        Park p1 = new Park("Gasworks Park", theCurrentUser);
+//        Park p2 = new Park("Ravenna Park", theCurrentUser);
+//        theCurrentUser.addParkToJurisdiction(p1);
+//        theCurrentUser.addParkToJurisdiction(p2);
         
         while (choice != 6)
         {
