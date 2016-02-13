@@ -74,7 +74,7 @@ public class ParkManager extends AbstractUser
         prk.addJob(job);
         
         // Update calendar
-        uPCalendar.addJob(job); // WORK ON THAT!
+        uPCalendar.addJob(job);
         
         }
 
