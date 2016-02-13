@@ -56,19 +56,22 @@ public class ParkManager extends AbstractUser
         Date startDate = null;
         Date endDate = null;
         //Park park = null;
+        
+        try 
+        {
+            startDate = format.parse(dateStart);
+            endDate = format.parse(dateEnd);
+        } 
+        catch (ParseException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
         Job job = new Job(prk, maxVolunteers, startDate, endDate, jobTitle, jobDescription);
         
         // TEMPORARY, USE prk parameter instead
         //park = new Park("Gasworks park", this);
-        
-        // Comment out below?
-        try {
-        startDate = format.parse(dateStart);
-        endDate = format.parse(dateEnd);
-        } catch (ParseException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-        }
         
         // Add job to the particular managed park by the current park manager
         prk.addJob(job);
@@ -78,25 +81,12 @@ public class ParkManager extends AbstractUser
         
         }
 
-    public void deleteJob(UrbanParkCalendar uPCalendar, int selectedJob,
+    public void deleteJob(UrbanParkCalendar uPCalendar, Job j,
             Park park)
     {
-        Job jobToDel = null;
-        ArrayList<Job> jobs = (ArrayList<Job>) park.getJobList();
-        Iterator itr = jobs.iterator();
-        int count = 0; // silly way of determining what job park manager wants
-                       // to delete
-        while (itr.hasNext())
-        {
-            if (count == selectedJob)
-            {
-                jobToDel = (Job) itr.next();
-            }
-
-        }
-
-        // Remove job finally
-        park.removeJob(jobToDel);
+        park.removeJob(j);
+        // Update calendar
+        uPCalendar.removeJob(j);
 
     }
 }
