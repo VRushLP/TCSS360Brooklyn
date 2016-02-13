@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 /**
  * Driver for Volunteer class
+ * 
  * @author Lachezar
  *
  */
@@ -18,7 +19,7 @@ public class VolunteerDriver
     static String input;
     static int choice;
     static String[] parsedInput;
-    
+
     // Input file name.
     private static final String inputPath = ".\\jobs.txt";
 
@@ -42,8 +43,8 @@ public class VolunteerDriver
 
             try
             {
-                choice = Integer.parseInt(parsedInput[0].substring(0,
-                        parsedInput[0].length()));
+                choice = Integer.parseInt(
+                        parsedInput[0].substring(0, parsedInput[0].length()));
                 // TODO catch NumberFormatExceptions here.
             }
             catch (NumberFormatException e)
@@ -63,7 +64,8 @@ public class VolunteerDriver
                     System.out.println("Goodbye!");
                     break;
                 default:
-                    System.out.println("Please enter one of the number options");
+                    System.out
+                            .println("Please enter one of the number options");
             }
         }
     }
@@ -71,7 +73,7 @@ public class VolunteerDriver
     public static void viewSignedUpJobs()
     {
         System.out.println("Entered viewSignedUpJobs().");
-        
+
     }
 
     /**
@@ -84,7 +86,7 @@ public class VolunteerDriver
         System.out.println("If would like to view more details about a job,"
                 + "please enter the number of the job. "
                 + "Here is a summary of all upcoming jobs:\n");
-        
+
         // WHERE WOULD THIS BE?
         // Get all jobs from csv file and put it in a map
         jobList = new HashMap<>();
@@ -104,23 +106,25 @@ public class VolunteerDriver
                 String jobStartDate = splitLine[1];
                 String jobEndDate = splitLine[2];
                 String jobDescription = splitLine[3];
-                //String jobCategory = splitLine[4];
+                // String jobCategory = splitLine[4];
 
-                System.out.println(jobCounter + ") " + "Job Location: " + jobLocation);
+                System.out.println(
+                        jobCounter + ") " + "Job Location: " + jobLocation);
                 System.out.println("Job Start Date: " + jobStartDate);
                 System.out.println("Job End Date: " + jobEndDate);
                 System.out.println("Job Description: " + jobDescription);
-                
+
                 // Print two new lines to separate visually each job
                 System.out.println();
                 System.out.println();
-                
+
                 // increment job counter
                 jobCounter++;
-                
-               //jobList.put(jobLocation, Job b);
+
+                // jobList.put(jobLocation, Job b);
             }
-            System.out.println("Prompts user to enter a job number to view more details");
+            System.out.println(
+                    "Prompts user to enter a job number to view more details");
             System.out.println();
             // Call viewJobDetails() method
             viewJobDetails();
@@ -144,16 +148,18 @@ public class VolunteerDriver
                 e.printStackTrace();
             }
         }
-        
+
     }
+
     /**
-     * Shows the details of a job. Not fully working.
-     * At this point, it outputs the first occurrence of a job in the job file.
+     * Shows the details of a job. Not fully working. At this point, it outputs
+     * the first occurrence of a job in the job file.
      */
-    public static void viewJobDetails() {
+    public static void viewJobDetails()
+    {
         // WHERE WOULD THIS BE?
         // Get all jobs from csv file and put it in a map
-        
+
         File inputFile = new File(inputPath);
         try
         {
@@ -179,9 +185,9 @@ public class VolunteerDriver
                 System.out.println("Job Description: " + jobDescription);
                 System.out.println("Job Category: " + jobCategory);
                 System.out.println();
-                
+
                 break;
-               //jobList.put(jobLocation, Job b);
+                // jobList.put(jobLocation, Job b);
             }
         }
         catch (FileNotFoundException e)
@@ -203,6 +209,6 @@ public class VolunteerDriver
                 e.printStackTrace();
             }
         }
-        
+
     }
 }

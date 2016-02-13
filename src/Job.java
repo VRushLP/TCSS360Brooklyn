@@ -14,7 +14,7 @@ public class Job implements Serializable
 {
     private static final long serialVersionUID = 8218272151272583884L;
     public static final int MAX_VOLUNTEER_NUM = 30;
-    public static final int MAX_JOB_LENGTH = 2;     // 2 days
+    public static final int MAX_JOB_LENGTH = 2; // 2 days
 
     // These are intentionally left at package visibility
     private Collection<Volunteer> volunteers;
@@ -33,15 +33,15 @@ public class Job implements Serializable
         // volunteer list starts empty
         volunteers = new ArrayList<>();
         associatedPark = thePark;
-        maxVolunteers = theMaxVolunteers;   // check if max volunteers is 30
+        maxVolunteers = theMaxVolunteers; // check if max volunteers is 30
         startDate = theStartDate;
         endDate = theEndDate;
         jobTitle = theJobTitle;
         jobDescription = theJobDescription;
-        
-        associatedPark.getJobList().add(this);
+
+        associatedPark.addJob(this);
     }
-    
+
     @Override
     public String toString()
     {

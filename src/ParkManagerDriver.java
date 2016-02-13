@@ -10,7 +10,8 @@ public class ParkManagerDriver
     static int choice;
     static String[] parsedInput;
 
-    public static void run(ParkManager theCurrentUser, Scanner in, UrbanParkCalendar UPCalendar)
+    public static void run(ParkManager theCurrentUser, Scanner in,
+            UrbanParkCalendar UPCalendar)
     {
         System.out.println("Welcome " + theCurrentUser.getEmail());
 
@@ -29,8 +30,8 @@ public class ParkManagerDriver
 
             try
             {
-                choice = Integer.parseInt(parsedInput[0].substring(0,
-                        parsedInput[0].length()));
+                choice = Integer.parseInt(
+                        parsedInput[0].substring(0, parsedInput[0].length()));
                 // TODO catch NumberFormatExceptions here.
             }
             catch (Exception e)
@@ -56,12 +57,14 @@ public class ParkManagerDriver
                     System.out.println("Goodbye!");
                     break;
                 default:
-                    System.out.println("Please enter one of the number options");
+                    System.out
+                            .println("Please enter one of the number options");
             }
         }
     }
 
-    public static void submitNewJob(ParkManager theCurrentUser, UrbanParkCalendar uPCalendar)
+    public static void submitNewJob(ParkManager theCurrentUser,
+            UrbanParkCalendar uPCalendar)
     {
         Scanner in = new Scanner(System.in);
         final String jobTitle;
@@ -70,19 +73,20 @@ public class ParkManagerDriver
         final String endDate;
         final int maxVolunteers;
         System.out.println("Submit New Job");
-        
-        System.out.println("Please select one of the parks you manage to add a job for that park");
+
+        System.out.println(
+                "Please select one of the parks you manage to add a job for that park");
         Collection<Park> parks = new ArrayList<Park>();
         Iterator itr = parks.iterator();
         Park park = null;
         while (itr.hasNext())
         {
-            
+
             park = (Park) itr.next();
             System.out.println(park);
-            
+
         }
-        
+
         System.out.print("Enter number:");
 
         input = in.nextLine();
@@ -90,8 +94,8 @@ public class ParkManagerDriver
 
         try
         {
-            choice = Integer.parseInt(parsedInput[0].substring(0,
-                    parsedInput[0].length()));
+            choice = Integer.parseInt(
+                    parsedInput[0].substring(0, parsedInput[0].length()));
             // TODO catch NumberFormatExceptions here. Not needed?
         }
         catch (Exception e)
@@ -99,11 +103,9 @@ public class ParkManagerDriver
             e.printStackTrace();
         }
 
-           
-        
         System.out.print("Please enter job title: ");
         jobTitle = in.nextLine();
-        //System.out.println();
+        // System.out.println();
         System.out.print("Job description: ");
         jobDescription = in.nextLine();
         System.out.print("Start Date (MM/DD/YYYY): ");
@@ -112,46 +114,47 @@ public class ParkManagerDriver
         endDate = in.nextLine();
         System.out.print("Maximum number of volunteers: ");
         maxVolunteers = in.nextInt();
-        
+
         // Call create job method in Park Manager class
         // and pass in the park that the PM wants to add a job to
-        theCurrentUser.createJob(uPCalendar, choice, 
-                park, maxVolunteers, startDate,
-                endDate, jobTitle, jobDescription);
-        
+        theCurrentUser.createJob(uPCalendar, choice, park, maxVolunteers,
+                startDate, endDate, jobTitle, jobDescription);
+
         in.close();
     }
 
-    public static void deleteJob(ParkManager theCurrentUser, UrbanParkCalendar uPCalendar)
+    public static void deleteJob(ParkManager theCurrentUser,
+            UrbanParkCalendar uPCalendar)
     {
         Scanner in = new Scanner(System.in);
-        
+
         System.out.println("Delete a Job");
-        
-        System.out.println("Please select one of the parks that you manage to delete a job from that park");
-        
-        // Commented out lines should not cause a problem once the theCurrentUser has actually parks
+
+        System.out.println(
+                "Please select one of the parks that you manage to delete a job from that park");
+
+        // Commented out lines should not cause a problem once the
+        // theCurrentUser has actually parks
         // to manage
-        
-//        theCurrentUser.viewAllJobs(uPCalendar);
-        
+
+        // theCurrentUser.viewAllJobs(uPCalendar);
+
         int selectedJob = 0;
-        
+
         // Throws a null pointer exception at the moment
-//        ArrayList<Park> prks = (ArrayList<Park>) theCurrentUser.getParks();
-//        
-//        Park park = null;
-//        Iterator itr = prks.iterator();
-        
-        
-//        while (itr.hasNext())
-//        {
-//            
-//            park = (Park) itr.next();
-//            System.out.println(park);
-//            
-//        }
-        
+        // ArrayList<Park> prks = (ArrayList<Park>) theCurrentUser.getParks();
+        //
+        // Park park = null;
+        // Iterator itr = prks.iterator();
+
+        // while (itr.hasNext())
+        // {
+        //
+        // park = (Park) itr.next();
+        // System.out.println(park);
+        //
+        // }
+
         System.out.print("Enter park number:");
 
         input = in.nextLine();
@@ -159,41 +162,40 @@ public class ParkManagerDriver
 
         try
         {
-            choice = Integer.parseInt(parsedInput[0].substring(0,
-                    parsedInput[0].length()));
+            choice = Integer.parseInt(
+                    parsedInput[0].substring(0, parsedInput[0].length()));
             // TODO catch NumberFormatExceptions here. Not needed?
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-        
-        
+
         // Display jobs from selected park
-//        int count = 0; // not a good thing to do
-//        while (itr.hasNext())
-//        {
-//            if (count == choice)
-//            {
-//                park = (Park) itr.next();
-//            }
-//            
-//            
-//        }
+        // int count = 0; // not a good thing to do
+        // while (itr.hasNext())
+        // {
+        // if (count == choice)
+        // {
+        // park = (Park) itr.next();
+        // }
+        //
+        //
+        // }
         System.out.println("Jobs at park number " + choice);
-        
+
         // Get all upcoming jobs for the selected park
-//        ArrayList<Job> jobs = (ArrayList<Job>) park.getJobList();
-//        Job job = null;
-//        Iterator itr2 = jobs.iterator();
-//        while (itr2.hasNext())
-//        {
-//            
-//            job = (Job) itr2.next();
-//            System.out.println(job.toString());
-//            
-//        }
-        
+        // ArrayList<Job> jobs = (ArrayList<Job>) park.getJobList();
+        // Job job = null;
+        // Iterator itr2 = jobs.iterator();
+        // while (itr2.hasNext())
+        // {
+        //
+        // job = (Job) itr2.next();
+        // System.out.println(job.toString());
+        //
+        // }
+
         System.out.print("Enter job number to delete:");
 
         input = in.nextLine();
@@ -201,8 +203,8 @@ public class ParkManagerDriver
 
         try
         {
-            selectedJob = Integer.parseInt(parsedInput[0].substring(0,
-                    parsedInput[0].length()));
+            selectedJob = Integer.parseInt(
+                    parsedInput[0].substring(0, parsedInput[0].length()));
             // TODO catch NumberFormatExceptions here. Not needed?
         }
         catch (Exception e)
@@ -210,8 +212,8 @@ public class ParkManagerDriver
             e.printStackTrace();
         }
         // call appropriate method in Park Manager class
-//        theCurrentUser.deleteJob(uPCalendar, selectedJob, park);
-        
+        // theCurrentUser.deleteJob(uPCalendar, selectedJob, park);
+
         in.close();
     }
 

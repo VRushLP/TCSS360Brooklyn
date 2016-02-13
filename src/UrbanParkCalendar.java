@@ -12,13 +12,25 @@ public class UrbanParkCalendar implements Serializable
     public static final int MAX_DATE_FROM_TODAY = 90;
 
     private static Collection<Job> masterJobCollection;
+    private static Collection<Volunteer> allVolunteers;
     private static Date currentDate;
 
     public UrbanParkCalendar()
     {
         masterJobCollection = new ArrayList<>();
+        allVolunteers = new ArrayList<>();
         // Throws an exception at this point
-//        setDate(new Date());
+        // setDate(new Date());
+    }
+
+    public Collection<Volunteer> getAllUsers()
+    {
+        return Collections.unmodifiableCollection(allVolunteers);
+    }
+
+    public boolean addVolunteer(Volunteer theVolunteer)
+    {
+        return allVolunteers.add(theVolunteer);
     }
 
     public Collection<Job> getJobList()
