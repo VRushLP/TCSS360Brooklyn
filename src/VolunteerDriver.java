@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -32,14 +33,18 @@ public class VolunteerDriver
     private static final String inputPath = "./jobs.txt";
 
     // Data Structure to store everything in
+    private static Volunteer myUser;
     private static UrbanParkCalendar myUPCalendar;
     private static Map<String, Job> jobList;
     private static ArrayList<Job> jobList2;
     private static BufferedReader inputFileReader;
+    private static Scanner myInput;
 
     public static void run(Volunteer theCurrentUser, Scanner in, UrbanParkCalendar UPCalendar)
     {
         myUPCalendar = UPCalendar;
+        myUser = theCurrentUser;
+        myInput = in;
         
         System.out.println("Welcome " + theCurrentUser.getEmail());
 
@@ -50,7 +55,7 @@ public class VolunteerDriver
             System.out.println("2. View jobs I am signed up for");
             System.out.println("3. Exit");
 
-            input = in.nextLine();
+            input = myInput.nextLine();
             parsedInput = input.split(" ");
 
             try
@@ -68,7 +73,7 @@ public class VolunteerDriver
             {
                 case 1:
 //                    viewJobs();
-                    viewJobs2(in);
+                    viewJobs();
                     break;
                 case 2:
                     viewSignedUpJobs(theCurrentUser);
@@ -101,156 +106,69 @@ public class VolunteerDriver
     /**
      * Allows the current user to view all jobs.
      */
-    public static void viewJobs2(Scanner in) {
-        while (!input.equalsIgnoreCase("b")) { // options to go back
-            // 1. get job at index, print all details of job
+    public static void viewJobs() {
+        ArrayList<Job> jobs = new ArrayList<Job>(myUPCalendar.getJobList()); // cast as arrayList for easy job viewing
+        Date today = new Date();
+        while (!input.equalsIgnoreCase("b")) { // while user wants to view jobs
             int i = 0;
-            for (Job job: myUPCalendar.getJobList()) {
+            for (Job job: jobs) {
+                if (job.getStartDate().after(today)); // only show upcoming days
                 System.out.println(i++ + ") " + job.toString());
             }
-            // 2. give option to volunteer for job
-            // 3. if back entered, go back to menu screen
             System.out.println("Enter b to go back, or enter job number to view details & sign up");
-            input = in.nextLine();
-        }
-        
-        
-        // view job details for a specific job
-    }
-
-    /**
-     * View a summary of all upcoming jobs.
-     */
-    public static void viewJobs()
-    {
-        // a temporary counter for the job, won't be used in the future
-        int jobCounter = 0;
-        System.out.println("If would like to view more details about a job, "
-                + "please enter the number of the job. "
-                + "Here is a summary of all upcoming jobs:\n");
-
-        // WHERE WOULD THIS BE?
-        // Get all jobs from csv file and put it in a map
-        jobList = new HashMap<>();
-        File inputFile = new File(inputPath);
-        try
-        {
-            inputFileReader = new BufferedReader(new FileReader(inputFile));
-            String nextLine;
-
-            while ((nextLine = inputFileReader.readLine()) != null)
-            {
-                // System.out.println(nextLine);
-                String[] splitLine = nextLine.split(",");
-                if (splitLine.length != 5)
-                    continue;
-                String jobLocation = splitLine[0];
-                String jobStartDate = splitLine[1];
-                String jobEndDate = splitLine[2];
-                String jobDescription = splitLine[3];
-                // String jobCategory = splitLine[4];
-
-                System.out.println(
-                        jobCounter + ") " + "Job Location: " + jobLocation);
-                System.out.println("Job Start Date: " + jobStartDate);
-                System.out.println("Job End Date: " + jobEndDate);
-                System.out.println("Job Description: " + jobDescription);
-
-                // Print two new lines to separate visually each job
-                System.out.println();
-                System.out.println();
-
-                // increment job counter
-                jobCounter++;
-
-                // jobList.put(jobLocation, Job b);
-            }
-            System.out.println(
-                    "Enter a job number to view more details");
-            System.out.println();
-            // Call viewJobDetails() method
-//            viewJobDetails();
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
-                inputFileReader.close();
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
+            input = myInput.nextLine();
+            if (!input.equalsIgnoreCase("B")) { // user wants to view a jobs details
+                viewJobDetails(jobs.get(Integer.parseInt(input)));
             }
         }
-
     }
 
     /**
      * Shows the details of a job. Not fully working. At this point, it outputs
      * the first occurrence of a job in the job file.
      */
-    public static void viewJobDetails()
+    public static void viewJobDetails(Job theJob)
     {
-        // WHERE WOULD THIS BE?
-        // Get all jobs from csv file and put it in a map
-
-        File inputFile = new File(inputPath);
-        try
-        {
-            inputFileReader = new BufferedReader(new FileReader(inputFile));
-            String nextLine;
-
-            while ((nextLine = inputFileReader.readLine()) != null)
-            {
-                // System.out.println(nextLine);
-                String[] splitLine = nextLine.split(",");
-                if (splitLine.length != 5)
-                    continue;
-                String jobLocation = splitLine[0];
-                String jobStartDate = splitLine[1];
-                String jobEndDate = splitLine[2];
-                String jobDescription = splitLine[3];
-                String jobCategory = splitLine[4];
-
-                System.out.println("Job Details:");
-                System.out.println("Job Location: " + jobLocation);
-                System.out.println("Job Start Date: " + jobStartDate);
-                System.out.println("Job End Date: " + jobEndDate);
-                System.out.println("Job Description: " + jobDescription);
-                System.out.println("Job Category: " + jobCategory);
-                System.out.println();
-
-                break;
-                // jobList.put(jobLocation, Job b);
-            }
+        // allow user to see details of the job and ask to volunteer for a job
+        
+        System.out.println(theJob.toString());
+        
+        System.out.println("Would you like to volunteer? \n"
+                + "Enter Y for yes, or any other key to go back to summary of jobs");
+        input = myInput.nextLine();
+        if (input.equalsIgnoreCase("Y")) {
+             volunteer(theJob);
+            // make user enter back to go back
+            System.out.println("TheCurrent User wants to volunteer");
         }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
+       
+    }
+    
+    public static void volunteer(Job theJob) {
+        boolean canSignUp = true;
+        ArrayList<Job> jobs = new ArrayList<Job>(myUser.getVolunteeredForJobs());
+//        for (Job i: jobs) {
+//            // make sure jobs aren't on same day for business rule
+//            if (i.getStartDate().getDay() == theJob.getStartDate().getDay()) {
+//                canSignUp = false;
+//            }
+//        }
+//        if (myUser.getVolunteeredForJobs().contains(theJob)) {
+//            canSignUp = false;
+//            System.out.println("Sorry you have already signed up for this job");
+//        } else if (theJob.getVolunteers().size() < theJob.getMaxVolunteers()) {
+//            canSignUp = false;
+//        }
+        
+        if (canSignUp == false) {
+            System.out.println("Sorry, you are not able to sign up for this job");
+        } else {
+            theJob.addVolunteer(myUser);
+            myUser.volunteerForJob(theJob);
+            System.out.println("Congratulations! You have volunteered");
         }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
-                inputFileReader.close();
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-
+        
+        System.out.println("Enter b go back to main menu");
+        input = myInput.nextLine();
     }
 }
