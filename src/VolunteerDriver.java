@@ -19,12 +19,6 @@ import java.util.Scanner;
 public class VolunteerDriver
 {
     
-    // add back for view summary of upcoming jobs
-    // allow user to view details about the job
-    
-    // volunteer only in upcoming jobs, so that volunteers
-    // can not sign up for previous jobs?
-    
     static String input;
     static int choice;
     static String[] parsedInput;
