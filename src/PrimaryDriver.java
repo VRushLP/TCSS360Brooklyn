@@ -169,7 +169,7 @@ public class PrimaryDriver
         }
         else if (currentUser instanceof Volunteer)
         {
-            VolunteerDriver.run((Volunteer) currentUser, in);
+            VolunteerDriver.run((Volunteer) currentUser, in, UPCalendar);
         }
         else
         {

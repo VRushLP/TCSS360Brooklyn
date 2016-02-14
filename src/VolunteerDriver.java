@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -31,11 +32,15 @@ public class VolunteerDriver
     private static final String inputPath = "./jobs.txt";
 
     // Data Structure to store everything in
+    private static UrbanParkCalendar myUPCalendar;
     private static Map<String, Job> jobList;
+    private static ArrayList<Job> jobList2;
     private static BufferedReader inputFileReader;
 
-    public static void run(Volunteer theCurrentUser, Scanner in)
+    public static void run(Volunteer theCurrentUser, Scanner in, UrbanParkCalendar UPCalendar)
     {
+        myUPCalendar = UPCalendar;
+        
         System.out.println("Welcome " + theCurrentUser.getEmail());
 
         while (choice != 3)
@@ -66,7 +71,7 @@ public class VolunteerDriver
                     viewJobs2(in);
                     break;
                 case 2:
-                    viewSignedUpJobs();
+                    viewSignedUpJobs(theCurrentUser);
                     break;
                 case 3:
                     System.out.println("Goodbye!");
@@ -78,22 +83,34 @@ public class VolunteerDriver
         }
     }
 
-    public static void viewSignedUpJobs()
+    /**
+     * Display all the jobs the user has signed up for.
+     */
+    public static void viewSignedUpJobs(Volunteer theCurrentUser)
     {
-        System.out.println("Entered viewSignedUpJobs().");
+        if (theCurrentUser.getVolunteeredForJobs().isEmpty()) {
+            System.out.println("Sorry, you have not volunteered for a job!\n");
+        } else {
+            for (Job job: theCurrentUser.getVolunteeredForJobs()) {
+                System.out.println(job.toString());
+            }
+        }
 
     }
     
-    // work in progress to fix view jobs method
+    /**
+     * Allows the current user to view all jobs.
+     */
     public static void viewJobs2(Scanner in) {
-        viewJobs();
-        input = in.nextLine();
         while (!input.equalsIgnoreCase("b")) { // options to go back
             // 1. get job at index, print all details of job
-            System.out.println("All details of a job will be printed here");
+            int i = 0;
+            for (Job job: myUPCalendar.getJobList()) {
+                System.out.println(i++ + ") " + job.toString());
+            }
             // 2. give option to volunteer for job
             // 3. if back entered, go back to menu screen
-            System.out.println("Enter b to go back");
+            System.out.println("Enter b to go back, or enter job number to view details & sign up");
             input = in.nextLine();
         }
         
