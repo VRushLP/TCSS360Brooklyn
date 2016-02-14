@@ -1,6 +1,5 @@
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,83 +42,57 @@ public class ParkManager extends AbstractUser
         return Collections.unmodifiableCollection(myParks);
     }
 
-    public boolean addParkToJurisdiction(Park thePark)
+    public boolean addParkToManager(Park thePark)
     {
         return myParks.add(thePark);
     }
 
-    public void createJob(UrbanParkCalendar uPCalendar, Park prk, 
-            int maxVolunteers, String dateStart, String dateEnd, 
-            String jobTitle, String jobDescription)
+    public void deleteJob(UrbanParkCalendar theUPCalendar, Job theJob,
+            Park thePark)
+    {
+        ArrayList<Volunteer> volunteers = new ArrayList<>(
+                theJob.getVolunteers());
+
+        // Remove job from all volunteers that were associated with it.
+        for (Volunteer volunteer : volunteers)
         {
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-        Date startDate = null;
-        Date endDate = null;
-        //Park park = null;
-        
-        try 
-        {
-            startDate = format.parse(dateStart);
-            endDate = format.parse(dateEnd);
-        } 
-        catch (ParseException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        
-        
-        
-        // TEMPORARY, USE prk parameter instead
-        //park = new Park("Gasworks park", this);
-        
-        // Add job to the particular managed park by the current park manager
-        Job job = new Job(prk, maxVolunteers, startDate, endDate, jobTitle, jobDescription);
-//        prk.addJob(new Job(prk, maxVolunteers, startDate, endDate, jobTitle, jobDescription));
-        
-        // Update calendar
-        uPCalendar.addJob(job);  
+            volunteer.removeJob(theJob);
         }
 
-    public void deleteJob(UrbanParkCalendar uPCalendar, Job j,
-            Park park)
-    {
-        park.removeJob(j);
+        // Update park
+        thePark.removeJob(theJob);
         // Update calendar
-        uPCalendar.removeJob(j);
+        theUPCalendar.removeJob(theJob);
 
     }
-    
-    
-    public void editJob(UrbanParkCalendar uPCalendar, Job j,
-            Park park, int maxVolunteers, String dateStart, String dateEnd, 
+
+    public void editJob(UrbanParkCalendar theUPCalendar, Job theJob,
+            Park thePark, int maxVolunteers, String dateStart, String dateEnd,
             String jobTitle, String jobDescription)
     {
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
         Date startDate = null;
         Date endDate = null;
-        //Park park = null;
-        
-        try 
+
+        try
         {
             startDate = format.parse(dateStart);
             endDate = format.parse(dateEnd);
-        } 
+        }
         catch (ParseException e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
+
         // Edit information in UrbanParkCalendar first
-        uPCalendar.editJob(j, park, maxVolunteers, startDate,
-                           endDate, jobTitle, jobDescription);
-        
+        theUPCalendar.editJob(theJob, thePark, maxVolunteers, startDate,
+                endDate, jobTitle, jobDescription);
+
         // Edit job
-        j.setStartDate(startDate);
-        j.setEndDate(endDate);
-        j.setJobTitle(jobTitle);
-        j.setJobDescription(jobDescription);
-        j.setMaxVolunteers(maxVolunteers);
+        theJob.setStartDate(startDate);
+        theJob.setEndDate(endDate);
+        theJob.setJobTitle(jobTitle);
+        theJob.setJobDescription(jobDescription);
+        theJob.setMaxVolunteers(maxVolunteers);
     }
 }

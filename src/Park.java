@@ -55,12 +55,9 @@ public class Park implements Serializable
     @Override
     public String toString()
     {
-        // TODO This probably needs to be redone.
         StringBuilder parkDetails = new StringBuilder();
-        parkDetails.append("ParkName: ");
+        parkDetails.append("Park: ");
         parkDetails.append(getParkName());
-        parkDetails.append("\nParkManager: ");
-        parkDetails.append(getParkManager());
 
         return parkDetails.toString();
     }

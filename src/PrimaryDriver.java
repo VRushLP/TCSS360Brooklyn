@@ -40,7 +40,7 @@ public class PrimaryDriver
 
         Park saltWaterState = new Park("Saltwater State Park",
                 alexanderTheGreat);
-        alexanderTheGreat.addParkToJurisdiction(saltWaterState);
+        alexanderTheGreat.addParkToManager(saltWaterState);
 
         ParkManager theodoreRoosevelt = new ParkManager("email@doesntexist.net",
                 "Alexander", "The Great");
@@ -48,8 +48,8 @@ public class PrimaryDriver
         Park wildWaves = new Park("Wild Waves Theme Park", theodoreRoosevelt);
         Park dashPoint = new Park("Dash Point State Park", theodoreRoosevelt);
 
-        theodoreRoosevelt.addParkToJurisdiction(wildWaves);
-        theodoreRoosevelt.addParkToJurisdiction(dashPoint);
+        theodoreRoosevelt.addParkToManager(wildWaves);
+        theodoreRoosevelt.addParkToManager(dashPoint);
 
         Volunteer firstVolunteer = new Volunteer("forgetfulFerg@email.net",
                 "Robert", "Ferguson");
