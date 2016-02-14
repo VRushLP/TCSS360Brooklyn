@@ -48,79 +48,78 @@ public class ParkManager extends AbstractUser
         return myParks.add(thePark);
     }
 
-    public void createJob(UrbanParkCalendar uPCalendar, int parkNum, Park prk,
-            int maxVolunteers, String dateStart, String dateEnd,
+    public void createJob(UrbanParkCalendar uPCalendar, Park prk, 
+            int maxVolunteers, String dateStart, String dateEnd, 
             String jobTitle, String jobDescription)
-    {
+        {
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
         Date startDate = null;
         Date endDate = null;
-        Park park = null;
-        Job job = new Job(park, maxVolunteers, startDate, endDate, jobTitle,
-                jobDescription);
-
-        // TEMPORARY, USE prk parameter instead
-        park = new Park("Gasworks park", this);
-
-        try
+        //Park park = null;
+        
+        try 
         {
             startDate = format.parse(dateStart);
             endDate = format.parse(dateEnd);
-        }
+        } 
         catch (ParseException e)
         {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-        // // Currently generates a null pointer exception
-        // // since there are no parks managed by PM
-        // Collection<Park> parks = getParks();
-        // Iterator itr = parks.iterator();
-        //
-        //
-        // // not a good way of checking if the park number corresponds to
-        // current
-        // // park
-        // int i = 0;
-        //
-        // while (itr.hasNext())
-        // {
-        // i++;
-        // if (i == parkNum)
-        // {
-        // park = (Park) itr.next();
-        // }
-        //
-        // }
-
+        
+        
+        
+        // TEMPORARY, USE prk parameter instead
+        //park = new Park("Gasworks park", this);
+        
         // Add job to the particular managed park by the current park manager
-        park.addJob(job);
-
+        Job job = new Job(prk, maxVolunteers, startDate, endDate, jobTitle, jobDescription);
+//        prk.addJob(new Job(prk, maxVolunteers, startDate, endDate, jobTitle, jobDescription));
+        
         // Update calendar
-        uPCalendar.addJob(job);
-
-    }
-
-    public void deleteJob(UrbanParkCalendar uPCalendar, int selectedJob,
-            Park park)
-    {
-        Job jobToDel = null;
-        ArrayList<Job> jobs = (ArrayList<Job>) park.getJobList();
-        Iterator itr = jobs.iterator();
-        int count = 0; // silly way of determining what job park manager wants
-                       // to delete
-        while (itr.hasNext())
-        {
-            if (count == selectedJob)
-            {
-                jobToDel = (Job) itr.next();
-            }
-
+        uPCalendar.addJob(job);  
         }
 
-        // Remove job finally
-        park.removeJob(jobToDel);
+    public void deleteJob(UrbanParkCalendar uPCalendar, Job j,
+            Park park)
+    {
+        park.removeJob(j);
+        // Update calendar
+        uPCalendar.removeJob(j);
 
+    }
+    
+    
+    public void editJob(UrbanParkCalendar uPCalendar, Job j,
+            Park park, int maxVolunteers, String dateStart, String dateEnd, 
+            String jobTitle, String jobDescription)
+    {
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+        Date startDate = null;
+        Date endDate = null;
+        //Park park = null;
+        
+        try 
+        {
+            startDate = format.parse(dateStart);
+            endDate = format.parse(dateEnd);
+        } 
+        catch (ParseException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        // Edit information in UrbanParkCalendar first
+        uPCalendar.editJob(j, park, maxVolunteers, startDate,
+                           endDate, jobTitle, jobDescription);
+        
+        // Edit job
+        j.setStartDate(startDate);
+        j.setEndDate(endDate);
+        j.setJobTitle(jobTitle);
+        j.setJobDescription(jobDescription);
+        j.setMaxVolunteers(maxVolunteers);
     }
 }

@@ -45,7 +45,7 @@ public class Park implements Serializable
     /**
      * Removes the job from the parks collection of jobs.
      * 
-     * @return true if the Job was removed successfully, false otherwise.
+     * @return True if the Job was removed successfully, false otherwise.
      */
     public boolean removeJob(Job theJob)
     {

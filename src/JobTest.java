@@ -26,7 +26,7 @@ public class JobTest
     {
         String parkName = "Woodland Park";
 
-        // Assuming that park manager has already been well tested
+        
         prk = new Park(parkName, pm);
         String jobTitle = "Pick up trash";
         String jobDescription = "Volunteers would be picking up the trash";
