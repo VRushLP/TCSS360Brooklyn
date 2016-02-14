@@ -153,12 +153,11 @@ public class VolunteerDriver
 //                canSignUp = false;
 //            }
 //        }
-//        if (myUser.getVolunteeredForJobs().contains(theJob)) {
-//            canSignUp = false;
-//            System.out.println("Sorry you have already signed up for this job");
-//        } else if (theJob.getVolunteers().size() < theJob.getMaxVolunteers()) {
-//            canSignUp = false;
-//        }
+        if (myUser.getVolunteeredForJobs().contains(theJob)) {
+            canSignUp = false;
+        } else if (theJob.getVolunteers().size() >= theJob.getMaxVolunteers()) {
+            canSignUp = false;
+        }
         
         if (canSignUp == false) {
             System.out.println("Sorry, you are not able to sign up for this job");
