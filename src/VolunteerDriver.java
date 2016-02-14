@@ -30,14 +30,11 @@ public class VolunteerDriver
     static String[] parsedInput;
 
     // Input file name.
-    private static final String inputPath = "./jobs.txt";
+    private static final String inputPath = ".\\jobs.txt";
 
     // Data Structure to store everything in
     private static Volunteer myUser;
     private static UrbanParkCalendar myUPCalendar;
-    private static Map<String, Job> jobList;
-    private static ArrayList<Job> jobList2;
-    private static BufferedReader inputFileReader;
     private static Scanner myInput;
 
     public static void run(Volunteer theCurrentUser, Scanner in, UrbanParkCalendar UPCalendar)
@@ -138,21 +135,19 @@ public class VolunteerDriver
         input = myInput.nextLine();
         if (input.equalsIgnoreCase("Y")) {
              volunteer(theJob);
-            // make user enter back to go back
             System.out.println("TheCurrent User wants to volunteer");
         }
        
     }
     
+    /**
+     * Allows the user to sign up for a job if the job if they have not already signed up for 
+     * this job and the job is not full of volunteers. 
+     */
     public static void volunteer(Job theJob) {
         boolean canSignUp = true;
-        ArrayList<Job> jobs = new ArrayList<Job>(myUser.getVolunteeredForJobs());
-//        for (Job i: jobs) {
-//            // make sure jobs aren't on same day for business rule
-//            if (i.getStartDate().getDay() == theJob.getStartDate().getDay()) {
-//                canSignUp = false;
-//            }
-//        }
+        // don't need to check for signing up for past jobs since this
+        // is taken care of since we never display past jobs to select 
         if (myUser.getVolunteeredForJobs().contains(theJob)) {
             canSignUp = false;
         } else if (theJob.getVolunteers().size() >= theJob.getMaxVolunteers()) {
