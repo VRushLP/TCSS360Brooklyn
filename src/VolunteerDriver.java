@@ -5,7 +5,7 @@ import java.util.Scanner;
 /**
  * Driver for Volunteer class
  * 
- * @author Bethany
+ * @author Lachezar, Bethany
  */
 public class VolunteerDriver
 {
@@ -177,4 +177,5 @@ public class VolunteerDriver
         System.out.println("Enter b go back to main menu");
         input = myInput.nextLine();
     }
+
 }
