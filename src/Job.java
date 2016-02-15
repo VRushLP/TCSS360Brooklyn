@@ -46,12 +46,14 @@ public class Job implements Serializable
         StringBuilder jobDetails = new StringBuilder();
         jobDetails.append("Job: ");
         jobDetails.append(jobTitle);
-        jobDetails.append("Description:");
+        jobDetails.append(" Description: ");
         jobDetails.append(jobDescription);
         jobDetails.append("\nLocation: ");
         jobDetails.append(associatedPark);
-        jobDetails.append("\nVolunteers Needed: ");
-        jobDetails.append(maxVolunteers - volunteers.size());
+        jobDetails.append("\nVolunteers: ");
+        jobDetails.append(volunteers.size());
+        jobDetails.append("/");
+        jobDetails.append(maxVolunteers);
         jobDetails.append("\nStart Date: ");
         jobDetails.append(startDate);
         jobDetails.append(" End Date: ");

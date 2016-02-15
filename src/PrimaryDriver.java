@@ -35,15 +35,17 @@ public class PrimaryDriver
         File inputFile = new File(inputPath);
         // Initialize Urban Parks Calendar
         UPCalendar = new UrbanParkCalendar();
-        ParkManager alexanderTheGreat = new ParkManager("email@doesntexist.net",
+        ParkManager alexanderTheGreat = new ParkManager("bigalex@aol.com",
                 "Alexander", "The Great");
 
         Park saltWaterState = new Park("Saltwater State Park",
                 alexanderTheGreat);
         alexanderTheGreat.addParkToManager(saltWaterState);
+        loginList.put(alexanderTheGreat.getEmail(), alexanderTheGreat);
 
-        ParkManager theodoreRoosevelt = new ParkManager("email@doesntexist.net",
-                "Alexander", "The Great");
+        ParkManager theodoreRoosevelt = new ParkManager(
+                "presidenttheo@whitehouse.gov", "Alexander", "The Great");
+        loginList.put(theodoreRoosevelt.getEmail(), theodoreRoosevelt);
 
         Park wildWaves = new Park("Wild Waves Theme Park", theodoreRoosevelt);
         Park dashPoint = new Park("Dash Point State Park", theodoreRoosevelt);
@@ -88,7 +90,6 @@ public class PrimaryDriver
 
             while ((nextLine = inputFileReader.readLine()) != null)
             {
-                // System.out.println(nextLine);
                 String[] splitLine = nextLine.split(",");
                 if (splitLine.length != 4)
                     continue;
@@ -150,7 +151,7 @@ public class PrimaryDriver
         // String userName = in.nextLine();
 
         // Hardcoded version for easier running later.
-        String userName = "testPM@doesntexist.net";
+        String userName = "bigalex@aol.com";
 
         // Uncomment out the line below to test the Volunteer class
         // and comment out the line above
@@ -175,7 +176,6 @@ public class PrimaryDriver
         {
             System.out.println("Login failed");
         }
-
         in.close();
     }
 
