@@ -16,7 +16,6 @@ public class Job implements Serializable
     public static final int MAX_VOLUNTEER_NUM = 30;
     public static final int MAX_JOB_LENGTH = 2; // 2 days
 
-    // These are intentionally left at package visibility
     private Collection<Volunteer> volunteers;
     private Park associatedPark;
     private int maxVolunteers;
@@ -38,7 +37,6 @@ public class Job implements Serializable
         endDate = theEndDate;
         jobTitle = theJobTitle;
         jobDescription = theJobDescription;
-
         associatedPark.addJob(this);
     }
 
@@ -48,15 +46,17 @@ public class Job implements Serializable
         StringBuilder jobDetails = new StringBuilder();
         jobDetails.append("Job: ");
         jobDetails.append(jobTitle);
+        jobDetails.append(" Description: ");
+        jobDetails.append(jobDescription);
         jobDetails.append("\nLocation: ");
         jobDetails.append(associatedPark);
-        jobDetails.append("\nVolunteers Needed: ");
-        jobDetails.append(maxVolunteers);
-        jobDetails.append("\nVolunteers Signed up: ");
+        jobDetails.append("\nVolunteers: ");
         jobDetails.append(volunteers.size());
+        jobDetails.append("/");
+        jobDetails.append(maxVolunteers);
         jobDetails.append("\nStart Date: ");
         jobDetails.append(startDate);
-        jobDetails.append("\nEnd Date: ");
+        jobDetails.append(" End Date: ");
         jobDetails.append(endDate);
         jobDetails.append("\n");
         return jobDetails.toString();
@@ -66,8 +66,7 @@ public class Job implements Serializable
     {
         if (volunteers.size() < maxVolunteers)
         {
-            volunteers.add(theVolunteer);
-            return true;
+            return volunteers.add(theVolunteer);
         }
         return false;
     }

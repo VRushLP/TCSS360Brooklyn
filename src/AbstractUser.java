@@ -13,8 +13,7 @@ public abstract class AbstractUser implements User, Serializable
         this.email = theEmail;
     }
 
-    public AbstractUser(String theEmail, String theFirstName,
-            String theLastName)
+    public AbstractUser(String theEmail, String theFirstName, String theLastName)
     {
         this(theEmail);
         this.firstName = theFirstName;

@@ -23,6 +23,11 @@ public class Volunteer extends AbstractUser
         return myJobs.add(theJob);
     }
 
+    public boolean removeJob(Job theJob)
+    {
+        return myJobs.remove(theJob);
+    }
+
     public Collection<Job> getVolunteeredForJobs()
     {
         return Collections.unmodifiableCollection(myJobs);
