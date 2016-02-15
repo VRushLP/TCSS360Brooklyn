@@ -7,8 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests Park Manager user.
- * 
  * @author Bethany Eastman
  * @version 02/09/2016
  */
