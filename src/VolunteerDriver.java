@@ -1,42 +1,31 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 /**
  * Driver for Volunteer class
  * 
- * @author Lachezar
- *
+ * @author Bethany
  */
 public class VolunteerDriver
 {
-    
+
     static String input;
     static int choice;
     static String[] parsedInput;
-
-    // Input file name.
-    private static final String inputPath = ".\\jobs.txt";
 
     // Data Structure to store everything in
     private static Volunteer myUser;
     private static UrbanParkCalendar myUPCalendar;
     private static Scanner myInput;
 
-    public static void run(Volunteer theCurrentUser, Scanner in, UrbanParkCalendar UPCalendar)
+    public static void run(Volunteer theCurrentUser, Scanner in,
+            UrbanParkCalendar UPCalendar)
     {
         myUPCalendar = UPCalendar;
         myUser = theCurrentUser;
         myInput = in;
-        
+
         System.out.println("Welcome " + theCurrentUser.getEmail());
 
         while (choice != 3)
@@ -53,7 +42,6 @@ public class VolunteerDriver
             {
                 choice = Integer.parseInt(
                         parsedInput[0].substring(0, parsedInput[0].length()));
-                // TODO catch NumberFormatExceptions here.
             }
             catch (NumberFormatException e)
             {
@@ -83,32 +71,43 @@ public class VolunteerDriver
      */
     public static void viewSignedUpJobs(Volunteer theCurrentUser)
     {
-        if (theCurrentUser.getVolunteeredForJobs().isEmpty()) {
+        if (theCurrentUser.getVolunteeredForJobs().isEmpty())
+        {
             System.out.println("Sorry, you have not volunteered for a job!\n");
-        } else {
-            for (Job job: theCurrentUser.getVolunteeredForJobs()) {
+        }
+        else
+        {
+            for (Job job : theCurrentUser.getVolunteeredForJobs())
+            {
                 System.out.println(job.toString());
             }
         }
 
     }
-    
+
     /**
      * Allows the current user to view all jobs.
      */
-    public static void viewJobs() {
-        ArrayList<Job> jobs = new ArrayList<Job>(myUPCalendar.getJobList()); // cast as arrayList for easy job viewing
+    public static void viewJobs()
+    {
+        ArrayList<Job> jobs = new ArrayList<Job>(myUPCalendar.getJobList());
+
         Date today = new Date();
-        while (!input.equalsIgnoreCase("b")) { // while user wants to view jobs
-            int i = 0;
-            for (Job job: jobs) {
-                if (job.getStartDate().after(today)); // only show upcoming days
+        while (!input.equalsIgnoreCase("b"))
+        { // while user wants to view jobs
+            int i = 1;
+            for (Job job : jobs)
+            {
+                if (job.getStartDate().after(today))
+                    ; // only show upcoming days
                 System.out.println(i++ + ") " + job.toString());
             }
-            System.out.println("Enter b to go back, or enter job number to view details & sign up");
+            System.out.println(
+                    "Enter b to go back, or enter job number to view details & sign up");
             input = myInput.nextLine();
-            if (!input.equalsIgnoreCase("B")) { // user wants to view a jobs details
-                viewJobDetails(jobs.get(Integer.parseInt(input)));
+            if (!input.equalsIgnoreCase("b"))
+            { // user wants to view a jobs details
+                viewJobDetails(jobs.get(Integer.parseInt(input) - 1));
             }
         }
     }
@@ -121,49 +120,60 @@ public class VolunteerDriver
     {
         // allow user to see details of the job and ask to volunteer for a job
         System.out.println(theJob.toString());
-        
+
         System.out.println("Would you like to volunteer? \n"
                 + "Enter Y for yes, or any other key to go back to summary of jobs");
         input = myInput.nextLine();
-        if (input.equalsIgnoreCase("Y")) {
-             volunteer(theJob);
+        if (input.equalsIgnoreCase("Y"))
+        {
+            volunteer(theJob);
             System.out.println("TheCurrent User wants to volunteer");
         }
-       
     }
-    
+
     /**
-     * Allows the user to sign up for a job if the job if they have not already signed up for 
-     * this job and the job is not full of volunteers. 
+     * Allows the user to sign up for a job if the job if they have not already
+     * signed up for this job and the job is not full of volunteers.
      */
-    public static void volunteer(Job theJob) {
+    public static void volunteer(Job theJob)
+    {
         boolean canSignUp = true;
         ArrayList<Job> jobs = new ArrayList<Job>(myUPCalendar.getJobList());
         // check if user has signed up for job on same day
-        for (Job job: jobs) {
-            if (job.getStartDate().equals(theJob.getStartDate()) || job.getStartDate().equals(theJob.getEndDate()) ||
-                    job.getEndDate().equals(theJob.getStartDate()) || job.getEndDate().equals(theJob.getEndDate())) {
+        for (Job job : jobs)
+        {
+            if (job.getStartDate().equals(theJob.getStartDate())
+                    || job.getStartDate().equals(theJob.getEndDate())
+                    || job.getEndDate().equals(theJob.getStartDate())
+                    || job.getEndDate().equals(theJob.getEndDate()))
+            {
                 canSignUp = false;
             }
         }
-        
+
         // make sure user hasn't signed up for job already
-        if (myUser.getVolunteeredForJobs().contains(theJob)) {
-            canSignUp = false;
-           
-        // make sure job is not full already
-        } else if (theJob.getVolunteers().size() >= theJob.getMaxVolunteers()) {
+        if (myUser.getVolunteeredForJobs().contains(theJob))
+        {
             canSignUp = false;
         }
-        
-        if (canSignUp == false) {
-            System.out.println("Sorry, you are not able to sign up for this job");
-        } else {
+        // make sure job is not full already
+        else if (theJob.getVolunteers().size() == theJob.getMaxVolunteers())
+        {
+            canSignUp = false;
+        }
+
+        if (canSignUp == false)
+        {
+            System.out.println(
+                    "Sorry, you are not able to sign up for this job. Please contact the Park Manager.");
+        }
+        else
+        {
             theJob.addVolunteer(myUser);
             myUser.volunteerForJob(theJob);
             System.out.println("Congratulations! You have volunteered");
         }
-        
+
         System.out.println("Enter b go back to main menu");
         input = myInput.nextLine();
     }
