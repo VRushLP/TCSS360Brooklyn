@@ -155,7 +155,7 @@ public class PrimaryDriver
 
         // Uncomment out the line below to test the Volunteer class
         // and comment out the line above
-        // String userName = "testVolunteer@please.net";
+//         String userName = "testVolunteer@please.net";
 
         User currentUser = login(userName);
 
@@ -170,7 +170,7 @@ public class PrimaryDriver
         }
         else if (currentUser instanceof Volunteer)
         {
-            VolunteerDriver.run((Volunteer) currentUser, in);
+            VolunteerDriver.run((Volunteer) currentUser, in, UPCalendar);
         }
         else
         {

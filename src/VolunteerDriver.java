@@ -1,34 +1,31 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
  * Driver for Volunteer class
  * 
- * @author Lachezar
- *
+ * @author Lachezar, Bethany
  */
 public class VolunteerDriver
 {
+
     static String input;
     static int choice;
     static String[] parsedInput;
 
-    // Input file name.
-    private static final String inputPath = ".\\jobs.txt";
-
     // Data Structure to store everything in
-    private static Map<String, Job> jobList;
-    private static BufferedReader inputFileReader;
+    private static Volunteer myUser;
+    private static UrbanParkCalendar myUPCalendar;
+    private static Scanner myInput;
 
-    public static void run(Volunteer theCurrentUser, Scanner in)
+    public static void run(Volunteer theCurrentUser, Scanner in,
+            UrbanParkCalendar UPCalendar)
     {
+        myUPCalendar = UPCalendar;
+        myUser = theCurrentUser;
+        myInput = in;
+
         System.out.println("Welcome " + theCurrentUser.getEmail());
 
         while (choice != 3)
@@ -38,14 +35,13 @@ public class VolunteerDriver
             System.out.println("2. View jobs I am signed up for");
             System.out.println("3. Exit");
 
-            input = in.nextLine();
+            input = myInput.nextLine();
             parsedInput = input.split(" ");
 
             try
             {
                 choice = Integer.parseInt(
                         parsedInput[0].substring(0, parsedInput[0].length()));
-                // TODO catch NumberFormatExceptions here.
             }
             catch (NumberFormatException e)
             {
@@ -58,7 +54,7 @@ public class VolunteerDriver
                     viewJobs();
                     break;
                 case 2:
-                    viewSignedUpJobs();
+                    viewSignedUpJobs(theCurrentUser);
                     break;
                 case 3:
                     System.out.println("Goodbye!");
@@ -70,145 +66,116 @@ public class VolunteerDriver
         }
     }
 
-    public static void viewSignedUpJobs()
+    /**
+     * Display all the jobs the user has signed up for.
+     */
+    public static void viewSignedUpJobs(Volunteer theCurrentUser)
     {
-        System.out.println("Entered viewSignedUpJobs().");
+        if (theCurrentUser.getVolunteeredForJobs().isEmpty())
+        {
+            System.out.println("Sorry, you have not volunteered for a job!\n");
+        }
+        else
+        {
+            for (Job job : theCurrentUser.getVolunteeredForJobs())
+            {
+                System.out.println(job.toString());
+            }
+        }
 
     }
 
     /**
-     * View a summary of all upcoming jobs.
+     * Allows the current user to view all jobs.
      */
     public static void viewJobs()
     {
-        // a temporary counter for the job, won't be used in the future
-        int jobCounter = 0;
-        System.out.println("If would like to view more details about a job,"
-                + "please enter the number of the job. "
-                + "Here is a summary of all upcoming jobs:\n");
+        ArrayList<Job> jobs = new ArrayList<Job>(myUPCalendar.getJobList());
 
-        // WHERE WOULD THIS BE?
-        // Get all jobs from csv file and put it in a map
-        jobList = new HashMap<>();
-        File inputFile = new File(inputPath);
-        try
-        {
-            inputFileReader = new BufferedReader(new FileReader(inputFile));
-            String nextLine;
-
-            while ((nextLine = inputFileReader.readLine()) != null)
+        Date today = new Date();
+        while (!input.equalsIgnoreCase("b"))
+        { // while user wants to view jobs
+            int i = 1;
+            for (Job job : jobs)
             {
-                // System.out.println(nextLine);
-                String[] splitLine = nextLine.split(",");
-                if (splitLine.length != 5)
-                    continue;
-                String jobLocation = splitLine[0];
-                String jobStartDate = splitLine[1];
-                String jobEndDate = splitLine[2];
-                String jobDescription = splitLine[3];
-                // String jobCategory = splitLine[4];
-
-                System.out.println(
-                        jobCounter + ") " + "Job Location: " + jobLocation);
-                System.out.println("Job Start Date: " + jobStartDate);
-                System.out.println("Job End Date: " + jobEndDate);
-                System.out.println("Job Description: " + jobDescription);
-
-                // Print two new lines to separate visually each job
-                System.out.println();
-                System.out.println();
-
-                // increment job counter
-                jobCounter++;
-
-                // jobList.put(jobLocation, Job b);
+                if (job.getStartDate().after(today))
+                    ; // only show upcoming days
+                System.out.println(i++ + ") " + job.toString());
             }
             System.out.println(
-                    "Prompts user to enter a job number to view more details");
-            System.out.println();
-            // Call viewJobDetails() method
-            viewJobDetails();
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
-                inputFileReader.close();
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
+                    "Enter b to go back, or enter job number to view details & sign up");
+            input = myInput.nextLine();
+            if (!input.equalsIgnoreCase("b"))
+            { // user wants to view a jobs details
+                viewJobDetails(jobs.get(Integer.parseInt(input) - 1));
             }
         }
-
     }
 
     /**
      * Shows the details of a job. Not fully working. At this point, it outputs
      * the first occurrence of a job in the job file.
      */
-    public static void viewJobDetails()
+    public static void viewJobDetails(Job theJob)
     {
-        // WHERE WOULD THIS BE?
-        // Get all jobs from csv file and put it in a map
+        // allow user to see details of the job and ask to volunteer for a job
+        System.out.println(theJob.toString());
 
-        File inputFile = new File(inputPath);
-        try
+        System.out.println("Would you like to volunteer? \n"
+                + "Enter Y for yes, or any other key to go back to summary of jobs");
+        input = myInput.nextLine();
+        if (input.equalsIgnoreCase("Y"))
         {
-            inputFileReader = new BufferedReader(new FileReader(inputFile));
-            String nextLine;
-
-            while ((nextLine = inputFileReader.readLine()) != null)
-            {
-                // System.out.println(nextLine);
-                String[] splitLine = nextLine.split(",");
-                if (splitLine.length != 5)
-                    continue;
-                String jobLocation = splitLine[0];
-                String jobStartDate = splitLine[1];
-                String jobEndDate = splitLine[2];
-                String jobDescription = splitLine[3];
-                String jobCategory = splitLine[4];
-
-                System.out.println("Job Details:");
-                System.out.println("Job Location: " + jobLocation);
-                System.out.println("Job Start Date: " + jobStartDate);
-                System.out.println("Job End Date: " + jobEndDate);
-                System.out.println("Job Description: " + jobDescription);
-                System.out.println("Job Category: " + jobCategory);
-                System.out.println();
-
-                break;
-                // jobList.put(jobLocation, Job b);
-            }
+            volunteer(theJob);
+            System.out.println("TheCurrent User wants to volunteer");
         }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
-                inputFileReader.close();
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-
     }
+
+    /**
+     * Allows the user to sign up for a job if the job if they have not already
+     * signed up for this job and the job is not full of volunteers.
+     */
+    public static void volunteer(Job theJob)
+    {
+        boolean canSignUp = true;
+        ArrayList<Job> jobs = new ArrayList<Job>(myUPCalendar.getJobList());
+        // check if user has signed up for job on same day
+        for (Job job : jobs)
+        {
+            if (job.getStartDate().equals(theJob.getStartDate())
+                    || job.getStartDate().equals(theJob.getEndDate())
+                    || job.getEndDate().equals(theJob.getStartDate())
+                    || job.getEndDate().equals(theJob.getEndDate()))
+            {
+                canSignUp = false;
+            }
+        }
+
+        // make sure user hasn't signed up for job already
+        if (myUser.getVolunteeredForJobs().contains(theJob))
+        {
+            canSignUp = false;
+        }
+        // make sure job is not full already
+        else if (theJob.getVolunteers().size() == theJob.getMaxVolunteers())
+        {
+            canSignUp = false;
+        }
+
+        if (canSignUp == false)
+        {
+            System.out.println(
+                    "Sorry, you are not able to sign up for this job. Please contact the Park Manager.");
+        }
+        else
+        {
+            theJob.addVolunteer(myUser);
+            myUser.volunteerForJob(theJob);
+            System.out.println("Congratulations! You have volunteered");
+        }
+
+        System.out.println("Enter b go back to main menu");
+        input = myInput.nextLine();
+    }
+
 }

@@ -1,20 +1,19 @@
 import static org.junit.Assert.*;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * 
  * @author Bethany Eastman
  * @version 02/09/2016
  */
 public class ParkManagerTest
 {
 
+    UrbanParkCalendar myCalendar;
     ParkManager joblessParkManager;
     Park myPark;
     Job myJob;
@@ -23,21 +22,31 @@ public class ParkManagerTest
     @Before
     public void setUp() throws Exception
     {
-        // Park manager with no job
-        myPark = new Park("Seattle Park", joblessParkManager);
+        myCalendar = new UrbanParkCalendar();
         joblessParkManager = new ParkManager("john@uw.edu", "John", "Smith",
                 myPark);
+        myPark = new Park("Seattle Park", joblessParkManager);
 
-        String dateStart = "02/22/2016 15:00:00";
-        String dateEnd = "02/24/2016 15:00:00";
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-
-        Date startDate = format.parse(dateStart);
+        String dateEnd = "02/24/2016";
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
         endDate = format.parse(dateEnd);
 
-        myJob = new Job(myPark, 5, startDate, endDate, "Pick up Trash",
+        myJob = new Job(myPark, 5, endDate, endDate, "Pick up Trash",
                 "Pick up trash at park");
+        
+        joblessParkManager.addParkToManager(myPark);
     }
+    
+    /**
+     * Test Park Manager & Park assignments work properly
+     */
+    @Test
+    public void testAddParkToManager()
+    {
+        assertTrue(joblessParkManager.getParks().contains(myPark));
+        assertTrue(myPark.getParkManager().equals(joblessParkManager));
+    }
+   
 
     /**
      * Create new job and make sure it is contained in that park.
@@ -55,52 +64,32 @@ public class ParkManagerTest
     @Test
     public void testEditJob()
     {
-        myJob.setEndDate(endDate);
-        myJob.setJobDescription("Plant trees in park");
-        myJob.setJobTitle("Plant trees");
-        myJob.setStartDate(endDate);
-        assertTrue(myPark.getJobList().contains(myJob));
-        assertEquals(myJob, new Job(myPark, 5, endDate, endDate, "Plant trees",
-                "Plant trees in park"));
-
+        assertTrue(myJob.getMaxVolunteers() == 5); // edit volunteer number
+        assertTrue(myJob.getStartDate().equals(endDate));
+        assertTrue(myJob.getEndDate().equals(endDate));
+        assertTrue(myJob.getJobTitle().equals("Pick up Trash"));
+        assertTrue(myJob.getJobDescription().equals("Pick up trash at park"));
+        joblessParkManager.editJob(myCalendar, myJob,
+                myPark, 20, "02/25/2016", "02/25/2016", 
+                "Trees", "Plant trees");
+        assertTrue(myJob.getMaxVolunteers() == 20);
+        assertTrue(!myJob.getStartDate().equals(endDate));
+        assertTrue(!myJob.getEndDate().equals(endDate));
+        assertTrue(myJob.getJobTitle().equals("Trees"));
+        assertTrue(myJob.getJobDescription().equals("Plant trees"));
     }
 
     /**
-     * Remove a job and make sure it is no longer in list of jobs for a park
-     * managers park.
+     * Make sure that when a Park Manager removes a job that it is 
+     * removed from the calendar.
      */
     @Test
     public void testRemoveJob()
     {
-        assertNotEquals(myPark.getJobList(), new ArrayList<Job>());
-        myPark.getJobList().remove(myJob);
-        assertEquals(myPark.getJobList(), new ArrayList<Job>());
-    }
-
-    @Test
-    public void testViewJob()
-    {
-        // make sure job view is same as expected
-        // for specific job
-        fail("Not yet implemented");
-    }
-
-    @Test
-    public void testViewVolunteers()
-    {
-        // test view with no volunteer
-        // test view with one volunteer
-        // test view with some volunteers
-        fail("Not yet implemented");
-    }
-
-    @Test
-    public void testViewAllJobs()
-    {
-        // test view with no job
-        // test view with one job
-        // test view with some jobs
-        fail("Not yet implemented");
+        myCalendar.addJob(myJob);
+        assertTrue(myCalendar.getJobList().contains(myJob));
+        joblessParkManager.deleteJob(myCalendar, myJob, myPark);
+        assertTrue(!myCalendar.getJobList().contains(myJob));
     }
 
 }
