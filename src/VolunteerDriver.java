@@ -120,7 +120,6 @@ public class VolunteerDriver
     public static void viewJobDetails(Job theJob)
     {
         // allow user to see details of the job and ask to volunteer for a job
-        
         System.out.println(theJob.toString());
         
         System.out.println("Would you like to volunteer? \n"
@@ -139,10 +138,20 @@ public class VolunteerDriver
      */
     public static void volunteer(Job theJob) {
         boolean canSignUp = true;
-        // don't need to check for signing up for past jobs since this
-        // is taken care of since we never display past jobs to select 
+        ArrayList<Job> jobs = new ArrayList<Job>(myUPCalendar.getJobList());
+        // check if user has signed up for job on same day
+        for (Job job: jobs) {
+            if (job.getStartDate().equals(theJob.getStartDate()) || job.getStartDate().equals(theJob.getEndDate()) ||
+                    job.getEndDate().equals(theJob.getStartDate()) || job.getEndDate().equals(theJob.getEndDate())) {
+                canSignUp = false;
+            }
+        }
+        
+        // make sure user hasn't signed up for job already
         if (myUser.getVolunteeredForJobs().contains(theJob)) {
             canSignUp = false;
+           
+        // make sure job is not full already
         } else if (theJob.getVolunteers().size() >= theJob.getMaxVolunteers()) {
             canSignUp = false;
         }
