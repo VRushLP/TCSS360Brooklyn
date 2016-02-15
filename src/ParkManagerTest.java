@@ -1,13 +1,13 @@
 import static org.junit.Assert.*;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
 
 /**
+ * Tests Park Manager user.
  * 
  * @author Bethany Eastman
  * @version 02/09/2016
@@ -24,20 +24,19 @@ public class ParkManagerTest
     @Before
     public void setUp() throws Exception
     {
-        // Park manager with no job
+        myCalendar = new UrbanParkCalendar();
         joblessParkManager = new ParkManager("john@uw.edu", "John", "Smith",
                 myPark);
         myPark = new Park("Seattle Park", joblessParkManager);
 
-        String dateStart = "02/22/2016";
         String dateEnd = "02/24/2016";
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-
-        Date startDate = format.parse(dateStart);
         endDate = format.parse(dateEnd);
 
-        myJob = new Job(myPark, 5, startDate, endDate, "Pick up Trash",
+        myJob = new Job(myPark, 5, endDate, endDate, "Pick up Trash",
                 "Pick up trash at park");
+        
+        joblessParkManager.addParkToManager(myPark);
     }
     
     /**
@@ -46,12 +45,9 @@ public class ParkManagerTest
     @Test
     public void testAddParkToManager()
     {
-        assertFalse(joblessParkManager.getParks().contains(myPark));
-        joblessParkManager.addParkToManager(myPark);
         assertTrue(joblessParkManager.getParks().contains(myPark));
         assertTrue(myPark.getParkManager().equals(joblessParkManager));
     }
-    
    
 
     /**
@@ -70,26 +66,28 @@ public class ParkManagerTest
     @Test
     public void testEditJob()
     {
-//        joblessParkManager.addParkToManager(myPark);
         assertTrue(myJob.getMaxVolunteers() == 5); // edit volunteer number
-        assertTrue(!myJob.getStartDate().equals(endDate));
-        assertTrue(myJob.getJobTitle().equals("Pick up Trash"));
-        joblessParkManager.editJob(myCalendar, myJob,
-                myPark, 20, "02/24/2016", "02/24/2016", 
-                "Pick up new Trash", "Pick up trash at park");
-        assertTrue(myJob.getMaxVolunteers() == 20);
         assertTrue(myJob.getStartDate().equals(endDate));
-        assertTrue(myJob.getJobTitle().equals("Pick up new Trash"));
+        assertTrue(myJob.getEndDate().equals(endDate));
+        assertTrue(myJob.getJobTitle().equals("Pick up Trash"));
+        assertTrue(myJob.getJobDescription().equals("Pick up trash at park"));
+        joblessParkManager.editJob(myCalendar, myJob,
+                myPark, 20, "02/25/2016", "02/25/2016", 
+                "Trees", "Plant trees");
+        assertTrue(myJob.getMaxVolunteers() == 20);
+        assertTrue(!myJob.getStartDate().equals(endDate));
+        assertTrue(!myJob.getEndDate().equals(endDate));
+        assertTrue(myJob.getJobTitle().equals("Trees"));
+        assertTrue(myJob.getJobDescription().equals("Plant trees"));
     }
 
     /**
-     * Remove a job and make sure it is no longer in list of jobs for a park
-     * managers park.
+     * Make sure that when a Park Manager removes a job that it is 
+     * removed from the calendar.
      */
     @Test
     public void testRemoveJob()
     {
-//        joblessParkManager.addParkToManager(myPark);
         myCalendar.addJob(myJob);
         assertTrue(myCalendar.getJobList().contains(myJob));
         joblessParkManager.deleteJob(myCalendar, myJob, myPark);
