@@ -1,20 +1,12 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 /**
  * Driver for Volunteer class
  * 
- * @author Lachezar
- *
+ * @author Lachezar, Bethany
+ * 
  */
 public class VolunteerDriver
 {
@@ -167,4 +159,5 @@ public class VolunteerDriver
         System.out.println("Enter b go back to main menu");
         input = myInput.nextLine();
     }
+  
 }
