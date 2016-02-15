@@ -24,9 +24,9 @@ public class ParkManagerTest
     public void setUp() throws Exception
     {
         // Park manager with no job
-        myPark = new Park("Seattle Park", joblessParkManager);
         joblessParkManager = new ParkManager("john@uw.edu", "John", "Smith",
                 myPark);
+        myPark = new Park("Seattle Park", joblessParkManager);
 
         String dateStart = "02/22/2016 15:00:00";
         String dateEnd = "02/24/2016 15:00:00";
@@ -72,35 +72,9 @@ public class ParkManagerTest
     @Test
     public void testRemoveJob()
     {
-        assertNotEquals(myPark.getJobList(), new ArrayList<Job>());
-        myPark.getJobList().remove(myJob);
+        myPark.addJob(myJob);
+        assertTrue(myPark.removeJob(myJob));
         assertEquals(myPark.getJobList(), new ArrayList<Job>());
-    }
-
-    @Test
-    public void testViewJob()
-    {
-        // make sure job view is same as expected
-        // for specific job
-        fail("Not yet implemented");
-    }
-
-    @Test
-    public void testViewVolunteers()
-    {
-        // test view with no volunteer
-        // test view with one volunteer
-        // test view with some volunteers
-        fail("Not yet implemented");
-    }
-
-    @Test
-    public void testViewAllJobs()
-    {
-        // test view with no job
-        // test view with one job
-        // test view with some jobs
-        fail("Not yet implemented");
     }
 
 }

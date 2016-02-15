@@ -63,7 +63,6 @@ public class VolunteerDriver
             switch (choice)
             {
                 case 1:
-//                    viewJobs();
                     viewJobs();
                     break;
                 case 2:
