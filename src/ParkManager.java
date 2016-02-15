@@ -1,6 +1,5 @@
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,24 +42,37 @@ public class ParkManager extends AbstractUser
         return Collections.unmodifiableCollection(myParks);
     }
 
-    public boolean addParkToJurisdiction(Park thePark)
+    public boolean addParkToManager(Park thePark)
     {
         return myParks.add(thePark);
     }
 
-    public void createJob(UrbanParkCalendar uPCalendar, int parkNum, Park prk,
-            int maxVolunteers, String dateStart, String dateEnd,
+    public void deleteJob(UrbanParkCalendar theUPCalendar, Job theJob,
+            Park thePark)
+    {
+        ArrayList<Volunteer> volunteers = new ArrayList<>(
+                theJob.getVolunteers());
+
+        // Remove job from all volunteers that were associated with it.
+        for (Volunteer volunteer : volunteers)
+        {
+            volunteer.removeJob(theJob);
+        }
+
+        // Update park
+        thePark.removeJob(theJob);
+        // Update calendar
+        theUPCalendar.removeJob(theJob);
+
+    }
+
+    public void editJob(UrbanParkCalendar theUPCalendar, Job theJob,
+            Park thePark, int maxVolunteers, String dateStart, String dateEnd,
             String jobTitle, String jobDescription)
     {
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
         Date startDate = null;
         Date endDate = null;
-        Park park = null;
-        Job job = new Job(park, maxVolunteers, startDate, endDate, jobTitle,
-                jobDescription);
-
-        // TEMPORARY, USE prk parameter instead
-        park = new Park("Gasworks park", this);
 
         try
         {
@@ -69,58 +81,18 @@ public class ParkManager extends AbstractUser
         }
         catch (ParseException e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        // // Currently generates a null pointer exception
-        // // since there are no parks managed by PM
-        // Collection<Park> parks = getParks();
-        // Iterator itr = parks.iterator();
-        //
-        //
-        // // not a good way of checking if the park number corresponds to
-        // current
-        // // park
-        // int i = 0;
-        //
-        // while (itr.hasNext())
-        // {
-        // i++;
-        // if (i == parkNum)
-        // {
-        // park = (Park) itr.next();
-        // }
-        //
-        // }
+        // Edit information in UrbanParkCalendar first
+        theUPCalendar.editJob(theJob, thePark, maxVolunteers, startDate,
+                endDate, jobTitle, jobDescription);
 
-        // Add job to the particular managed park by the current park manager
-        park.addJob(job);
-
-        // Update calendar
-        uPCalendar.addJob(job);
-
-    }
-
-    public void deleteJob(UrbanParkCalendar uPCalendar, int selectedJob,
-            Park park)
-    {
-        Job jobToDel = null;
-        ArrayList<Job> jobs = (ArrayList<Job>) park.getJobList();
-        Iterator itr = jobs.iterator();
-        int count = 0; // silly way of determining what job park manager wants
-                       // to delete
-        while (itr.hasNext())
-        {
-            if (count == selectedJob)
-            {
-                jobToDel = (Job) itr.next();
-            }
-
-        }
-
-        // Remove job finally
-        park.removeJob(jobToDel);
-
+        // Edit job
+        theJob.setStartDate(startDate);
+        theJob.setEndDate(endDate);
+        theJob.setJobTitle(jobTitle);
+        theJob.setJobDescription(jobDescription);
+        theJob.setMaxVolunteers(maxVolunteers);
     }
 }

@@ -17,7 +17,7 @@ public class UrbanParkCalendar implements Serializable
 
     public UrbanParkCalendar()
     {
-        masterJobCollection = new ArrayList<>();
+        masterJobCollection = new ArrayList<Job>();
         allVolunteers = new ArrayList<>();
         // Throws an exception at this point
         // setDate(new Date());
@@ -41,6 +41,28 @@ public class UrbanParkCalendar implements Serializable
     public void addJob(Job theJob)
     {
         masterJobCollection.add(theJob);
+    }
+    
+    // Added edit job method
+    public void editJob(Job theJob, Park park, int maxVolunteers, Date startDate, 
+                        Date endDate, String jobTitle, String jobDescription)
+    {
+
+        // Iterate over masterJobCollection
+        // When a job matching the parameter job is found,
+        // then edit its attributes
+        for (Job j : masterJobCollection)
+        {
+            if (j.equals(theJob))
+            {
+                j.setStartDate(startDate);
+                j.setEndDate(endDate);
+                j.setJobTitle(jobTitle);
+                j.setJobDescription(jobDescription);
+                j.setMaxVolunteers(maxVolunteers);
+            }
+        }
+        
     }
 
     public boolean removeJob(Job theJob)
