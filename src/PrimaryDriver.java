@@ -83,6 +83,10 @@ public class PrimaryDriver
         UPCalendar.addJob(sweep);
         UPCalendar.addJob(drainLake);
 
+        UrbanParkStaffMember dude = new UrbanParkStaffMember("thedude@aol.com",
+                "Jeff", "Bridges");
+        loginList.put(dude.getEmail(), dude);
+
         try
         {
             inputFileReader = new BufferedReader(new FileReader(inputFile));
@@ -151,11 +155,13 @@ public class PrimaryDriver
         // String userName = in.nextLine();
 
         // Hardcoded version for easier running later.
-        String userName = "bigalex@aol.com";
+        // String userName = "presidenttheo@whitehouse.gov";
 
         // Uncomment out the line below to test the Volunteer class
         // and comment out the line above
-//         String userName = "testVolunteer@please.net";
+        // String userName = "testVolunteer@please.net";
+
+        String userName = "thedude@aol.com";
 
         User currentUser = login(userName);
 
@@ -165,8 +171,8 @@ public class PrimaryDriver
         }
         else if (currentUser instanceof UrbanParkStaffMember)
         {
-            System.out.println("The user was an instance of "
-                    + currentUser.getClass() + "!");
+            UrbanParkStaffMemberDriver.run((UrbanParkStaffMember) currentUser,
+                    in, UPCalendar);
         }
         else if (currentUser instanceof Volunteer)
         {
