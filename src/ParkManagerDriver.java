@@ -168,7 +168,7 @@ public class ParkManagerDriver
             {
                 e.printStackTrace();
             }
-            // Update calendar
+            // Update calendar first
             if (myUPCalendar.addJob(job))
             {
                 park.addJob(job);

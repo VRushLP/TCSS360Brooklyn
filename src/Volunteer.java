@@ -16,6 +16,7 @@ public class Volunteer extends AbstractUser
     public Volunteer(String theEmail, String theFirstName, String theLastName)
     {
         super(theEmail, theFirstName, theLastName);
+        myJobs = new ArrayList<>();
     }
 
     public boolean volunteerForJob(Job theJob)

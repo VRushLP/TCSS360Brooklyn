@@ -110,8 +110,8 @@ public class UrbanParkStaffMemberDriver
         }
         else
         {
-            System.out.print(
-                    toPrint.size() + " results for last name " + toSearch);
+            System.out.println(
+                    toPrint.size() + " result(s) for last name " + toSearch);
 
             for (Volunteer v : toPrint)
             {
