@@ -38,70 +38,7 @@ public class PrimaryDriver
         UPCalendar = new UrbanParkCalendar();
         loginList = new HashMap<>();
 
-        // Get all user information from csv file and put it in a map
-
-        // File inputFile = new File(inputPath);
-        // // Initialize Urban Parks Calendar
-
-        // ParkManager alexanderTheGreat = new ParkManager("bigalex@aol.com",
-        // "Alexander", "The Great");
-        //
-        // Park saltWaterState = new Park("Saltwater State Park",
-        // alexanderTheGreat);
-        // alexanderTheGreat.addParkToManager(saltWaterState);
-        // loginList.put(alexanderTheGreat.getEmail(), alexanderTheGreat);
-        //
-        // ParkManager theodoreRoosevelt = new ParkManager(
-        // "presidenttheo@whitehouse.gov", "Alexander", "The Great");
-        // loginList.put(theodoreRoosevelt.getEmail(), theodoreRoosevelt);
-        //
-        // Park wildWaves = new Park("Wild Waves Theme Park",
-        // theodoreRoosevelt);
-        // Park dashPoint = new Park("Dash Point State Park",
-        // theodoreRoosevelt);
-        //
-        // theodoreRoosevelt.addParkToManager(wildWaves);
-        // theodoreRoosevelt.addParkToManager(dashPoint);
-        //
-        // Volunteer firstVolunteer = new Volunteer("forgetfulFerg@email.net",
-        // "Robert", "Ferguson");
-        // Volunteer secondVolunteer = new Volunteer("bobthebanshee@email.net",
-        // "Bob", "A. Ghost");
-        // Volunteer thirdVolunteer = new Volunteer("invalidemail@gmail.com",
-        // "Richard", "Tricky");
-        //
-        // UPCalendar.addVolunteer(firstVolunteer);
-        // UPCalendar.addVolunteer(secondVolunteer);
-        // UPCalendar.addVolunteer(thirdVolunteer);
-        //
-        // Job bigfoot = new Job(dashPoint, 30, new Date(), new Date(),
-        // "Bigfoot Hunting", "We'll get him this time.");
-        // Job yetis = new Job(dashPoint, 30, new Date(), new Date(),
-        // "Yeti Extermination", "They're everywhere!.");
-        // Job garbageCollect = new Job(wildWaves, 30, new Date(), new Date(),
-        // "Garbage Collection", "Not as exciting, I know");
-        // Job sweep = new Job(wildWaves, 30, new Date(), new Date(),
-        // "Sweeping up the beach.",
-        // "Getting rid of the sand. It gets /everywhere/");
-        // Job drainLake = new Job(saltWaterState, 30, new Date(), new Date(),
-        // "Drain the Lake",
-        // "We're going to need at least 20 able bodied men and women to drink
-        // all that water.");
-        //
-        // UPCalendar.addJob(bigfoot);
-        // UPCalendar.addJob(yetis);
-        // UPCalendar.addJob(garbageCollect);
-        // UPCalendar.addJob(sweep);
-        // UPCalendar.addJob(drainLake);
-        //
-        // UrbanParkStaffMember dude = new
-        // UrbanParkStaffMember("thedude@aol.com",
-        // "Jeff", "Bridges");
-        // loginList.put(dude.getEmail(), dude);
-
         /* Serializing Work starts here! */
-
-        /* Get objects from files. */
         try
         {
             inputFileReader = new FileInputStream(filePaths[0]);
@@ -132,6 +69,44 @@ public class PrimaryDriver
             e.printStackTrace();
         }
         /* Input Serializing Work ends here! */
+
+        // There's currently an issue serializing the Calendar. These are here a
+        // temporary fix.
+        ParkManager theodoreRoosevelt = new ParkManager(
+                "presidenttheo@whitehouse.gov", "Alexander", "The Great");
+        loginList.put(theodoreRoosevelt.getEmail(), theodoreRoosevelt);
+
+        Park wildWaves = new Park("Wild Waves Theme Park", theodoreRoosevelt);
+        Park dashPoint = new Park("Dash Point State Park", theodoreRoosevelt);
+
+        theodoreRoosevelt.addParkToManager(wildWaves);
+        theodoreRoosevelt.addParkToManager(dashPoint);
+
+        Volunteer firstVolunteer = new Volunteer("forgetfulferg@email.net",
+                "Robert", "Ferguson");
+        Volunteer secondVolunteer = new Volunteer("bobthebanshee@email.net",
+                "Bob", "A. Ghost");
+        Volunteer thirdVolunteer = new Volunteer("invalidemail@gmail.com",
+                "Richard", "Tricky");
+
+        UPCalendar.addVolunteer(firstVolunteer);
+        UPCalendar.addVolunteer(secondVolunteer);
+        UPCalendar.addVolunteer(thirdVolunteer);
+
+        Job bigfoot = new Job(dashPoint, 30, new Date(), new Date(),
+                "Bigfoot Hunting", "We'll get him this time.");
+        Job yetis = new Job(dashPoint, 30, new Date(), new Date(),
+                "Yeti Extermination", "They're everywhere!.");
+        Job garbageCollect = new Job(wildWaves, 30, new Date(), new Date(),
+                "Garbage Collection", "Not as exciting, I know");
+        Job sweep = new Job(wildWaves, 30, new Date(), new Date(),
+                "Sweeping up the beach.",
+                "Getting rid of the sand. It gets /everywhere/");
+
+        UPCalendar.addJob(bigfoot);
+        UPCalendar.addJob(yetis);
+        UPCalendar.addJob(garbageCollect);
+        UPCalendar.addJob(sweep);
 
         Scanner in = new Scanner(System.in);
 
