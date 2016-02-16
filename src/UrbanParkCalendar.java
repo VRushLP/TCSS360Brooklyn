@@ -38,14 +38,21 @@ public class UrbanParkCalendar implements Serializable
         return Collections.unmodifiableCollection(masterJobCollection);
     }
 
-    public void addJob(Job theJob)
+    public boolean addJob(Job theJob)
     {
-        masterJobCollection.add(theJob);
+        if (masterJobCollection.size() < 30)
+        {
+            return masterJobCollection.add(theJob);
+
+        }
+        else
+            return false;
     }
-    
+
     // Added edit job method
-    public void editJob(Job theJob, Park park, int maxVolunteers, Date startDate, 
-                        Date endDate, String jobTitle, String jobDescription)
+    public void editJob(Job theJob, Park park, int maxVolunteers,
+            Date startDate, Date endDate, String jobTitle,
+            String jobDescription)
     {
 
         // Iterate over masterJobCollection
@@ -62,7 +69,7 @@ public class UrbanParkCalendar implements Serializable
                 j.setMaxVolunteers(maxVolunteers);
             }
         }
-        
+
     }
 
     public boolean removeJob(Job theJob)
@@ -72,7 +79,7 @@ public class UrbanParkCalendar implements Serializable
 
     public void setDate(Date theDate)
     {
-        setDate(theDate);
+        currentDate = theDate;
     }
 
     public static Date getCurrentDate()
