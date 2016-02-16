@@ -108,6 +108,11 @@ public class PrimaryDriver
         UPCalendar.addJob(garbageCollect);
         UPCalendar.addJob(sweep);
 
+        dashPoint.addJob(bigfoot);
+        dashPoint.addJob(yetis);
+        wildWaves.addJob(garbageCollect);
+        wildWaves.addJob(sweep);
+
         Scanner in = new Scanner(System.in);
 
         // Prompt user to log

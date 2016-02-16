@@ -41,7 +41,7 @@ public class UrbanParkCalendar implements Serializable
     {
         boolean theresRoom = checkForRoomThatWeek(theJob);
 
-        if (theresRoom && masterJobCollection.size() < 30)
+        if (theresRoom && masterJobCollection.size() < MAX_JOBS)
         {
             return masterJobCollection.add(theJob);
         }
@@ -61,9 +61,6 @@ public class UrbanParkCalendar implements Serializable
                 + TimeUnit.DAYS.toMillis(3) + 1);
         int jobsThatWeek = 0;
 
-        System.out.println(minDate);
-        System.out.println(maxDate);
-
         for (Job j : check)
         {
             if (j.getStartDate().after(minDate)
@@ -75,7 +72,7 @@ public class UrbanParkCalendar implements Serializable
 
         check.remove(checkAround);
 
-        if (jobsThatWeek > MAX_WEEKLY_JOBS)
+        if (jobsThatWeek >= MAX_WEEKLY_JOBS)
         {
             return false;
         }

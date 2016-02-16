@@ -171,6 +171,7 @@ public class ParkManagerDriver
             // Update calendar
             if (myUPCalendar.addJob(job))
             {
+                park.addJob(job);
                 System.out.println("Job created!");
                 System.out.println(job.toString());
             }
@@ -179,7 +180,6 @@ public class ParkManagerDriver
                 System.out.println(
                         "There was a problem adding your job. Please contact an Urban Park Employee.");
             }
-
         }
     }
 
