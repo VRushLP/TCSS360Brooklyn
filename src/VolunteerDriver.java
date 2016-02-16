@@ -26,7 +26,7 @@ public class VolunteerDriver
         myUser = theCurrentUser;
         myInput = in;
 
-        System.out.println("Welcome " + theCurrentUser.getEmail());
+        System.out.println("Welcome " + myUser.getEmail());
 
         while (choice != 3)
         {
@@ -54,7 +54,7 @@ public class VolunteerDriver
                     viewJobs();
                     break;
                 case 2:
-                    viewSignedUpJobs(theCurrentUser);
+                    viewSignedUpJobs();
                     break;
                 case 3:
                     System.out.println("Goodbye!");
@@ -69,20 +69,19 @@ public class VolunteerDriver
     /**
      * Display all the jobs the user has signed up for.
      */
-    public static void viewSignedUpJobs(Volunteer theCurrentUser)
+    public static void viewSignedUpJobs()
     {
-        if (theCurrentUser.getVolunteeredForJobs().isEmpty())
+        if (myUser.getVolunteeredForJobs().isEmpty())
         {
             System.out.println("Sorry, you have not volunteered for a job!\n");
         }
         else
         {
-            for (Job job : theCurrentUser.getVolunteeredForJobs())
+            for (Job job : myUser.getVolunteeredForJobs())
             {
                 System.out.println(job.toString());
             }
         }
-
     }
 
     /**
@@ -126,8 +125,8 @@ public class VolunteerDriver
         input = myInput.nextLine();
         if (input.equalsIgnoreCase("Y"))
         {
+            System.out.println("Checking if you can Volunteer.");
             volunteer(theJob);
-            System.out.println("TheCurrent User wants to volunteer");
         }
     }
 

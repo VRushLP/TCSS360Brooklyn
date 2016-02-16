@@ -7,6 +7,13 @@ import java.util.Scanner;
 
 public class ParkManagerDriver
 {
+    private static int choice;
+
+    // Data Structure to store everything in
+    private static ParkManager myUser;
+    private static UrbanParkCalendar myUPCalendar;
+    private static Scanner myInput;
+
     /**
      * @param in
      *            Scanner from calling method.
@@ -14,12 +21,16 @@ public class ParkManagerDriver
      *            The global Urban Parks Calendar
      * @author Lachezar, Robert
      */
-    public static void run(ParkManager theCurrentUser, Scanner in,
+    public static void run(ParkManager theUser, Scanner in,
             UrbanParkCalendar UPCalendar)
     {
-        System.out.println("Welcome " + theCurrentUser.getEmail());
+        myUPCalendar = UPCalendar;
+        myUser = theUser;
+        myInput = in;
 
-        int choice = 0;
+        System.out.println("Welcome " + theUser.getEmail());
+
+        choice = 0;
 
         while (choice != 6)
         {
@@ -32,25 +43,25 @@ public class ParkManagerDriver
                     "5. View the volunteers for a job in the parks that I manage");
             System.out.println("6. Exit.");
 
-            choice = in.nextInt();
-            in.nextLine();
+            choice = myInput.nextInt();
+            myInput.nextLine();
 
             switch (choice)
             {
                 case 1:
-                    submitNewJob(theCurrentUser, UPCalendar, in);
+                    submitNewJob();
                     break;
                 case 2:
-                    deleteJob(theCurrentUser, UPCalendar, in);
+                    deleteJob();
                     break;
                 case 3:
-                    editJob(theCurrentUser, UPCalendar, in);
+                    editJob();
                     break;
                 case 4:
-                    viewJobsInParks(theCurrentUser, UPCalendar, in);
+                    viewJobsInParks();
                     break;
                 case 5:
-                    viewVolunteers(theCurrentUser, UPCalendar, in);
+                    viewVolunteers();
                     break;
                 case 6:
                     System.out.println("Goodbye!");
@@ -60,15 +71,15 @@ public class ParkManagerDriver
                             "Please enter one of the numbered options");
             }
         }
+        myInput.close();
     }
 
     /**
-     * @param theCurrentUser
-     * @param theUPCalendar
+     * @param myUser
+     * @param myUPCalendar
      * @author Lachezar
      */
-    public static void submitNewJob(ParkManager theCurrentUser,
-            UrbanParkCalendar theUPCalendar, Scanner in)
+    public static void submitNewJob()
     {
         String jobTitle;
         String jobDescription;
@@ -81,7 +92,7 @@ public class ParkManagerDriver
         Park park = null;
         // Business Rule #1: ensure that the total number of pending jobs
         // is not currently 30
-        if (theUPCalendar.getJobList().size() == UrbanParkCalendar.MAX_JOBS)
+        if (myUPCalendar.getJobList().size() == UrbanParkCalendar.MAX_JOBS)
         {
             System.out.println("Error: A job cannot be added."
                     + " The maximum number of pending jobs has been reached ("
@@ -92,8 +103,7 @@ public class ParkManagerDriver
             System.out.println(
                     "Please select one of the parks you manage to add a job for that park");
 
-            ArrayList<Park> parks = new ArrayList<Park>(
-                    theCurrentUser.getParks());
+            ArrayList<Park> parks = new ArrayList<Park>(myUser.getParks());
 
             for (int i = 0; i < parks.size(); i++)
             {
@@ -102,17 +112,17 @@ public class ParkManagerDriver
 
             System.out.print("Enter park number:");
 
-            theChoice = in.nextInt();
-            in.nextLine();
+            theChoice = myInput.nextInt();
+            myInput.nextLine();
             park = parks.get(theChoice - 1);
 
             System.out.print("Please enter job title: ");
-            jobTitle = in.nextLine();
+            jobTitle = myInput.nextLine();
             // System.out.println();
             System.out.print("Job description: ");
-            jobDescription = in.nextLine();
+            jobDescription = myInput.nextLine();
             System.out.print("Start Date (MM/DD/YYYY): ");
-            startDate = in.nextLine();
+            startDate = myInput.nextLine();
 
             // Validate entered start date (business rule #5)
             if (!validateStartDate(startDate))
@@ -120,11 +130,11 @@ public class ParkManagerDriver
                 System.out.println("Error: Start date cannot be in the past or"
                         + " more than 3 months from today's date. ");
                 System.out.print("Enter new Start Date (MM/DD/YYYY): ");
-                startDate = in.nextLine();
+                startDate = myInput.nextLine();
             }
 
             System.out.print("End Date (MM/DD/YYYY): ");
-            endDate = in.nextLine();
+            endDate = myInput.nextLine();
 
             // Validate entered start and end dates (business rule #4)
             // TO DO: Keep examining user input even if
@@ -134,12 +144,12 @@ public class ParkManagerDriver
                 System.out.println("Error: A job may not be scheduled that "
                         + "lasts more than two days.");
                 System.out.print("Enter new end date (MM/DD/YYYY): ");
-                endDate = in.nextLine();
+                endDate = myInput.nextLine();
             }
 
             System.out.print("Maximum number of volunteers (Up to 30): ");
-            maxVolunteers = in.nextInt();
-            in.nextLine();
+            maxVolunteers = myInput.nextInt();
+            myInput.nextLine();
 
             if (maxVolunteers > 30)
             {
@@ -159,7 +169,7 @@ public class ParkManagerDriver
                 e.printStackTrace();
             }
             // Update calendar
-            theUPCalendar.addJob(job);
+            myUPCalendar.addJob(job);
 
             System.out.println("Job created!");
             System.out.println(job.toString());
@@ -168,12 +178,11 @@ public class ParkManagerDriver
 
     /**
      * 
-     * @param theCurrentUser
-     * @param theUPCalendar
+     * @param myUser
+     * @param myUPCalendar
      * @author Lachezar
      */
-    public static void deleteJob(ParkManager theCurrentUser,
-            UrbanParkCalendar theUPCalendar, Scanner in)
+    public static void deleteJob()
     {
         int theChoice;
         Park park = null;
@@ -184,7 +193,7 @@ public class ParkManagerDriver
         System.out.println(
                 "Please select one of the parks you manage to delete a job from that park");
 
-        ArrayList<Park> parks = new ArrayList<Park>(theCurrentUser.getParks());
+        ArrayList<Park> parks = new ArrayList<Park>(myUser.getParks());
 
         System.out.println();
         for (int i = 0; i < parks.size(); i++)
@@ -194,8 +203,8 @@ public class ParkManagerDriver
 
         System.out.print("Enter park number:");
 
-        theChoice = in.nextInt();
-        in.nextLine();
+        theChoice = myInput.nextInt();
+        myInput.nextLine();
 
         // Get desired park
         park = parks.get(theChoice - 1);
@@ -216,25 +225,24 @@ public class ParkManagerDriver
             }
             System.out.print("Enter job number:");
 
-            theChoice = in.nextInt();
-            in.nextLine();
+            theChoice = myInput.nextInt();
+            myInput.nextLine();
 
             // Get desired job to delete
             theJob = jobs.get(theChoice - 1);
 
             // Delete job
-            theCurrentUser.deleteJob(theUPCalendar, theJob, park);
+            myUser.deleteJob(myUPCalendar, theJob, park);
         }
     }
 
     /**
      * 
-     * @param theCurrentUser
-     * @param uPCalendar
+     * @param myUser
+     * @param myUPCalendar
      * @author Lachezar
      */
-    public static void editJob(ParkManager theCurrentUser,
-            UrbanParkCalendar uPCalendar, Scanner in)
+    public static void editJob()
     {
         final String jobTitle;
         final String jobDescription;
@@ -253,7 +261,7 @@ public class ParkManagerDriver
         System.out.println(
                 "Please select one of the parks you manage to edit a job from that park");
 
-        ArrayList<Park> parks = new ArrayList<Park>(theCurrentUser.getParks());
+        ArrayList<Park> parks = new ArrayList<Park>(myUser.getParks());
 
         System.out.println();
         for (int i = 0; i < parks.size(); i++)
@@ -263,8 +271,8 @@ public class ParkManagerDriver
 
         System.out.print("Enter park number:");
 
-        theChoice = in.nextInt();
-        in.nextLine();
+        theChoice = myInput.nextInt();
+        myInput.nextLine();
 
         // Get desired park
         park = parks.get(theChoice - 1);
@@ -287,19 +295,19 @@ public class ParkManagerDriver
             }
             System.out.print("Enter job number:");
 
-            theChoice = in.nextInt();
-            in.nextLine();
+            theChoice = myInput.nextInt();
+            myInput.nextLine();
 
             // Get desired job to delete
             jobToEdit = jobs.get(theChoice - 1);
 
             System.out.print("Please enter job title: ");
-            jobTitle = in.nextLine();
+            jobTitle = myInput.nextLine();
             // System.out.println();
             System.out.print("Job description: ");
-            jobDescription = in.nextLine();
+            jobDescription = myInput.nextLine();
             System.out.print("Start Date (MM/DD/YYYY): ");
-            startDate = in.nextLine();
+            startDate = myInput.nextLine();
 
             // Validate entered start date (business rule #5)
             if (!validateStartDate(startDate))
@@ -307,11 +315,11 @@ public class ParkManagerDriver
                 System.out.println("Error: Start date cannot be in the past or"
                         + " more than 3 months from today's date. ");
                 System.out.print("Enter new Start Date (MM/DD/YYYY): ");
-                startDate = in.nextLine();
+                startDate = myInput.nextLine();
             }
 
             System.out.print("End Date (MM/DD/YYYY): ");
-            endDate = in.nextLine();
+            endDate = myInput.nextLine();
 
             // Validate entered start and end dates (business rule #4)
             if (!validateJobDuration(startDate, endDate))
@@ -319,14 +327,14 @@ public class ParkManagerDriver
                 System.out.println("Error: A job may not be scheduled that "
                         + "lasts more than two days.");
                 System.out.print("Enter new End Date (MM/DD/YYYY): ");
-                endDate = in.nextLine();
+                endDate = myInput.nextLine();
             }
 
             System.out
                     .println("Please Enter the maximum number of volunteers:");
 
-            maxVolunteers = in.nextInt();
-            in.nextLine();
+            maxVolunteers = myInput.nextInt();
+            myInput.nextLine();
 
             if (maxVolunteers > 30)
             {
@@ -335,19 +343,18 @@ public class ParkManagerDriver
                 maxVolunteers = 30;
             }
 
-            theCurrentUser.editJob(uPCalendar, jobToEdit, park, maxVolunteers,
+            myUser.editJob(myUPCalendar, jobToEdit, park, maxVolunteers,
                     startDate, endDate, jobTitle, jobDescription);
         }
     }
 
     /**
      * 
-     * @param theCurrentUser
+     * @param myUser
      * @param uPCalendar
      * @author Lachezar
      */
-    public static void viewJobsInParks(ParkManager theCurrentUser,
-            UrbanParkCalendar uPCalendar, Scanner in)
+    public static void viewJobsInParks()
     {
         Park park = null;
         int theChoice;
@@ -355,7 +362,7 @@ public class ParkManagerDriver
         System.out.println("Please select one of the parks you manage to view "
                 + "a summary of all upcoming jobs in that park");
 
-        ArrayList<Park> parks = new ArrayList<Park>(theCurrentUser.getParks());
+        ArrayList<Park> parks = new ArrayList<Park>(myUser.getParks());
 
         System.out.println();
         for (int i = 0; i < parks.size(); i++)
@@ -364,8 +371,8 @@ public class ParkManagerDriver
         }
         System.out.print("Enter park number:");
 
-        theChoice = in.nextInt();
-        in.nextLine();
+        theChoice = myInput.nextInt();
+        myInput.nextLine();
 
         // Get desired park
         park = parks.get(theChoice - 1);
@@ -387,12 +394,11 @@ public class ParkManagerDriver
 
     /**
      * 
-     * @param theCurrentUser
+     * @param myUser
      * @param uPCalendar
      * @author Lachezar
      */
-    private static void viewVolunteers(ParkManager theCurrentUser,
-            UrbanParkCalendar uPCalendar, Scanner in)
+    private static void viewVolunteers()
     {
         Park park = null;
         Job job = null;
@@ -401,7 +407,7 @@ public class ParkManagerDriver
         System.out.println(
                 "Please select one of the parks you manage to view the jobs");
 
-        ArrayList<Park> parks = new ArrayList<Park>(theCurrentUser.getParks());
+        ArrayList<Park> parks = new ArrayList<Park>(myUser.getParks());
 
         System.out.println();
         for (int i = 0; i < parks.size(); i++)
@@ -411,8 +417,8 @@ public class ParkManagerDriver
         }
         System.out.print("Enter park number:");
 
-        theChoice = in.nextInt();
-        in.nextLine();
+        theChoice = myInput.nextInt();
+        myInput.nextLine();
         // Get desired park
         park = parks.get(theChoice - 1);
 
@@ -433,8 +439,8 @@ public class ParkManagerDriver
             }
             System.out.print("Enter job number:");
 
-            theChoice = in.nextInt();
-            in.nextLine();
+            theChoice = myInput.nextInt();
+            myInput.nextLine();
 
             // Get desired job
             job = jobs.get(theChoice - 1);
@@ -448,7 +454,6 @@ public class ParkManagerDriver
             {
                 System.out.println((i + 1) + ") " + volunteers.get(i));
             }
-
         }
     }
 
