@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class UrbanParkCalendar implements Serializable
 {
@@ -19,8 +20,6 @@ public class UrbanParkCalendar implements Serializable
     {
         masterJobCollection = new ArrayList<Job>();
         allVolunteers = new ArrayList<>();
-        // Throws an exception at this point
-        // setDate(new Date());
     }
 
     public Collection<Volunteer> getAllUsers()
@@ -40,13 +39,44 @@ public class UrbanParkCalendar implements Serializable
 
     public boolean addJob(Job theJob)
     {
-        if (masterJobCollection.size() < 30)
+        boolean theresRoom = checkForRoomThatWeek(theJob);
+
+        if (theresRoom && masterJobCollection.size() < MAX_JOBS)
         {
             return masterJobCollection.add(theJob);
-
         }
         else
             return false;
+    }
+
+    private boolean checkForRoomThatWeek(Job theJob)
+    {
+        ArrayList<Job> check = new ArrayList<>(masterJobCollection);
+
+        check.add(theJob);
+        int checkAround = check.indexOf(theJob);
+        Date minDate = new Date(theJob.getStartDate().getTime()
+                - TimeUnit.DAYS.toMillis(3) - 1);
+        Date maxDate = new Date(theJob.getStartDate().getTime()
+                + TimeUnit.DAYS.toMillis(3) + 1);
+        int jobsThatWeek = 0;
+
+        for (Job j : check)
+        {
+            if (j.getStartDate().after(minDate)
+                    && j.getStartDate().before(maxDate) && !j.equals(theJob))
+            {
+                jobsThatWeek++;
+            }
+        }
+
+        check.remove(checkAround);
+
+        if (jobsThatWeek >= MAX_WEEKLY_JOBS)
+        {
+            return false;
+        }
+        return true;
     }
 
     // Added edit job method
@@ -58,15 +88,15 @@ public class UrbanParkCalendar implements Serializable
         // Iterate over masterJobCollection
         // When a job matching the parameter job is found,
         // then edit its attributes
-        for (Job j : masterJobCollection)
+        for (Job curJob : masterJobCollection)
         {
-            if (j.equals(theJob))
+            if (curJob.equals(theJob))
             {
-                j.setStartDate(startDate);
-                j.setEndDate(endDate);
-                j.setJobTitle(jobTitle);
-                j.setJobDescription(jobDescription);
-                j.setMaxVolunteers(maxVolunteers);
+                curJob.setStartDate(startDate);
+                curJob.setEndDate(endDate);
+                curJob.setJobTitle(jobTitle);
+                curJob.setJobDescription(jobDescription);
+                curJob.setMaxVolunteers(maxVolunteers);
             }
         }
 
@@ -85,5 +115,10 @@ public class UrbanParkCalendar implements Serializable
     public static Date getCurrentDate()
     {
         return currentDate;
+    }
+
+    public String toString()
+    {
+        return masterJobCollection.toString();
     }
 }

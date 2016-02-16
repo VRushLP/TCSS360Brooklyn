@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.Date;
 
 /**
- * 
- * 
  * @author Bethany Eastman
  * @version 02/09/2016
  */
@@ -37,7 +35,6 @@ public class Job implements Serializable
         endDate = theEndDate;
         jobTitle = theJobTitle;
         jobDescription = theJobDescription;
-        associatedPark.addJob(this);
     }
 
     @Override
