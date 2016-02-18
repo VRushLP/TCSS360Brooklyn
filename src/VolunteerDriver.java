@@ -137,7 +137,7 @@ public class VolunteerDriver
     public static void volunteer(Job theJob)
     {
         boolean canSignUp = true;
-        ArrayList<Job> jobs = new ArrayList<Job>(myUPCalendar.getJobList());
+        ArrayList<Job> jobs = new ArrayList<Job>(myUser.getVolunteeredForJobs());
         // check if user has signed up for job on same day
         for (Job job : jobs)
         {
