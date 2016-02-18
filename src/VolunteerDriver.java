@@ -136,41 +136,48 @@ public class VolunteerDriver
      */
     public static void volunteer(Job theJob)
     {
-        boolean canSignUp = true;
-        ArrayList<Job> jobs = new ArrayList<Job>(myUser.getVolunteeredForJobs());
-        // check if user has signed up for job on same day
-        for (Job job : jobs)
-        {
-            if (job.getStartDate().equals(theJob.getStartDate())
-                    || job.getStartDate().equals(theJob.getEndDate())
-                    || job.getEndDate().equals(theJob.getStartDate())
-                    || job.getEndDate().equals(theJob.getEndDate()))
-            {
-                canSignUp = false;
-            }
-        }
-
-        // make sure user hasn't signed up for job already
-        if (myUser.getVolunteeredForJobs().contains(theJob))
-        {
-            canSignUp = false;
-        }
-        // make sure job is not full already
-        else if (theJob.getVolunteers().size() == theJob.getMaxVolunteers())
-        {
-            canSignUp = false;
-        }
-
-        if (canSignUp == false)
-        {
-            System.out.println(
-                    "Sorry, you are not able to sign up for this job. Please contact the Park Manager.");
-        }
-        else
-        {
-            theJob.addVolunteer(myUser);
-            myUser.volunteerForJob(theJob);
+//        boolean canSignUp = true;
+//        ArrayList<Job> jobs = new ArrayList<Job>(myUser.getVolunteeredForJobs());
+//        // check if user has signed up for job on same day
+//        for (Job job : jobs)
+//        {
+//            if (job.getStartDate().equals(theJob.getStartDate())
+//                    || job.getStartDate().equals(theJob.getEndDate())
+//                    || job.getEndDate().equals(theJob.getStartDate())
+//                    || job.getEndDate().equals(theJob.getEndDate()))
+//            {
+//                canSignUp = false;
+//            }
+//        }
+//
+//        // make sure user hasn't signed up for job already
+//        if (myUser.getVolunteeredForJobs().contains(theJob))
+//        {
+//            canSignUp = false;
+//        }
+//        // make sure job is not full already
+//        else if (theJob.getVolunteers().size() == theJob.getMaxVolunteers())
+//        {
+//            canSignUp = false;
+//        }
+//
+//        if (canSignUp == false)
+//        {
+//            System.out.println(
+//                    "Sorry, you are not able to sign up for this job. Please contact the Park Manager.");
+//        }
+//        else
+//        {
+//            theJob.addVolunteer(myUser);
+//            myUser.volunteerForJob(theJob);
+//            System.out.println("Congratulations! You have volunteered");
+//        }
+        
+        try {
+            myUser.canVolunteer(theJob);
             System.out.println("Congratulations! You have volunteered");
+        } catch (Exception e) {
+            System.out.println("Sorry you may not volunteer since: " + e.getMessage());
         }
 
         System.out.println("Enter b go back to main menu");
