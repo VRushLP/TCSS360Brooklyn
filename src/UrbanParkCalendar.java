@@ -80,9 +80,8 @@ public class UrbanParkCalendar implements Serializable
     }
 
     // Added edit job method
-    public void editJob(Job theJob, int maxVolunteers,
-            Date startDate, Date endDate, String jobTitle,
-            String jobDescription)
+    public void editJob(Job theJob, int maxVolunteers, Date startDate,
+            Date endDate, String jobTitle, String jobDescription)
     {
 
         // Iterate over masterJobCollection
@@ -115,6 +114,26 @@ public class UrbanParkCalendar implements Serializable
     public static Date getCurrentDate()
     {
         return currentDate;
+    }
+
+    public Collection<Volunteer> searchVolunteer(String theLastName)
+    {
+        ArrayList<Volunteer> returnable = new ArrayList<>();
+
+        for (Job job : masterJobCollection)
+        {
+            ArrayList<Volunteer> jobVolunteers = (ArrayList<Volunteer>) job
+                    .getVolunteers();
+
+            for (Volunteer v : jobVolunteers)
+            {
+                if (v.getLastName().equals(theLastName))
+                {
+                    returnable.add(v);
+                }
+            }
+        }
+        return returnable;
     }
 
     @Override

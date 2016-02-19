@@ -1,5 +1,4 @@
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public abstract class AbstractUser implements User, Serializable
 {
@@ -13,28 +12,11 @@ public abstract class AbstractUser implements User, Serializable
         this.email = theEmail;
     }
 
-    public AbstractUser(String theEmail, String theFirstName,
-            String theLastName)
+    public AbstractUser(String theEmail, String theFirstName, String theLastName)
     {
         this(theEmail);
         this.firstName = theFirstName;
         this.lastName = theLastName;
-    }
-
-    @Override
-    public void viewJob(Job theJob)
-    {
-        System.out.println(theJob.toString());
-    }
-
-    public void viewAllJobs(UrbanParkCalendar theCalendar)
-    {
-        ArrayList<Job> allJobs = (ArrayList<Job>) theCalendar.getJobList();
-
-        for (int i = 0; i < allJobs.size(); i++)
-        {
-            System.out.println(i + " " + allJobs.get(i));
-        }
     }
 
     @Override

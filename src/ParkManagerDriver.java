@@ -239,7 +239,7 @@ public class ParkManagerDriver
             theJob = jobs.get(theChoice - 1);
 
             // Delete job
-            myUser.deleteJob(myUPCalendar, theJob, park);
+//            myUser.deleteJob(myUPCalendar, theJob, park);
         }
     }
 
@@ -350,8 +350,8 @@ public class ParkManagerDriver
                 maxVolunteers = 30;
             }
 
-            myUser.editJob(myUPCalendar, jobToEdit, park, maxVolunteers,
-                    startDate, endDate, jobTitle, jobDescription);
+            // myUser.editJob(myUPCalendar, jobToEdit, park, maxVolunteers,
+            //        startDate, endDate, jobTitle, jobDescription);
         }
     }
 
