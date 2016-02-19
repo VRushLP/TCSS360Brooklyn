@@ -60,19 +60,19 @@ public class Volunteer extends AbstractUser
         // check that job doesn't already exist in user list of jobs
         if (isDuplicate(theJob))
         {
-            throw new Exception("Already signed up.");
+            throw new Exception("You have already signed up for this job.");
         }
 
         // check that job is not past job
         if (isPastJob(theJob))
         {
-            throw new Exception("Job is in the past.");
+            throw new Exception("This job has already happended");
         }
 
         // check that job is not full
         if (isFullJob(theJob))
         {
-            throw new Exception("Job is full.");
+            throw new Exception("This job has the max amount of volunteers.");
         }
 
         // check that user has not signed up for job on same day.
@@ -82,7 +82,7 @@ public class Volunteer extends AbstractUser
         }
 
         // no exceptions thrown, allow to volunteer
-        theJob.addVolunteer(this);
+        theJob.addVolunteer(this); 
         volunteerForJob(theJob);
     }
 
@@ -124,10 +124,9 @@ public class Volunteer extends AbstractUser
      */
     public boolean isFullJob(Job theJob)
     {
-        return false; // not yet implemented ; need to add categories into jobs
+        return theJob.getVolunteers().size() == theJob.getMaxVolunteers();
+        // needs to be fixed for work categories
     }
-
-    // move methods below into the job class ?
 
     /**
      * Return true if a job overlaps with another jobs start date.
