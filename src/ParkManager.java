@@ -85,7 +85,7 @@ public class ParkManager extends AbstractUser
         }
 
         // Edit information in UrbanParkCalendar first
-        theUPCalendar.editJob(theJob, thePark, maxVolunteers, startDate,
+        theUPCalendar.editJob(theJob, maxVolunteers, startDate,
                 endDate, jobTitle, jobDescription);
 
         // Edit job

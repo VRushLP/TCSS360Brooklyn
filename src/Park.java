@@ -7,24 +7,22 @@ public class Park implements Serializable
 {
     private static final long serialVersionUID = -6204556836361813053L;
     private String parkName;
-    private ParkManager parkManager;
+    private String parkManagerName;
+    private String parkManagerEmail;
     private Collection<Job> parksJobList;
 
     public Park(String theParkName, ParkManager theParkManager)
     {
         parkName = theParkName;
-        parkManager = theParkManager;
+        setParkManagerName(theParkManager.getFirstName() + " "
+                + theParkManager.getLastName());
+        setParkManagerEmail(theParkManager.getEmail());
         parksJobList = new ArrayList<Job>();
     }
 
     public String getParkName()
     {
         return parkName;
-    }
-
-    public ParkManager getParkManager()
-    {
-        return parkManager;
     }
 
     public Collection<Job> getJobList()
@@ -60,5 +58,25 @@ public class Park implements Serializable
         parkDetails.append(getParkName());
 
         return parkDetails.toString();
+    }
+
+    public String getParkManagerEmail()
+    {
+        return parkManagerEmail;
+    }
+
+    public void setParkManagerEmail(String parkManagerEmail)
+    {
+        this.parkManagerEmail = parkManagerEmail;
+    }
+
+    public String getParkManagerName()
+    {
+        return parkManagerName;
+    }
+
+    public void setParkManagerName(String parkManagerName)
+    {
+        this.parkManagerName = parkManagerName;
     }
 }

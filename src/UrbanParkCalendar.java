@@ -80,7 +80,7 @@ public class UrbanParkCalendar implements Serializable
     }
 
     // Added edit job method
-    public void editJob(Job theJob, Park park, int maxVolunteers,
+    public void editJob(Job theJob, int maxVolunteers,
             Date startDate, Date endDate, String jobTitle,
             String jobDescription)
     {

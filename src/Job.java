@@ -15,7 +15,7 @@ public class Job implements Serializable
     public static final int MAX_JOB_LENGTH = 2; // 2 days
 
     private Collection<Volunteer> volunteers;
-    private Park associatedPark;
+    private String parkName;
     private int maxVolunteers;
 
     private Date startDate;
@@ -29,7 +29,7 @@ public class Job implements Serializable
     {
         // volunteer list starts empty
         volunteers = new ArrayList<>();
-        associatedPark = thePark;
+        parkName = thePark.getParkName();
         maxVolunteers = theMaxVolunteers; // check if max volunteers is 30
         startDate = theStartDate;
         endDate = theEndDate;
@@ -46,7 +46,7 @@ public class Job implements Serializable
         jobDetails.append("\nDescription: ");
         jobDetails.append(jobDescription);
         jobDetails.append("\nLocation: ");
-        jobDetails.append(associatedPark);
+        jobDetails.append(parkName);
         jobDetails.append("\nVolunteers: ");
         jobDetails.append(volunteers.size());
         jobDetails.append("/");
@@ -123,9 +123,9 @@ public class Job implements Serializable
         return Collections.unmodifiableCollection(volunteers);
     }
 
-    public Park getAssociatedPark()
+    public String getAssociatedPark()
     {
-        return associatedPark;
+        return parkName;
     }
 
     @Override
@@ -138,10 +138,9 @@ public class Job implements Serializable
             // not.
             return jobTitle.equals(compare.jobTitle)
                     && jobDescription.equals(compare.jobDescription)
-                    && associatedPark.equals(compare.associatedPark)
+                    && parkName.equals(compare.parkName)
                     && startDate.equals(compare.startDate);
         }
-
         return false;
     }
 }
