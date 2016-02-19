@@ -1,17 +1,14 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public abstract class SharedDriverFunctions
+public abstract class SharedUserDriverFunctions
 {
-    abstract public void run(User theUser, Scanner in,
-            UrbanParkCalendar UPCalendar);
-
     public void viewJob(Job theJob)
     {
         System.out.println(theJob.toString());
     }
 
-    public void viewAllJobs(UrbanParkCalendar theCalendar)
+    public void viewAllUpcomingJobs(UrbanParkCalendar theCalendar)
     {
         ArrayList<Job> allJobs = (ArrayList<Job>) theCalendar.getJobList();
 
@@ -20,5 +17,4 @@ public abstract class SharedDriverFunctions
             System.out.println(i + " " + allJobs.get(i));
         }
     }
-
 }

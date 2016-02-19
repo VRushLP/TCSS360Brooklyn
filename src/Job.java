@@ -10,7 +10,6 @@ import java.util.Date;
  */
 public class Job implements Serializable
 {
-    private static final long serialVersionUID = 8218272151272583884L;
     public static final int MAX_VOLUNTEER_NUM = 30;
     public static final int MAX_JOB_LENGTH = 2; // 2 days
 

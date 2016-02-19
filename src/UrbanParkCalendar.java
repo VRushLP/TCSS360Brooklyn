@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 
 public class UrbanParkCalendar implements Serializable
 {
-    private static final long serialVersionUID = -6937747495177492138L;
     public static final int MAX_JOBS = 30;
     public static final int MAX_WEEKLY_JOBS = 5;
     public static final int MAX_DATE_FROM_TODAY = 90;

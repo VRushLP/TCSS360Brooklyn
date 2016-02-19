@@ -4,14 +4,7 @@ import java.util.Collection;
 
 public class ParkManager extends AbstractUser
 {
-    private static final long serialVersionUID = 2473533828616953096L;
     private Collection<Park> myParks;
-
-    public ParkManager(String theEmail)
-    {
-        super(theEmail);
-        myParks = new ArrayList<Park>();
-    }
 
     public ParkManager(String theEmail, String theFirstName, String theLastName)
     {

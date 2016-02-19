@@ -5,7 +5,6 @@ import java.util.Collections;
 
 public class Park implements Serializable
 {
-    private static final long serialVersionUID = -6204556836361813053L;
     private String parkName;
     private String parkManagerName;
     private String parkManagerEmail;

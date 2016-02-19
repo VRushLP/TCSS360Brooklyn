@@ -2,19 +2,13 @@ import java.io.Serializable;
 
 public abstract class AbstractUser implements User, Serializable
 {
-    private static final long serialVersionUID = -483510211432682135L;
     private String lastName;
     private String firstName;
     private String email;
 
-    public AbstractUser(String theEmail)
-    {
-        this.email = theEmail;
-    }
-
     public AbstractUser(String theEmail, String theFirstName, String theLastName)
     {
-        this(theEmail);
+        this.email = theEmail;
         this.firstName = theFirstName;
         this.lastName = theLastName;
     }
