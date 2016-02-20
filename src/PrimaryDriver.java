@@ -14,8 +14,7 @@ import java.util.Scanner;
 public class PrimaryDriver
 {
     // Input file name.
-    private static final String[] filePaths = { "calendar.ser",
-            "loginList.ser" };
+    private static final String[] filePaths = { "calendar.ser", "loginList.ser" };
 
     // Data Structure to store everything in
     private static Map<String, AbstractUser> loginList;
@@ -113,10 +112,33 @@ public class PrimaryDriver
                 "Sweeping up the beach.",
                 "Getting rid of the sand. It gets /everywhere/");
 
-        UPCalendar.addJob(bigfoot);
-        UPCalendar.addJob(yetis);
-        UPCalendar.addJob(garbageCollect);
-        UPCalendar.addJob(sweep);
+        try
+        {
+            UPCalendar.addJob(yetis);
+            UPCalendar.addJob(bigfoot);
+            UPCalendar.addJob(garbageCollect);
+            UPCalendar.addJob(sweep);
+        }
+        catch (CalendarWeekFullException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (CalendarFullException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (JobTooLongException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (JobTimeTravelException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         dashPoint.addJob(bigfoot);
         dashPoint.addJob(yetis);

@@ -169,16 +169,29 @@ public class ParkManagerDriver
                 e.printStackTrace();
             }
             // Update calendar first
-            if (myUPCalendar.addJob(job))
+            try
             {
-                park.addJob(job);
-                System.out.println("Job created!");
-                System.out.println(job.toString());
+                myUPCalendar.addJob(job);
             }
-            else
+            catch (CalendarWeekFullException e)
             {
-                System.out
-                        .println("There was a problem adding your job. Please contact an Urban Park Employee.");
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            catch (CalendarFullException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            catch (JobTooLongException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            catch (JobTimeTravelException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
         }
     }
