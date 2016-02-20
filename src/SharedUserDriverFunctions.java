@@ -8,7 +8,7 @@ public abstract class SharedUserDriverFunctions
         System.out.println(theJob.toString());
     }
 
-    public void viewAllUpcomingJobs(UrbanParkCalendar theCalendar)
+    public static void viewAllUpcomingJobs(UrbanParkCalendar theCalendar)
     {
         ArrayList<Job> allJobs = (ArrayList<Job>) theCalendar.getJobList();
 

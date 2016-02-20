@@ -11,8 +11,7 @@ import org.junit.Test;
  */
 public class VolunteerTest
 {
-    // job's equals not working properly, does not check if names are the same.
-
+    
     Volunteer joblessVolunteer;
     Volunteer sameVolunteer;
     Volunteer oneJobVolunteer;
@@ -21,36 +20,109 @@ public class VolunteerTest
     Job newJob;
     Job conflictingJob;
     Job pastJob;
-
-<<<<<<< HEAD
+    Job jobToday;
+    Job jobConflictsBeforeStart;
+    Job jobConflictsAfterStart;
+    
     @Before
     public void setUp()
     {
+        long DAY_IN_MS = 1000 * 60 * 60 * 24;
+        Date sevenDays = new Date(System.currentTimeMillis() - (7 * DAY_IN_MS));
+        Date fourDays = new Date(System.currentTimeMillis() + (4 * DAY_IN_MS));
+        Date threeDays = new Date(System.currentTimeMillis() + (3 * DAY_IN_MS));
+        Date fiveDays = new Date(System.currentTimeMillis() + (5 * DAY_IN_MS));
+        Date sixDays = new Date(System.currentTimeMillis() + (6 * DAY_IN_MS));
+        
         joblessVolunteer = new Volunteer("jobless@gmail.com", "John", "Smith");
         sameVolunteer = new Volunteer("jobless@gmail.com", "John", "Smith");
-        oneJobVolunteer = new Volunteer("b@uw.edu");
-        tom = new ParkManager("tom@uw.edu");
+        oneJobVolunteer = new Volunteer("b@uw.edu", "Jane", "Does");
+        tom = new ParkManager("tom@uw.edu", "Tom", "Hanks");
         newPark = new Park("Tom's Park", tom);
-        newJob = new Job(newPark, 1, new Date(),
-                new Date(), "Pick up trash", "Clean up trash from Park");
-        conflictingJob = new Job(newPark, 3, new Date(),
+        newJob = new Job(newPark, 1, fourDays,
+                fiveDays, "Pick up trash", "Clean up trash from Park");
+        conflictingJob = new Job(newPark, 3, fourDays,
+                fiveDays, "Clean bathrroms", "Clean the bathrooms in the park");
+        pastJob = new Job(newPark, 3, sevenDays,
+                sevenDays, "Clean bathrroms", "Clean the bathrooms in the park");
+        jobToday = new Job(newPark, 3, new Date(),
                 new Date(), "Clean bathrroms", "Clean the bathrooms in the park");
-        pastJob = new Job(newPark, 3, new Date(1994, 2, 1),
-                new Date(1994, 2, 2), "Clean bathrroms", "Clean the bathrooms in the park");
+        jobConflictsBeforeStart = new Job(newPark, 3, threeDays,
+                fiveDays, "Clean bathrroms", "Clean the bathrooms in the park");
+        jobConflictsAfterStart = new Job(newPark, 3, fourDays,
+                sixDays, "Clean bathrroms", "Clean the bathrooms in the park");
     }
-=======
-//    @Before
-//    public void setUp()
-//    {
-//        joblessVolunteer = new Volunteer("jobless@gmail.com", "John", "Smith");
-//        sameVolunteer = new Volunteer("jobless@gmail.com", "John", "Smith");
-//        oneJobVolunteer = new Volunteer("b@uw.edu");
-//        tom = new ParkManager("tom@uw.edu");
-//        newPark = new Park("Tom's Park", tom);
-//        newJob = new Job(newPark, 1, new Date(),
-//                new Date(), "Pick up trash", "Clean up trash from Park");
-//    }
->>>>>>> master
+    
+    /**
+     * Test that the volunteer can sign up for a job.
+     */
+    @Test
+    public void testCanVolunteer() {
+        try {
+            sameVolunteer.canVolunteer(newJob);
+            sameVolunteer.canVolunteer(jobToday); // job doesn't conflict
+        } catch(Exception e) { 
+            assertEquals("You have already signed up for this job.", e.getMessage());
+            fail();
+        }
+    }
+    
+    /**
+     * Tests volunteer can't sign up for past job.
+     */
+    @Test
+    public void testPastJobException() {
+        try {
+            sameVolunteer.canVolunteer(pastJob);
+            fail(); 
+        } catch(Exception e) { 
+            assertEquals("This job has already happended", e.getMessage());
+        }
+    }
+    
+    
+    
+    /**
+     * Tests exception is thrown when duplicate job is attempted to volunteer.
+     */
+    @Test
+    public void testDuplicateJobException() {
+        sameVolunteer.volunteerForJob(newJob);
+        try {
+            sameVolunteer.canVolunteer(newJob);
+            fail(); 
+        } catch(Exception e) { 
+            assertEquals("You have already signed up for this job.", e.getMessage());
+        }
+    }
+    
+    /**
+     * Tests exception thrown for jobs that interfere.
+     */
+    @Test
+    public void testInteferingJobException() {
+        sameVolunteer.volunteerForJob(newJob);
+        try {
+            sameVolunteer.canVolunteer(conflictingJob);
+            fail(); 
+        } catch(Exception e) { 
+            assertEquals("This job intereferes with another job.", e.getMessage());
+        }
+        
+        try {
+            sameVolunteer.canVolunteer(jobConflictsBeforeStart);
+            fail(); 
+        } catch(Exception e) { 
+            assertEquals("This job intereferes with another job.", e.getMessage());
+        }
+        
+        try {
+            sameVolunteer.canVolunteer(jobConflictsAfterStart);
+            fail(); 
+        } catch(Exception e) { 
+            assertEquals("This job intereferes with another job.", e.getMessage());
+        }
+    }
     
     /**
      * Test that equals method works properly
@@ -90,14 +162,6 @@ public class VolunteerTest
     }
     
     /**
-     * Test that the volunteer can sign up for a job.
-     */
-    @Test
-    public void testCanVolunteer() {
-        fail("Not yet implemented");
-    }
-    
-    /**
      * Tests business rule that a volunteer may not sign up 
      * for jobs that occur on the same day.
      */
@@ -121,26 +185,41 @@ public class VolunteerTest
     
     // go in job tests? 
     
-    @Test
-    public void testStartDayOverlaps() {
-        fail("Not yet implemented");
-    }
-    
-    @Test
-    public void testEndDayOverlaps() {
-        fail("Not yet implemented");
-
-    }
-    
+    /**
+     * Test that two jobs have share a start or end date.
+     */
     @Test
     public void testShareDates() {
-        fail("Not yet implemented");
-
+        assertTrue(oneJobVolunteer.shareDates(newJob, conflictingJob));
+        assertFalse(oneJobVolunteer.shareDates(newJob, pastJob));
     }
     
+    /**
+     * Tests that a job conflicts with another job, if job occurs during the other job.
+     */
+    @Test
+    public void testStartDayOverlaps() {
+        assertTrue(oneJobVolunteer.startDayOverlaps(jobConflictsBeforeStart, newJob));
+        assertFalse(oneJobVolunteer.startDayOverlaps(jobConflictsAfterStart, newJob));
+    }
+    
+    /**
+     * Tests that a job conflicts with another job, if job starts during job.
+     */
+    @Test
+    public void testEndDayOverlaps() {
+        assertTrue(oneJobVolunteer.endDayOverlaps(jobConflictsAfterStart, newJob));
+        assertFalse(oneJobVolunteer.endDayOverlaps(jobConflictsBeforeStart, newJob));
+    }
+    
+    /**
+     * Tests that a job is in the past.
+     */
     @Test
     public void testIsPastJob() {
-        fail("Not yet implemented");
+        assertTrue(oneJobVolunteer.isPastJob(pastJob));
+        assertFalse(oneJobVolunteer.isPastJob(newJob));
+        assertFalse(oneJobVolunteer.isPastJob(jobToday));
     }
     
 

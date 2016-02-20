@@ -10,10 +10,6 @@ import java.util.Date;
 public class Volunteer extends AbstractUser
 {
     private Collection<Job> myJobs;
-<<<<<<< HEAD
-    // private int myWorkCategory;
-=======
->>>>>>> master
 
     public Volunteer(String theEmail, String theFirstName, String theLastName)
     {
@@ -78,7 +74,6 @@ public class Volunteer extends AbstractUser
         }
 
         // no exceptions thrown, allow to volunteer
-//        theJob.addVolunteer(this); 
         volunteerForJob(theJob);
     }
 
@@ -127,7 +122,7 @@ public class Volunteer extends AbstractUser
     /**
      * Return true if a job overlaps with another jobs start date.
      */
-    private boolean startDayOverlaps(Job theJob, Job theOtherJob)
+    public boolean startDayOverlaps(Job theJob, Job theOtherJob)
     {
         return theJob.getStartDate().before(theOtherJob.getStartDate())
                 && theJob.getEndDate().after(theOtherJob.getStartDate());
@@ -136,7 +131,7 @@ public class Volunteer extends AbstractUser
     /**
      * Return true if a job overlaps with another jobs end date.
      */
-    private boolean endDayOverlaps(Job theJob, Job theOtherJob)
+    public boolean endDayOverlaps(Job theJob, Job theOtherJob)
     {
         return theJob.getStartDate().before(theOtherJob.getEndDate())
                 && theJob.getEndDate().after(theOtherJob.getEndDate());
@@ -145,7 +140,7 @@ public class Volunteer extends AbstractUser
     /**
      * Return true if two jobs share any start or end dates.
      */
-    private boolean shareDates(Job theJob, Job theOtherJob)
+    public boolean shareDates(Job theJob, Job theOtherJob)
     {
         return theJob.getStartDate().equals(theOtherJob.getStartDate())
                 || theJob.getStartDate().equals(theOtherJob.getEndDate())

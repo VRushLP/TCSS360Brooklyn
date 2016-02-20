@@ -7,7 +7,7 @@ import java.util.Scanner;
  * 
  * @author Lachezar, Bethany
  */
-public class VolunteerDriver
+public class VolunteerDriver extends SharedUserDriverFunctions
 {
 
     static String input;
@@ -94,13 +94,16 @@ public class VolunteerDriver
         Date today = new Date();
         while (!input.equalsIgnoreCase("b"))
         { // while user wants to view jobs
-            int i = 1;
-            for (Job job : jobs)
-            {
-                if (job.getStartDate().after(today))
-                    ; // only show upcoming days
-                System.out.println(i++ + ") " + job.toString());
-            }
+//            int i = 1;
+//            for (Job job : jobs)
+//            {
+//                if (job.getStartDate().after(today))
+//                    ; // only show upcoming days
+//                System.out.println(i++ + ") " + job.toString());
+//            }
+            
+            viewAllUpcomingJobs(myUPCalendar);
+            
             System.out.println(
                     "Enter b to go back, or enter job number to view details & sign up");
             input = myInput.nextLine();
