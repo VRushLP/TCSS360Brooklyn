@@ -1,3 +1,4 @@
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -113,10 +114,33 @@ public class PrimaryDriver
                 "Sweeping up the beach.",
                 "Getting rid of the sand. It gets /everywhere/");
 
-        UPCalendar.addJob(bigfoot);
-        UPCalendar.addJob(yetis);
-        UPCalendar.addJob(garbageCollect);
-        UPCalendar.addJob(sweep);
+        try
+        {
+            UPCalendar.addJob(yetis);
+            UPCalendar.addJob(bigfoot);
+            UPCalendar.addJob(garbageCollect);
+            UPCalendar.addJob(sweep);
+        }
+        catch (CalendarWeekFullException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (CalendarFullException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (JobTooLongException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (JobTimeTravelException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         dashPoint.addJob(bigfoot);
         dashPoint.addJob(yetis);

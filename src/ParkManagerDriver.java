@@ -1,3 +1,4 @@
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -5,7 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 
-public class ParkManagerDriver
+public class ParkManagerDriver extends SharedUserDriverFunctions
+
 {
     private static int choice;
 
@@ -39,8 +41,8 @@ public class ParkManagerDriver
             System.out.println("2. Delete a job");
             System.out.println("3. Edit the details of a job.");
             System.out.println("4. View summary of upcoming jobs in my parks.");
-            System.out
-                    .println("5. View the volunteers for a job in the parks that I manage");
+            System.out.println(
+                    "5. View the volunteers for a job in the parks that I manage");
             System.out.println("6. Exit.");
 
             choice = myInput.nextInt();
@@ -67,8 +69,8 @@ public class ParkManagerDriver
                     System.out.println("Goodbye!");
                     break;
                 default:
-                    System.out
-                            .println("Please enter one of the numbered options");
+                    System.out.println(
+                            "Please enter one of the numbered options");
             }
         }
         myInput.close();
@@ -100,8 +102,8 @@ public class ParkManagerDriver
         }
         else
         {
-            System.out
-                    .println("Please select one of the parks you manage to add a job for that park");
+            System.out.println(
+                    "Please select one of the parks you manage to add a job for that park");
 
             ArrayList<Park> parks = new ArrayList<Park>(myUser.getParks());
 
@@ -153,8 +155,8 @@ public class ParkManagerDriver
 
             if (maxVolunteers > 30)
             {
-                System.out
-                        .println("A job is allowed a maximum of 30 volunteers.");
+                System.out.println(
+                        "A job is allowed a maximum of 30 volunteers.");
                 maxVolunteers = 30;
             }
 
@@ -169,16 +171,29 @@ public class ParkManagerDriver
                 e.printStackTrace();
             }
             // Update calendar first
-            if (myUPCalendar.addJob(job))
+            try
             {
-                park.addJob(job);
-                System.out.println("Job created!");
-                System.out.println(job.toString());
+                myUPCalendar.addJob(job);
             }
-            else
+            catch (CalendarWeekFullException e)
             {
-                System.out
-                        .println("There was a problem adding your job. Please contact an Urban Park Employee.");
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            catch (CalendarFullException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            catch (JobTooLongException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            catch (JobTimeTravelException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
         }
     }
@@ -197,8 +212,8 @@ public class ParkManagerDriver
         // Desired job to delete
         Job theJob = null;
 
-        System.out
-                .println("Please select one of the parks you manage to delete a job from that park");
+        System.out.println(
+                "Please select one of the parks you manage to delete a job from that park");
 
         ArrayList<Park> parks = new ArrayList<Park>(myUser.getParks());
 
@@ -224,8 +239,8 @@ public class ParkManagerDriver
         }
         else
         {
-            System.out
-                    .println("Please enter the number of the job you would like to delete");
+            System.out.println(
+                    "Please enter the number of the job you would like to delete");
             for (int i = 0; i < jobs.size(); i++)
             {
                 System.out.println((i + 1) + ") " + jobs.get(i));
@@ -265,8 +280,8 @@ public class ParkManagerDriver
 
         System.out.println("Edit a Job");
 
-        System.out
-                .println("Please select one of the parks you manage to edit a job from that park");
+        System.out.println(
+                "Please select one of the parks you manage to edit a job from that park");
 
         ArrayList<Park> parks = new ArrayList<Park>(myUser.getParks());
 
@@ -293,8 +308,8 @@ public class ParkManagerDriver
         }
         else
         {
-            System.out
-                    .println("Please enter the number of the job you would like to edit");
+            System.out.println(
+                    "Please enter the number of the job you would like to edit");
             System.out.println();
             for (int i = 0; i < jobs.size(); i++)
             {
@@ -345,8 +360,8 @@ public class ParkManagerDriver
 
             if (maxVolunteers > 30)
             {
-                System.out
-                        .println("A job is allowed a maximum of 30 volunteers.");
+                System.out.println(
+                        "A job is allowed a maximum of 30 volunteers.");
                 maxVolunteers = 30;
             }
 
@@ -411,8 +426,8 @@ public class ParkManagerDriver
         Job job = null;
         int theChoice;
 
-        System.out
-                .println("Please select one of the parks you manage to view the jobs");
+        System.out.println(
+                "Please select one of the parks you manage to view the jobs");
 
         ArrayList<Park> parks = new ArrayList<Park>(myUser.getParks());
 

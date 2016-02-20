@@ -1,24 +1,44 @@
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
+
 
 public class UrbanParkCalendar implements Serializable
 {
+    private static final long serialVersionUID = -6937747495177492138L;
     public static final int MAX_JOBS = 30;
     public static final int MAX_WEEKLY_JOBS = 5;
     public static final int MAX_DATE_FROM_TODAY = 90;
 
-    private static Collection<Job> masterJobCollection;
+    private static Collection<Job> upcomingJobCollection;
+    private static Collection<Job> pastJobCollection;
     private static Collection<Volunteer> allVolunteers;
-    private static Date currentDate;
+    private static GregorianCalendar calendar;
 
     public UrbanParkCalendar()
     {
-        masterJobCollection = new ArrayList<Job>();
+        upcomingJobCollection = new ArrayList<Job>();
+        pastJobCollection = new ArrayList<Job>();
         allVolunteers = new ArrayList<>();
+        calendar = new GregorianCalendar();
+    }
+
+    public void updateCalendar()
+    {
+        calendar.setTime(new Date());
+        for (Job j : upcomingJobCollection)
+        {
+            if (j.getStartDate().before(calendar.getTime()))
+            {
+                pastJobCollection.add(j);
+                upcomingJobCollection.remove(j);
+            }
+        }
     }
 
     public Collection<Volunteer> getAllUsers()
@@ -33,31 +53,35 @@ public class UrbanParkCalendar implements Serializable
 
     public Collection<Job> getJobList()
     {
-        return Collections.unmodifiableCollection(masterJobCollection);
+        return Collections.unmodifiableCollection(upcomingJobCollection);
     }
 
-    public boolean addJob(Job theJob)
+    public boolean addJob(Job theJob) throws CalendarWeekFullException,
+            CalendarFullException, JobTooLongException, JobTimeTravelException
     {
-        boolean theresRoom = checkForRoomThatWeek(theJob);
+        checkForRoomThatWeek(theJob);
+        checkJobCapacity();
 
-        if (theresRoom && masterJobCollection.size() < MAX_JOBS)
-        {
-            return masterJobCollection.add(theJob);
-        }
-        else
-            return false;
+        return upcomingJobCollection.add(theJob);
     }
 
-    private boolean checkForRoomThatWeek(Job theJob)
+    private void checkJobCapacity() throws CalendarFullException
     {
-        ArrayList<Job> check = new ArrayList<>(masterJobCollection);
+        if (upcomingJobCollection.size() >= MAX_JOBS)
+            throw new CalendarFullException();
+    }
+
+    private void checkForRoomThatWeek(Job theJob)
+            throws CalendarWeekFullException
+    {
+        ArrayList<Job> check = new ArrayList<>(upcomingJobCollection);
 
         check.add(theJob);
         int checkAround = check.indexOf(theJob);
         Date minDate = new Date(theJob.getStartDate().getTime()
-                - TimeUnit.DAYS.toMillis(3) - 1);
+                - TimeUnit.DAYS.toMillis(2) - 1);
         Date maxDate = new Date(theJob.getStartDate().getTime()
-                + TimeUnit.DAYS.toMillis(3) + 1);
+                + TimeUnit.DAYS.toMillis(2) + 1);
         int jobsThatWeek = 0;
 
         for (Job j : check)
@@ -68,76 +92,16 @@ public class UrbanParkCalendar implements Serializable
                 jobsThatWeek++;
             }
         }
-
         check.remove(checkAround);
 
         if (jobsThatWeek >= MAX_WEEKLY_JOBS)
         {
-            return false;
+            throw new CalendarWeekFullException();
         }
-        return true;
-    }
-
-    // Added edit job method
-    public void editJob(Job theJob, int maxVolunteers, Date startDate,
-            Date endDate, String jobTitle, String jobDescription)
-    {
-
-        // Iterate over masterJobCollection
-        // When a job matching the parameter job is found,
-        // then edit its attributes
-        for (Job curJob : masterJobCollection)
-        {
-            if (curJob.equals(theJob))
-            {
-                curJob.setStartDate(startDate);
-                curJob.setEndDate(endDate);
-                curJob.setJobTitle(jobTitle);
-                curJob.setJobDescription(jobDescription);
-                curJob.setMaxVolunteers(maxVolunteers);
-            }
-        }
-
     }
 
     public boolean removeJob(Job theJob)
     {
-        return masterJobCollection.remove(theJob);
-    }
-
-    public void setDate(Date theDate)
-    {
-        currentDate = theDate;
-    }
-
-    public static Date getCurrentDate()
-    {
-        return currentDate;
-    }
-
-    public Collection<Volunteer> searchVolunteer(String theLastName)
-    {
-        ArrayList<Volunteer> returnable = new ArrayList<>();
-
-        for (Job job : masterJobCollection)
-        {
-            ArrayList<Volunteer> jobVolunteers = (ArrayList<Volunteer>) job
-                    .getVolunteers();
-
-            for (Volunteer v : jobVolunteers)
-            {
-                if (v.getLastName().equals(theLastName))
-                {
-                    returnable.add(v);
-                }
-            }
-        }
-        return returnable;
-    }
-
-    @Override
-    public String toString()
-    {
-        return masterJobCollection.toString();
+        return upcomingJobCollection.remove(theJob);
     }
 }

@@ -1,3 +1,4 @@
+
 public class UrbanParkStaffMember extends AbstractUser
 {
     public UrbanParkStaffMember(String theEmail, String theFirstName,
