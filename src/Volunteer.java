@@ -13,12 +13,6 @@ public class Volunteer extends AbstractUser
     private Collection<Job> myJobs;
     // private int myWorkCategory;
 
-    public Volunteer(String theEmail)
-    {
-        super(theEmail);
-        myJobs = new ArrayList<>();
-    }
-
     public Volunteer(String theEmail, String theFirstName, String theLastName)
     {
         super(theEmail, theFirstName, theLastName);
@@ -28,7 +22,7 @@ public class Volunteer extends AbstractUser
     public boolean volunteerForJob(Job theJob)
     {
         // add volunteer to list of volunteers in job ?
-        // theJob.addVolunteer(this);
+        theJob.addVolunteer(this);
         return myJobs.add(theJob);
     }
 
@@ -82,7 +76,7 @@ public class Volunteer extends AbstractUser
         }
 
         // no exceptions thrown, allow to volunteer
-        theJob.addVolunteer(this); 
+//        theJob.addVolunteer(this); 
         volunteerForJob(theJob);
     }
 
