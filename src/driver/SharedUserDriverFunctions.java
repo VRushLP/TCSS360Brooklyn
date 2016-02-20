@@ -1,5 +1,9 @@
+package driver;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import model.Job;
+import model.UrbanParkCalendar;
 
 public abstract class SharedUserDriverFunctions
 {
