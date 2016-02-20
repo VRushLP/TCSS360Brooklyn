@@ -1,7 +1,6 @@
 package driver;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import model.Job;
 import model.UrbanParkCalendar;
@@ -10,18 +9,7 @@ public abstract class SharedUserDriverFunctions
 {
     public void viewJob(Job theJob)
     {
-        StringBuilder jobSummary = new StringBuilder();
-        SimpleDateFormat d = new SimpleDateFormat();
-
-        jobSummary.append(theJob.getJobTitle());
-        jobSummary.append(' ');
-        jobSummary.append(theJob.getAssociatedPark());
-        jobSummary.append(' ');
-        jobSummary.append(d.format(theJob.getStartDate()));
-        jobSummary.append('-');
-        jobSummary.append(d.format(theJob.getEndDate()));
-
-        System.out.println(jobSummary);
+        System.out.println(theJob.toString());
     }
 
     public void viewAllUpcomingJobs(UrbanParkCalendar theCalendar)
