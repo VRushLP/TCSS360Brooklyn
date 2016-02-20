@@ -4,14 +4,7 @@ import java.util.Collections;
 
 public class Volunteer extends AbstractUser
 {
-    private static final long serialVersionUID = 5475286744817127535L;
     private Collection<Job> myJobs;
-
-    public Volunteer(String theEmail)
-    {
-        super(theEmail);
-        myJobs = new ArrayList<>();
-    }
 
     public Volunteer(String theEmail, String theFirstName, String theLastName)
     {

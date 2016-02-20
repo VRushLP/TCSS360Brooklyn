@@ -11,14 +11,14 @@ public class UrbanParkCalendarTest
     private static Job testJob;
     private static Park testPark;
 
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception
-    {
-        testUPCalendar = new UrbanParkCalendar();
-        testPark = new Park("Park (for testing)",
-                new ParkManager("testing@gmail.com"));
-        testJob = new Job(testPark, 10, new Date(), new Date(), "test", "test");
-    }
+    // @BeforeClass
+    // public static void setUpBeforeClass() throws Exception
+    // {
+    // testUPCalendar = new UrbanParkCalendar();
+    // testPark = new Park("Park (for testing)",
+    // new ParkManager("testing@gmail.com"));
+    // testJob = new Job(testPark, 10, new Date(), new Date(), "test", "test");
+    // }
 
     @Test
     public void testListCurrentJobs()

@@ -19,17 +19,17 @@ public class VolunteerTest
     Park newPark;
     Job newJob;
 
-    @Before
-    public void setUp()
-    {
-        joblessVolunteer = new Volunteer("jobless@gmail.com", "John", "Smith");
-        sameVolunteer = new Volunteer("jobless@gmail.com", "John", "Smith");
-        oneJobVolunteer = new Volunteer("b@uw.edu");
-        tom = new ParkManager("tom@uw.edu");
-        newPark = new Park("Tom's Park", tom);
-        newJob = new Job(newPark, 1, new Date(),
-                new Date(), "Pick up trash", "Clean up trash from Park");
-    }
+//    @Before
+//    public void setUp()
+//    {
+//        joblessVolunteer = new Volunteer("jobless@gmail.com", "John", "Smith");
+//        sameVolunteer = new Volunteer("jobless@gmail.com", "John", "Smith");
+//        oneJobVolunteer = new Volunteer("b@uw.edu");
+//        tom = new ParkManager("tom@uw.edu");
+//        newPark = new Park("Tom's Park", tom);
+//        newJob = new Job(newPark, 1, new Date(),
+//                new Date(), "Pick up trash", "Clean up trash from Park");
+//    }
     
     /**
      * Test that equals method works properly
