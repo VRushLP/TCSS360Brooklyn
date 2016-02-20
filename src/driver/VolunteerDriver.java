@@ -1,6 +1,16 @@
+package driver;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
+
+import exception.AlreadyVolunteeredException;
+import exception.ConflictingJobCommitmentException;
+import exception.JobIsFullException;
+
+import model.Job;
+import model.UrbanParkCalendar;
+import model.Volunteer;
 
 /**
  * Driver for Volunteer class
@@ -103,6 +113,7 @@ public class VolunteerDriver
             }
             System.out.println(
                     "Enter b to go back, or enter job number to view details & sign up");
+
             input = myInput.nextLine();
             if (!input.equalsIgnoreCase("b"))
             { // user wants to view a jobs details
@@ -119,9 +130,9 @@ public class VolunteerDriver
     {
         // allow user to see details of the job and ask to volunteer for a job
         System.out.println(theJob.toString());
-
         System.out.println("Would you like to volunteer? \n"
                 + "Enter Y for yes, or any other key to go back to summary of jobs");
+
         input = myInput.nextLine();
         if (input.equalsIgnoreCase("Y"))
         {
@@ -136,45 +147,25 @@ public class VolunteerDriver
      */
     public static void volunteer(Job theJob)
     {
-        boolean canSignUp = true;
-        ArrayList<Job> jobs = new ArrayList<Job>(myUPCalendar.getJobList());
-        // check if user has signed up for job on same day
-        for (Job job : jobs)
+        theJob.addVolunteer(myUser);
+        try
         {
-            if (job.getStartDate().equals(theJob.getStartDate())
-                    || job.getStartDate().equals(theJob.getEndDate())
-                    || job.getEndDate().equals(theJob.getStartDate())
-                    || job.getEndDate().equals(theJob.getEndDate()))
-            {
-                canSignUp = false;
-            }
-        }
-
-        // make sure user hasn't signed up for job already
-        if (myUser.getVolunteeredForJobs().contains(theJob))
-        {
-            canSignUp = false;
-        }
-        // make sure job is not full already
-        else if (theJob.getVolunteers().size() == theJob.getMaxVolunteers())
-        {
-            canSignUp = false;
-        }
-
-        if (canSignUp == false)
-        {
-            System.out.println(
-                    "Sorry, you are not able to sign up for this job. Please contact the Park Manager.");
-        }
-        else
-        {
-            theJob.addVolunteer(myUser);
             myUser.volunteerForJob(theJob);
-            System.out.println("Congratulations! You have volunteered");
         }
+        catch (AlreadyVolunteeredException | ConflictingJobCommitmentException
+                | JobIsFullException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        System.out.println("Congratulations! You have volunteered");
 
         System.out.println("Enter b go back to main menu");
         input = myInput.nextLine();
     }
 
+    public void displayLogin()
+    {
+        System.out.println("Welcome Volunteer " + myUser.getEmail() + "!");
+    }
 }

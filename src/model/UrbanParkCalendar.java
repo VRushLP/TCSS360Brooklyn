@@ -1,5 +1,7 @@
+package model;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -7,6 +9,12 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
 
+import exception.CalendarFullException;
+import exception.CalendarWeekFullException;
+import exception.JobToThePastException;
+import exception.JobTimeTravelException;
+import exception.JobToTheFutureException;
+import exception.JobTooLongException;
 
 public class UrbanParkCalendar implements Serializable
 {
@@ -57,12 +65,24 @@ public class UrbanParkCalendar implements Serializable
     }
 
     public boolean addJob(Job theJob) throws CalendarWeekFullException,
-            CalendarFullException, JobTooLongException, JobTimeTravelException
+            CalendarFullException, JobTooLongException, JobTimeTravelException,
+            JobToThePastException, JobToTheFutureException
     {
+        checkJobDate(theJob);
         checkForRoomThatWeek(theJob);
         checkJobCapacity();
 
         return upcomingJobCollection.add(theJob);
+    }
+
+    private void checkJobDate(Job theJob) throws JobToThePastException,
+            JobToTheFutureException
+    {
+        if (theJob.getStartDate().before(calendar.getTime()))
+            throw new JobToThePastException();
+        if (theJob.getStartDate().getTime() - calendar.getTime().getTime() > TimeUnit.DAYS
+                .toMillis(MAX_DATE_FROM_TODAY))
+            throw new JobToTheFutureException();
     }
 
     private void checkJobCapacity() throws CalendarFullException
