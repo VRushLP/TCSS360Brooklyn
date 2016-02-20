@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 
 public class UrbanParkCalendar implements Serializable
 {
-    private static final long serialVersionUID = -6937747495177492138L;
     public static final int MAX_JOBS = 30;
     public static final int MAX_WEEKLY_JOBS = 5;
     public static final int MAX_DATE_FROM_TODAY = 90;
@@ -80,9 +79,8 @@ public class UrbanParkCalendar implements Serializable
     }
 
     // Added edit job method
-    public void editJob(Job theJob, Park park, int maxVolunteers,
-            Date startDate, Date endDate, String jobTitle,
-            String jobDescription)
+    public void editJob(Job theJob, int maxVolunteers, Date startDate,
+            Date endDate, String jobTitle, String jobDescription)
     {
 
         // Iterate over masterJobCollection
@@ -115,6 +113,26 @@ public class UrbanParkCalendar implements Serializable
     public static Date getCurrentDate()
     {
         return currentDate;
+    }
+
+    public Collection<Volunteer> searchVolunteer(String theLastName)
+    {
+        ArrayList<Volunteer> returnable = new ArrayList<>();
+
+        for (Job job : masterJobCollection)
+        {
+            ArrayList<Volunteer> jobVolunteers = (ArrayList<Volunteer>) job
+                    .getVolunteers();
+
+            for (Volunteer v : jobVolunteers)
+            {
+                if (v.getLastName().equals(theLastName))
+                {
+                    returnable.add(v);
+                }
+            }
+        }
+        return returnable;
     }
 
     @Override
