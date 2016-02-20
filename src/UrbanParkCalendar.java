@@ -1,4 +1,4 @@
-package model;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,10 +7,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
 
-import exception.CalendarFullException;
-import exception.CalendarWeekFullException;
-import exception.JobTimeTravelException;
-import exception.JobTooLongException;
 
 public class UrbanParkCalendar implements Serializable
 {

@@ -1,20 +1,7 @@
-<<<<<<< HEAD:src/VolunteerDriver.java
-
-
-=======
-package driver;
->>>>>>> parent of d1c133c... Refactoring:src/driver/VolunteerDriver.java
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
-<<<<<<< HEAD:src/VolunteerDriver.java
-=======
-import model.Job;
-import model.UrbanParkCalendar;
-import model.Volunteer;
-
->>>>>>> parent of d1c133c... Refactoring:src/driver/VolunteerDriver.java
 /**
  * Driver for Volunteer class
  * 
