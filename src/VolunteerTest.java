@@ -22,6 +22,7 @@ public class VolunteerTest
     Job conflictingJob;
     Job pastJob;
 
+<<<<<<< HEAD
     @Before
     public void setUp()
     {
@@ -37,6 +38,19 @@ public class VolunteerTest
         pastJob = new Job(newPark, 3, new Date(1994, 2, 1),
                 new Date(1994, 2, 2), "Clean bathrroms", "Clean the bathrooms in the park");
     }
+=======
+//    @Before
+//    public void setUp()
+//    {
+//        joblessVolunteer = new Volunteer("jobless@gmail.com", "John", "Smith");
+//        sameVolunteer = new Volunteer("jobless@gmail.com", "John", "Smith");
+//        oneJobVolunteer = new Volunteer("b@uw.edu");
+//        tom = new ParkManager("tom@uw.edu");
+//        newPark = new Park("Tom's Park", tom);
+//        newJob = new Job(newPark, 1, new Date(),
+//                new Date(), "Pick up trash", "Clean up trash from Park");
+//    }
+>>>>>>> master
     
     /**
      * Test that equals method works properly

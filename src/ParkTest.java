@@ -49,11 +49,11 @@ public class ParkTest
         assertEquals(prkName, prk.getParkName());
     }
 
-    @Test
-    public void testGetParkManager()
-    {
-        assertEquals(theodoreRoosevelt, prk.getParkManager());
-    }
+    // @Test
+    // public void testGetParkManager()
+    // {
+    // assertEquals(theodoreRoosevelt, prk.getParkManager());
+    // }
 
     @Test
     public void testGetJobList()
