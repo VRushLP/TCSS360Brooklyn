@@ -25,7 +25,8 @@ public class PrimaryDriver
     private static final String EXIT_STRING = "quit";
 
     // Input file name.
-    private static final String[] filePaths = { "jobList.ser", "loginList.ser" };
+    private static final String[] filePaths = { "jobList.ser",
+            "loginList.ser" };
 
     // Data Structure to store everything in
     private static Map<String, AbstractUser> loginList;
@@ -70,8 +71,8 @@ public class PrimaryDriver
 
             if (currentUser instanceof ParkManager)
             {
-                ParkManagerDriver
-                        .run((ParkManager) currentUser, in, UPCalendar);
+                ParkManagerDriver.run((ParkManager) currentUser, in,
+                        UPCalendar);
             }
             else if (currentUser instanceof UrbanParkStaffMember)
             {
@@ -84,8 +85,8 @@ public class PrimaryDriver
             }
             else if (!userInput.equalsIgnoreCase(EXIT_STRING))
             {
-                System.out
-                        .println("Login failed. Please try again or type 'Quit' to terminate the program.");
+                System.out.println(
+                        "Login failed. Please try again or type 'Quit' to terminate the program.");
             }
             else
             {

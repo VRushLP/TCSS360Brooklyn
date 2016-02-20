@@ -1,6 +1,7 @@
 package driver;
 
 import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 
 import model.Job;
@@ -8,7 +9,7 @@ import model.UrbanParkCalendar;
 
 public abstract class SharedUserDriverFunctions
 {
-    public void viewJob(Job theJob)
+    public static void viewJob(Job theJob)
     {
         StringBuilder jobSummary = new StringBuilder();
         SimpleDateFormat d = new SimpleDateFormat();
@@ -24,7 +25,7 @@ public abstract class SharedUserDriverFunctions
         System.out.println(jobSummary);
     }
 
-    public void viewAllUpcomingJobs(UrbanParkCalendar theCalendar)
+    public static void viewAllUpcomingJobs(UrbanParkCalendar theCalendar)
     {
         ArrayList<Job> allJobs = (ArrayList<Job>) theCalendar.getJobList();
 
