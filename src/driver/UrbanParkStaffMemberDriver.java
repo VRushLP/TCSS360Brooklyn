@@ -47,8 +47,8 @@ public class UrbanParkStaffMemberDriver
 
             try
             {
-                choice = Integer.parseInt(parsedInput[0].substring(0,
-                        parsedInput[0].length()));
+                choice = Integer.parseInt(
+                        parsedInput[0].substring(0, parsedInput[0].length()));
             }
             catch (NumberFormatException e)
             {
@@ -94,8 +94,8 @@ public class UrbanParkStaffMemberDriver
 
         do
         {
-            System.out
-                    .println("Enter b to go back, or enter a job number to view in greater detail.");
+            System.out.println(
+                    "Enter b to go back, or enter a job number to view in greater detail.");
             input = myInput.nextLine();
             if (!input.equalsIgnoreCase("b"))
             { // user wants to view a jobs details
@@ -108,17 +108,18 @@ public class UrbanParkStaffMemberDriver
     {
         System.out.println("What name would you like to search for?");
         String toSearch = myInput.nextLine();
-        ArrayList<Volunteer> toPrint = new ArrayList<>(scanVolunteers(toSearch));
+        ArrayList<Volunteer> toPrint = new ArrayList<>(
+                scanVolunteers(toSearch));
 
         if (toPrint.isEmpty())
         {
-            System.out.println("There are no volunteers with the last name "
-                    + toSearch);
+            System.out.println(
+                    "There are no volunteers with the last name " + toSearch);
         }
         else
         {
-            System.out.println(toPrint.size() + " result(s) for last name "
-                    + toSearch);
+            System.out.println(
+                    toPrint.size() + " result(s) for last name " + toSearch);
 
             for (Volunteer v : toPrint)
             {
@@ -134,9 +135,8 @@ public class UrbanParkStaffMemberDriver
 
         for (User currentUser : iterable)
         {
-            if (currentUser instanceof Volunteer
-                    && ((Volunteer) currentUser).getLastName()
-                            .equalsIgnoreCase(lastName))
+            if (currentUser instanceof Volunteer && ((Volunteer) currentUser)
+                    .getLastName().equalsIgnoreCase(lastName))
             {
                 toPrint.add((Volunteer) currentUser);
             }
@@ -147,7 +147,7 @@ public class UrbanParkStaffMemberDriver
 
     public void displayLogin()
     {
-        System.out.println("Welcome Urban Parks Staff Member "
-                + myUser.getEmail() + "!");
+        System.out.println(
+                "Welcome Urban Parks Staff Member " + myUser.getEmail() + "!");
     }
 }

@@ -7,6 +7,7 @@ import java.util.Scanner;
 import exception.AlreadyVolunteeredException;
 import exception.ConflictingJobCommitmentException;
 import exception.JobIsFullException;
+
 import model.Job;
 import model.UrbanParkCalendar;
 import model.Volunteer;
@@ -49,8 +50,8 @@ public class VolunteerDriver
 
             try
             {
-                choice = Integer.parseInt(parsedInput[0].substring(0,
-                        parsedInput[0].length()));
+                choice = Integer.parseInt(
+                        parsedInput[0].substring(0, parsedInput[0].length()));
             }
             catch (NumberFormatException e)
             {
@@ -110,8 +111,9 @@ public class VolunteerDriver
                     ; // only show upcoming days
                 System.out.println(i++ + ") " + job.toString());
             }
-            System.out
-                    .println("Enter b to go back, or enter job number to view details & sign up");
+            System.out.println(
+                    "Enter b to go back, or enter job number to view details & sign up");
+
             input = myInput.nextLine();
             if (!input.equalsIgnoreCase("b"))
             { // user wants to view a jobs details
@@ -128,10 +130,9 @@ public class VolunteerDriver
     {
         // allow user to see details of the job and ask to volunteer for a job
         System.out.println(theJob.toString());
+        System.out.println("Would you like to volunteer? \n"
+                + "Enter Y for yes, or any other key to go back to summary of jobs");
 
-        System.out
-                .println("Would you like to volunteer? \n"
-                        + "Enter Y for yes, or any other key to go back to summary of jobs");
         input = myInput.nextLine();
         if (input.equalsIgnoreCase("Y"))
         {
@@ -146,7 +147,6 @@ public class VolunteerDriver
      */
     public static void volunteer(Job theJob)
     {
-
         theJob.addVolunteer(myUser);
         try
         {
@@ -168,5 +168,4 @@ public class VolunteerDriver
     {
         System.out.println("Welcome Volunteer " + myUser.getEmail() + "!");
     }
-
 }

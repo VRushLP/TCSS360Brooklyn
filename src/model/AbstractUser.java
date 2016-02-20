@@ -1,4 +1,5 @@
 package model;
+
 import java.io.Serializable;
 
 public abstract class AbstractUser implements User, Serializable
@@ -7,7 +8,8 @@ public abstract class AbstractUser implements User, Serializable
     private String firstName;
     private String email;
 
-    public AbstractUser(String theEmail, String theFirstName, String theLastName)
+    public AbstractUser(String theEmail, String theFirstName,
+            String theLastName)
     {
         this.email = theEmail;
         this.firstName = theFirstName;

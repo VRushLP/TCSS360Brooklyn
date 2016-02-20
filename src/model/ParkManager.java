@@ -1,4 +1,6 @@
+
 package model;
+
 import java.util.Collections;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,16 +15,16 @@ public class ParkManager extends AbstractUser
         myParks = new ArrayList<Park>();
     }
 
-    public ParkManager(String theEmail, String theFirstName,
-            String theLastName, Park thePark)
+    public ParkManager(String theEmail, String theFirstName, String theLastName,
+            Park thePark)
     {
         super(theEmail, theFirstName, theLastName);
         myParks = new ArrayList<Park>();
         myParks.add(thePark);
     }
 
-    public ParkManager(String theEmail, String theFirstName,
-            String theLastName, Collection<Park> theParks)
+    public ParkManager(String theEmail, String theFirstName, String theLastName,
+            Collection<Park> theParks)
     {
         super(theEmail, theFirstName, theLastName);
         myParks = new ArrayList<Park>(theParks);
