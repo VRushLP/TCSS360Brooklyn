@@ -151,13 +151,14 @@ public class VolunteerDriver
         try
         {
             myUser.volunteerForJob(theJob);
+            System.out.println("Congratulations! You have volunteered");
         }
         catch (Exception e)
         {
             // TODO Auto-generated catch block
+            System.out.println("Sorry, you were not able to volunteer");
             e.printStackTrace();
         }
-        System.out.println("Congratulations! You have volunteered");
 
         System.out.println("Enter b go back to main menu");
         input = myInput.nextLine();

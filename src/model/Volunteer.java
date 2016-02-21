@@ -26,7 +26,8 @@ public class Volunteer extends AbstractUser
 
     public boolean volunteerForJob(Job theJob)
             throws AlreadyVolunteeredException,
-            ConflictingJobCommitmentException, JobIsFullException, JobToThePastException
+            ConflictingJobCommitmentException, JobIsFullException,
+            JobToThePastException
     {
         checkForConflicts(theJob);
         return myJobs.add(theJob);
@@ -44,12 +45,14 @@ public class Volunteer extends AbstractUser
 
     private void checkForConflicts(Job theJob)
             throws AlreadyVolunteeredException,
-            ConflictingJobCommitmentException, JobIsFullException, JobToThePastException
+            ConflictingJobCommitmentException, JobIsFullException,
+            JobToThePastException
     {
-        if (isPastJob(theJob)) {
+        if (isPastJob(theJob))
+        {
             throw new JobToThePastException();
         }
-        
+
         // make sure user hasn't signed up for job already
         if (myJobs.contains(theJob))
         {
@@ -57,7 +60,7 @@ public class Volunteer extends AbstractUser
         }
 
         // check if user has signed up for job on same day
-        if (!volunteerIsFree(theJob)) 
+        if (!volunteerIsFree(theJob))
         {
             throw new ConflictingJobCommitmentException();
         }
@@ -69,10 +72,10 @@ public class Volunteer extends AbstractUser
             throw new JobIsFullException();
         }
     }
-    
+
     /**
-     * Checks that there are no days overlapping with a potential job in
-     * the Volunteers current list of jobs.
+     * Checks that there are no days overlapping with a potential job in the
+     * Volunteers current list of jobs.
      */
     public boolean volunteerIsFree(Job theJob)
     {
@@ -93,7 +96,6 @@ public class Volunteer extends AbstractUser
 
         return isFree;
     }
-    
 
     /**
      * Return true if the job already happened.
@@ -102,7 +104,7 @@ public class Volunteer extends AbstractUser
     {
         return theJob.getStartDate().before(new Date());
     }
-    
+
     /**
      * Return true if a job overlaps with another jobs start date.
      */
