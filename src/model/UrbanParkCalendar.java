@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import exception.CalendarFullException;
 import exception.CalendarWeekFullException;
+import exception.DuplicateJobExistsException;
 import exception.JobToThePastException;
 import exception.JobTimeTravelException;
 import exception.JobToTheFutureException;
@@ -39,7 +40,9 @@ public class UrbanParkCalendar implements Serializable
     public void updateCalendar()
     {
         calendar.setTime(new Date());
-        for (Job j : upcomingJobCollection)
+        ArrayList<Job> jobsToCheck = new ArrayList<>(upcomingJobCollection);
+
+        for (Job j : jobsToCheck)
         {
             if (j.getStartDate().before(calendar.getTime()))
             {
@@ -56,17 +59,23 @@ public class UrbanParkCalendar implements Serializable
 
     public boolean addVolunteer(Volunteer theVolunteer)
     {
-        return allVolunteers.add(theVolunteer);
+        if (!allVolunteers.contains(theVolunteer))
+        {
+            return allVolunteers.add(theVolunteer);
+        }
+        return false;
     }
 
     public Collection<Job> getJobList()
     {
+        updateCalendar();
         return Collections.unmodifiableCollection(upcomingJobCollection);
     }
 
-    public boolean addJob(Job theJob) throws CalendarWeekFullException,
-            CalendarFullException, JobTooLongException, JobTimeTravelException,
-            JobToThePastException, JobToTheFutureException
+    public boolean addJob(Job theJob)
+            throws CalendarWeekFullException, CalendarFullException,
+            JobTooLongException, JobTimeTravelException, JobToThePastException,
+            JobToTheFutureException, DuplicateJobExistsException
     {
         checkJobDate(theJob);
         checkForRoomThatWeek(theJob);
@@ -75,14 +84,32 @@ public class UrbanParkCalendar implements Serializable
         return upcomingJobCollection.add(theJob);
     }
 
-    private void checkJobDate(Job theJob) throws JobToThePastException,
-            JobToTheFutureException
+    private void checkJobDate(Job theJob) throws DuplicateJobExistsException,
+            JobToThePastException, JobToTheFutureException, JobTooLongException
     {
+        if (upcomingJobCollection.contains(theJob))
+        {
+            throw new DuplicateJobExistsException();
+        }
+
+        if (theJob.getEndDate().getTime()
+                - theJob.getStartDate().getTime() > TimeUnit.DAYS
+                        .toMillis(Job.MAX_JOB_LENGTH))
+        {
+            throw new JobTooLongException();
+        }
+
         if (theJob.getStartDate().before(calendar.getTime()))
+        {
             throw new JobToThePastException();
-        if (theJob.getStartDate().getTime() - calendar.getTime().getTime() > TimeUnit.DAYS
-                .toMillis(MAX_DATE_FROM_TODAY))
+        }
+
+        if (theJob.getStartDate().getTime()
+                - calendar.getTime().getTime() > TimeUnit.DAYS
+                        .toMillis(MAX_DATE_FROM_TODAY))
+        {
             throw new JobToTheFutureException();
+        }
     }
 
     private void checkJobCapacity() throws CalendarFullException
@@ -97,11 +124,12 @@ public class UrbanParkCalendar implements Serializable
         ArrayList<Job> check = new ArrayList<>(upcomingJobCollection);
 
         check.add(theJob);
-        int checkAround = check.indexOf(theJob);
+
         Date minDate = new Date(theJob.getStartDate().getTime()
-                - TimeUnit.DAYS.toMillis(2) - 1);
+                - TimeUnit.DAYS.toMillis(3) - 1);
         Date maxDate = new Date(theJob.getStartDate().getTime()
-                + TimeUnit.DAYS.toMillis(2) + 1);
+                + TimeUnit.DAYS.toMillis(3) + 1);
+        // Three days on either side.
         int jobsThatWeek = 0;
 
         for (Job j : check)
@@ -112,7 +140,7 @@ public class UrbanParkCalendar implements Serializable
                 jobsThatWeek++;
             }
         }
-        check.remove(checkAround);
+        check.remove(check.indexOf(theJob));
 
         if (jobsThatWeek >= MAX_WEEKLY_JOBS)
         {

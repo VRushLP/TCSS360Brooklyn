@@ -20,7 +20,7 @@ public class ParkManager extends AbstractUser
     {
         super(theEmail, theFirstName, theLastName);
         myParks = new ArrayList<Park>();
-        myParks.add(thePark);
+        addParkToManager(thePark);
     }
 
     public ParkManager(String theEmail, String theFirstName, String theLastName,
@@ -28,6 +28,11 @@ public class ParkManager extends AbstractUser
     {
         super(theEmail, theFirstName, theLastName);
         myParks = new ArrayList<Park>(theParks);
+
+        for (Park p : theParks)
+        {
+            addParkToManager(p);
+        }
     }
 
     public Collection<Park> getParks()
@@ -37,6 +42,15 @@ public class ParkManager extends AbstractUser
 
     public boolean addParkToManager(Park thePark)
     {
-        return myParks.add(thePark);
+        if (myParks.add(thePark))
+        {
+            thePark.setParkManagerEmail(getEmail());
+            thePark.setParkManagerName(getFirstName() + " " + getLastName());
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

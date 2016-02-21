@@ -14,6 +14,7 @@ import model.Volunteer;
 
 import exception.CalendarFullException;
 import exception.CalendarWeekFullException;
+import exception.DuplicateJobExistsException;
 import exception.JobTimeTravelException;
 import exception.JobToTheFutureException;
 import exception.JobToThePastException;
@@ -169,7 +170,8 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
             }
             catch (CalendarWeekFullException | CalendarFullException
                     | JobTooLongException | JobTimeTravelException
-                    | JobToThePastException | JobToTheFutureException e)
+                    | JobToThePastException | JobToTheFutureException
+                    | DuplicateJobExistsException e)
             {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
