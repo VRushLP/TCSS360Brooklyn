@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import model.AbstractUser;
+import model.Park;
 import model.ParkManager;
 import model.UrbanParkCalendar;
 import model.UrbanParkStaffMember;
@@ -50,7 +51,7 @@ public class PrimaryDriver
         loginList = new HashMap<>();
 
         // Only call one of these!
-        // fabricateInformation();
+        //fabricateInformation();
         deserializeData();
 
         Scanner in = new Scanner(System.in);
@@ -105,7 +106,6 @@ public class PrimaryDriver
 
     private static void fabricateInformation()
     {
-
     }
 
     private static void deserializeData()

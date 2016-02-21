@@ -1,19 +1,21 @@
 package model;
 
 import java.io.Serializable;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
 import exception.CalendarFullException;
 import exception.CalendarWeekFullException;
-import exception.JobToThePastException;
 import exception.JobTimeTravelException;
 import exception.JobToTheFutureException;
+import exception.JobToThePastException;
 import exception.JobTooLongException;
 
 public class UrbanParkCalendar implements Serializable
@@ -124,4 +126,100 @@ public class UrbanParkCalendar implements Serializable
     {
         return upcomingJobCollection.remove(theJob);
     }
+
+    public void editJobTitle(Job jobToEdit, String jobTitle)
+    {
+        Iterator<Job> itr = upcomingJobCollection.iterator();
+        while (itr.hasNext())
+        {
+            Job j = itr.next();
+            if (j.getJobTitle() == jobToEdit.getJobTitle())
+            {
+                j.setJobTitle(jobTitle);
+                break;
+            }
+            
+        }
+        
+    }
+    
+    public void editJobDesc(Job jobToEdit, String jobDescription)
+    {
+        Iterator<Job> itr = upcomingJobCollection.iterator();
+        while (itr.hasNext())
+        {
+            Job j = itr.next();
+            if (j.getJobTitle() == jobToEdit.getJobTitle())
+            {
+                j.setJobDescription(jobDescription);
+                break;
+            }
+            
+        }
+        
+    }
+    public void editJobStartDate(Job jobToEdit, String startDate)
+    {
+        Iterator<Job> itr = upcomingJobCollection.iterator();
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+        while (itr.hasNext())
+        {
+            Job j = itr.next();
+            if (j.getJobTitle() == jobToEdit.getJobTitle())
+            {
+                try
+                {
+                    j.setStartDate(format.parse(startDate));
+                }
+                catch (ParseException e)
+                {
+                    e.printStackTrace();
+                }
+                break;
+            }
+            
+        }
+        
+    }
+
+    public void editJobEndDate(Job jobToEdit, String endDate)
+    {
+        Iterator<Job> itr = upcomingJobCollection.iterator();
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+        while (itr.hasNext())
+        {
+            Job j = itr.next();
+            if (j.getJobTitle() == jobToEdit.getJobTitle())
+            {
+                try
+                {
+                    j.setEndDate(format.parse(endDate));
+                }
+                catch (ParseException e)
+                {
+                    e.printStackTrace();
+                }
+                break;
+            }
+            
+        }
+        
+    }
+
+    public void editMaxVol(Job jobToEdit, int maxVolunteers)
+    {
+        Iterator<Job> itr = upcomingJobCollection.iterator();
+        while (itr.hasNext())
+        {
+            Job j = itr.next();
+            if (j.getJobTitle() == jobToEdit.getJobTitle())
+            {
+                j.setMaxVolunteers(maxVolunteers);
+                break;
+            }
+            
+        }
+        
+    }
+
 }

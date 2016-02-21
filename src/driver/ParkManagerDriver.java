@@ -41,11 +41,11 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         myUPCalendar = UPCalendar;
         myUser = theUser;
         myInput = in;
-
-        System.out.println("Welcome " + theUser.getEmail());
-
         choice = 0;
-
+        
+        // Display appropriate welcoming message first
+        displayLogin();
+        
         while (choice != 6)
         {
             System.out.println("Enter one of the options below:");
@@ -66,16 +66,16 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                     submitNewJob();
                     break;
                 case 2:
-                    deleteJob();
+                    deleteJob(myUPCalendar);
                     break;
                 case 3:
-                    editJob();
+                    editJob(myUPCalendar);
                     break;
                 case 4:
-                    viewJobsInParks();
+                    viewJobsInParks(myUPCalendar);
                     break;
                 case 5:
-                    viewVolunteers();
+                    viewVolunteers(myUPCalendar);
                     break;
                 case 6:
                     System.out.println("Goodbye!");
@@ -85,7 +85,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                             "Please enter one of the numbered options");
             }
         }
-        myInput.close();
+//        myInput.close();
     }
 
     /**
@@ -165,7 +165,12 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
             // Update calendar first
             try
             {
+                Volunteer v = new Volunteer("email@abv.bg", "Sammy", "Bla");
+                job.addVolunteer(v);
                 myUPCalendar.addJob(job);
+                // Display message to user to indicate that the operation was successful
+                System.out.println("Job was added successfully.\n");
+                
             }
             catch (CalendarWeekFullException | CalendarFullException
                     | JobTooLongException | JobTimeTravelException
@@ -182,8 +187,9 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
      * @param myUser
      * @param myUPCalendar
      * @author Lachezar
+     * @param theUPCalendar 
      */
-    public static void deleteJob()
+    public static void deleteJob(UrbanParkCalendar theUPCalendar)
     {
         int theChoice;
         Park park = null;
@@ -210,7 +216,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         // Get desired park
         park = parks.get(theChoice - 1);
 
-        ArrayList<Job> jobs = new ArrayList<Job>(park.getJobList());
+        ArrayList<Job> jobs = new ArrayList<Job>(theUPCalendar.getJobList());
 
         if (jobs.size() == 0)
         {
@@ -219,10 +225,15 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         else
         {
             System.out.println(
-                    "Please enter the number of the job you would like to delete");
+                    "\nPlease enter the number of the job you would like to delete\n");
             for (int i = 0; i < jobs.size(); i++)
             {
-                System.out.println((i + 1) + ") " + jobs.get(i));
+                // Check to see if selected park corresponds to the
+                // associated park for the job we are currently on
+                if (jobs.get(i).getAssociatedPark() == park.getParkName())
+                {
+                    System.out.println((i + 1) + ") " + jobs.get(i));
+                }    
             }
             System.out.print("Enter job number:");
 
@@ -231,9 +242,12 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
 
             // Get desired job to delete
             theJob = jobs.get(theChoice - 1);
-
-            // Delete job
-            // myUser.deleteJob(myUPCalendar, theJob, park);
+            
+            // Delete job from Calendar
+            theUPCalendar.removeJob(theJob);
+            
+            // Display message to user to indicate that the operation was successful
+            System.out.println("Job was deleted successfully.\n");
         }
     }
 
@@ -242,15 +256,18 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
      * @param myUser
      * @param myUPCalendar
      * @author Lachezar
+     * @param theUPCalendar 
      */
-    public static void editJob()
+    public static void editJob(UrbanParkCalendar theUPCalendar)
     {
-        final String jobTitle;
-        final String jobDescription;
+        String jobTitle;
+        String jobDescription;
         String startDate;
         String endDate;
         int maxVolunteers;
         Park park = null;
+        int option = 0;
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 
         int theChoice;
 
@@ -278,7 +295,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         // Get desired park
         park = parks.get(theChoice - 1);
 
-        ArrayList<Job> jobs = new ArrayList<Job>(park.getJobList());
+        ArrayList<Job> jobs = new ArrayList<Job>(theUPCalendar.getJobList());
 
         if (jobs.size() == 0)
         {
@@ -292,7 +309,13 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
             System.out.println();
             for (int i = 0; i < jobs.size(); i++)
             {
-                System.out.println((i + 1) + ") " + jobs.get(i));
+                // Check to see if selected park corresponds to the
+                // associated park for the job we are currently on
+                if (jobs.get(i).getAssociatedPark() == park.getParkName())
+                {
+                    System.out.println((i + 1) + ") " + jobs.get(i));
+                }
+                
             }
             System.out.print("Enter job number:");
 
@@ -301,31 +324,72 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
 
             // Get desired job to delete
             jobToEdit = jobs.get(theChoice - 1);
-
-            System.out.print("Please enter job title: ");
-            jobTitle = myInput.nextLine();
-            // System.out.println();
-            System.out.print("Job description: ");
-            jobDescription = myInput.nextLine();
-            System.out.print("Start Date (MM/DD/YYYY): ");
-            startDate = myInput.nextLine();
-
-            System.out.print("End Date (MM/DD/YYYY): ");
-            endDate = myInput.nextLine();
-
-            System.out
-                    .println("Please Enter the maximum number of volunteers:");
-
-            maxVolunteers = myInput.nextInt();
-            myInput.nextLine();
-
-            if (maxVolunteers > 30)
+            
+            while (option != 6)
             {
-                System.out.println(
-                        "A job is allowed a maximum of 30 volunteers.");
-                maxVolunteers = 30;
-            }
+                System.out.println("Enter one of the options below:");
+                System.out.println("1. Edit job title");
+                System.out.println("2. Edit job description");
+                System.out.println("3. Edit start date");
+                System.out.println("4. Edit end date");
+                System.out.println("5. Edit maximum number of volunteers");
+                System.out.println("6. Back");
 
+                option = myInput.nextInt();
+                myInput.nextLine();
+
+                switch (option)
+                {
+                    case 1:
+                        System.out.print("Please enter job title: ");
+                        jobTitle = myInput.nextLine();
+                        theUPCalendar.editJobTitle(jobToEdit, jobTitle);
+                        // Display message to user to indicate that the edit was successful
+                        System.out.println("Job title was modified successfully.\n");
+                        break;
+                    case 2:
+                        System.out.print("Job Description: ");
+                        jobDescription = myInput.nextLine();
+                        theUPCalendar.editJobDesc(jobToEdit, jobDescription);
+                        // Display message to user to indicate that the edit was successful
+                        System.out.println("Job description was modified successfully.\n");
+                        break;
+                    case 3:
+                        System.out.print("Start Date (MM/DD/YYYY): ");
+                        startDate = myInput.nextLine();
+                        theUPCalendar.editJobStartDate(jobToEdit, startDate);
+                        // Display message to user to indicate that the edit was successful
+                        System.out.println("Job start date was modified successfully.\n");
+                        break;
+                    case 4:
+                        System.out.print("End Date (MM/DD/YYYY): ");
+                        endDate = myInput.nextLine();
+                        theUPCalendar.editJobEndDate(jobToEdit, endDate);
+                        // Display message to  user to indicate that the edit was successful
+                        System.out.println("Job end date was modified successfully.\n");
+                        break;
+                    case 5:
+                        System.out.println("Please Enter the maximum number of volunteers:");
+                        maxVolunteers = myInput.nextInt();
+                        myInput.nextLine();
+                        if (maxVolunteers > 30)
+                        {
+                            System.out.println("A job is allowed a maximum of 30 volunteers.");
+                            maxVolunteers = 30;
+                        }
+                        theUPCalendar.editMaxVol(jobToEdit, maxVolunteers);
+                        // Display message to user to indicate that the edit was successful
+                        System.out.println("Maximum number of volunteers for selected job "
+                                         + "was changed successfully.\n");
+                        break;
+                    case 6:
+                        break;
+                    default:
+                        System.out.println(
+                                "Please enter one of the numbered options");
+                }
+            }
+            
             // myUser.editJob(myUPCalendar, jobToEdit, park, maxVolunteers,
             // startDate, endDate, jobTitle, jobDescription);
         }
@@ -336,8 +400,10 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
      * @param myUser
      * @param uPCalendar
      * @author Lachezar
+     * @param myUPCalendar2 
+     * @param theUPCalendar 
      */
-    public static void viewJobsInParks()
+    public static void viewJobsInParks(UrbanParkCalendar theUPCalendar)
     {
         Park park = null;
         int theChoice;
@@ -346,8 +412,8 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                 + "a summary of all upcoming jobs in that park");
 
         ArrayList<Park> parks = new ArrayList<Park>(myUser.getParks());
-
         System.out.println();
+        
         for (int i = 0; i < parks.size(); i++)
         {
             System.out.println((i + 1) + ") " + parks.get(i));
@@ -359,18 +425,25 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
 
         // Get desired park
         park = parks.get(theChoice - 1);
-
-        ArrayList<Job> jobs = new ArrayList<Job>(park.getJobList());
+        
+        ArrayList<Job> jobs = new ArrayList<Job>(theUPCalendar.getJobList());
 
         if (jobs.size() == 0)
         {
-            System.out.println("There are no jobs to view.");
+            System.out.println("There are no jobs to view.\n");
         }
         else
         {
+            System.out.println("\nJob(s) in " + park.getParkName() + ":");
             for (int i = 0; i < jobs.size(); i++)
             {
-                System.out.println((i + 1) + ") " + jobs.get(i));
+                // Check to see if selected park corresponds to the
+                // associated park for the job we are currently on
+                if (jobs.get(i).getAssociatedPark() == park.getParkName())
+                {
+                    System.out.println((i + 1) + ") " + jobs.get(i));
+                }
+                
             }
         }
     }
@@ -381,7 +454,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
      * @param uPCalendar
      * @author Lachezar
      */
-    private static void viewVolunteers()
+    private static void viewVolunteers(UrbanParkCalendar theUPCalendar)
     {
         Park park = null;
         Job job = null;
@@ -402,11 +475,12 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
 
         theChoice = myInput.nextInt();
         myInput.nextLine();
+        System.out.println();
         // Get desired park
         park = parks.get(theChoice - 1);
 
-        ArrayList<Job> jobs = new ArrayList<Job>(park.getJobList());
-
+        ArrayList<Job> jobs = new ArrayList<Job>(theUPCalendar.getJobList());
+    
         if (jobs.size() == 0)
         {
             System.out.println("There are no jobs to view.");
@@ -417,8 +491,14 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
             System.out.println();
             for (int i = 0; i < jobs.size(); i++)
             {
-                System.out.println((i + 1) + ") " + jobs.get(i));
-                System.out.println();
+                // Check to see if selected park corresponds to the
+                // associated park for the job we are currently on
+                
+                if (jobs.get(i).getAssociatedPark() == park.getParkName())
+                {   
+                    System.out.println((i + 1) + ") " + jobs.get(i));
+                    System.out.println();
+                }
             }
             System.out.print("Enter job number:");
 
@@ -433,15 +513,25 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
 
             // Print volunteer information from collection of volunteers for
             // selected job
-            for (int i = 0; i < volunteers.size(); i++)
+            if (volunteers.size() == 0)
             {
-                System.out.println((i + 1) + ") " + volunteers.get(i));
+                System.out.println("There are currently no volunteers signed up.\n");
+            }
+            else
+            {
+                System.out.println("\nVolunteer(s):");
+                for (int i = 0; i < volunteers.size(); i++)
+                {
+                    System.out.println((i + 1) + ") " + volunteers.get(i));
+                }
+                System.out.println();
             }
         }
     }
 
-    public void displayLogin()
+    public static void displayLogin()
     {
-        System.out.println("Welcome Park Manager" + myUser.getEmail() + "!");
+        System.out.println("Welcome " + myUser.getFirstName() + " " +
+                myUser.getLastName() + "!\n" + "Logged in as: Park Manager\n");
     }
 }
