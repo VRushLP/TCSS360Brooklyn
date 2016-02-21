@@ -16,9 +16,9 @@ public class Park implements Serializable
     public Park(String theParkName, ParkManager theParkManager)
     {
         parkName = theParkName;
-        setParkManagerName(theParkManager.getFirstName() + " "
-                + theParkManager.getLastName());
-        setParkManagerEmail(theParkManager.getEmail());
+        parkManagerName = theParkManager.getFirstName() + " "
+                + theParkManager.getLastName();
+        parkManagerEmail = theParkManager.getEmail();
         parksJobList = new ArrayList<Job>();
     }
 
