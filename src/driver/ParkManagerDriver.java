@@ -165,8 +165,6 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
             // Update calendar first
             try
             {
-                Volunteer v = new Volunteer("email@abv.bg", "Sammy", "Bla");
-                job.addVolunteer(v);
                 myUPCalendar.addJob(job);
                 // Display message to user to indicate that the operation was successful
                 System.out.println("Job was added successfully.\n");
@@ -267,8 +265,6 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         int maxVolunteers;
         Park park = null;
         int option = 0;
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-
         int theChoice;
 
         // Desired job to edit
