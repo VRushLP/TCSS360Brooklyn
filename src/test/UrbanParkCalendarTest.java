@@ -2,6 +2,7 @@ package test;
 
 import static org.junit.Assert.*;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -66,6 +67,23 @@ public class UrbanParkCalendarTest
         assertEquals(0, calendar.getAllUsers().size());
         calendar.addVolunteer(new Volunteer(null, null, null));
         assertEquals(1, calendar.getAllUsers().size());
+    }
+
+    @Test
+    public void testUpcomingValidation() throws CalendarWeekFullException,
+            CalendarFullException, JobTooLongException, JobTimeTravelException,
+            JobToThePastException, JobToTheFutureException,
+            DuplicateJobExistsException, InterruptedException
+    {
+        calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM,
+                new Date(System.currentTimeMillis() + 1),
+                new Date(System.currentTimeMillis() + 1),
+                "Just subtlely in the past", "Really does not matter"));
+
+        TimeUnit.MILLISECONDS.sleep(2);
+
+        calendar.updateCalendar();
+        assertEquals(0, calendar.getJobList().size());
     }
 
     @Test
