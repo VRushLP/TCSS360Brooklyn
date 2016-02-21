@@ -2,8 +2,18 @@ import static org.junit.Assert.*;
 
 import java.util.Date;
 
+import model.Job;
+import model.Park;
+import model.ParkManager;
+import model.Volunteer;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import exception.AlreadyVolunteeredException;
+import exception.ConflictingJobCommitmentException;
+import exception.JobIsFullException;
+import exception.JobToThePastException;
 
 /**
  * @author Bethany Eastman
@@ -59,8 +69,8 @@ public class VolunteerTest
     @Test
     public void testCanVolunteer() {
         try {
-            sameVolunteer.canVolunteer(newJob);
-            sameVolunteer.canVolunteer(jobToday); // job doesn't conflict
+            sameVolunteer.volunteerForJob(newJob);
+            sameVolunteer.volunteerForJob(jobToday); // job doesn't conflict
         } catch(Exception e) { 
             assertEquals("You have already signed up for this job.", e.getMessage());
             fail();
@@ -73,10 +83,10 @@ public class VolunteerTest
     @Test
     public void testPastJobException() {
         try {
-            sameVolunteer.canVolunteer(pastJob);
+            sameVolunteer.volunteerForJob(pastJob);
             fail(); 
         } catch(Exception e) { 
-            assertEquals("This job has already happended", e.getMessage());
+            assertEquals(JobToThePastException.class, e.getClass());
         }
     }
     
@@ -87,12 +97,12 @@ public class VolunteerTest
      */
     @Test
     public void testDuplicateJobException() {
-        sameVolunteer.volunteerForJob(newJob);
         try {
-            sameVolunteer.canVolunteer(newJob);
+            sameVolunteer.volunteerForJob(newJob);
+            sameVolunteer.volunteerForJob(newJob);
             fail(); 
         } catch(Exception e) { 
-            assertEquals("You have already signed up for this job.", e.getMessage());
+            assertEquals(AlreadyVolunteeredException.class, e.getClass());
         }
     }
     
@@ -101,26 +111,26 @@ public class VolunteerTest
      */
     @Test
     public void testInteferingJobException() {
-        sameVolunteer.volunteerForJob(newJob);
         try {
-            sameVolunteer.canVolunteer(conflictingJob);
+            sameVolunteer.volunteerForJob(newJob);
+            sameVolunteer.volunteerForJob(conflictingJob);
             fail(); 
-        } catch(Exception e) { 
-            assertEquals("This job intereferes with another job.", e.getMessage());
+        } catch(Exception e) {
+            assertEquals(ConflictingJobCommitmentException.class , e.getClass());
         }
         
         try {
-            sameVolunteer.canVolunteer(jobConflictsBeforeStart);
+            sameVolunteer.volunteerForJob(jobConflictsBeforeStart);
             fail(); 
         } catch(Exception e) { 
-            assertEquals("This job intereferes with another job.", e.getMessage());
+            assertEquals(ConflictingJobCommitmentException.class , e.getClass());
         }
         
         try {
-            sameVolunteer.canVolunteer(jobConflictsAfterStart);
+            sameVolunteer.volunteerForJob(jobConflictsAfterStart);
             fail(); 
         } catch(Exception e) { 
-            assertEquals("This job intereferes with another job.", e.getMessage());
+            assertEquals(ConflictingJobCommitmentException.class , e.getClass());
         }
     }
     
@@ -145,8 +155,12 @@ public class VolunteerTest
     public void testVolunteerForJob()
     {
         assertTrue(!oneJobVolunteer.getVolunteeredForJobs().contains(newJob));
-        assertTrue(oneJobVolunteer.volunteerForJob(newJob));
-        assertTrue(oneJobVolunteer.getVolunteeredForJobs().contains(newJob));
+        try {
+            assertTrue(oneJobVolunteer.volunteerForJob(newJob));
+            assertTrue(oneJobVolunteer.getVolunteeredForJobs().contains(newJob));
+        } catch (Exception e) {
+            fail();
+        }
     }
     
     /**
@@ -155,11 +169,19 @@ public class VolunteerTest
     @Test
     public void testRemoveJob()
     {
-        oneJobVolunteer.volunteerForJob(newJob);
+        try
+        {
+            oneJobVolunteer.volunteerForJob(newJob);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         assertTrue(oneJobVolunteer.getVolunteeredForJobs().contains(newJob));
         assertTrue(oneJobVolunteer.removeJob(newJob));
         assertTrue(!oneJobVolunteer.getVolunteeredForJobs().contains(newJob));
     }
+    
     
     /**
      * Tests business rule that a volunteer may not sign up 
@@ -167,23 +189,18 @@ public class VolunteerTest
      */
     @Test
     public void testVolunteerIsFree() {
-        oneJobVolunteer.volunteerForJob(newJob);
-        assertFalse(oneJobVolunteer.volunteerIsFree(newJob));
-        assertTrue(oneJobVolunteer.volunteerIsFree(pastJob));
+        try
+        {
+            oneJobVolunteer.volunteerForJob(newJob);
+            assertFalse(oneJobVolunteer.volunteerIsFree(newJob));
+            assertTrue(oneJobVolunteer.volunteerIsFree(pastJob));
+        }
+        catch (AlreadyVolunteeredException | ConflictingJobCommitmentException
+                | JobIsFullException | JobToThePastException e)
+        {
+            fail();
+        }
     }
-    
-    /**
-     * Tests that a volunteer may not sign up for
-     * the same job twice.
-     */
-    @Test
-    public void testIsDuplicate() {
-        oneJobVolunteer.volunteerForJob(newJob);
-        assertTrue(oneJobVolunteer.isDuplicate(newJob));
-        assertFalse(oneJobVolunteer.isDuplicate(conflictingJob));
-    }
-    
-    // go in job tests? 
     
     /**
      * Test that two jobs have share a start or end date.
