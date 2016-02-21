@@ -50,8 +50,8 @@ public class PrimaryDriver
         loginList = new HashMap<>();
 
         // Only call one of these!
-        // fabricateInformation();
-        deserializeData();
+        fabricateInformation();
+        // deserializeData();
 
         Scanner in = new Scanner(System.in);
 
