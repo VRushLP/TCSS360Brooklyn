@@ -1,6 +1,14 @@
+package driver;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Scanner;
+
+import model.Job;
+import model.UrbanParkCalendar;
+import model.UrbanParkStaffMember;
+import model.User;
+import model.Volunteer;
 
 public class UrbanParkStaffMemberDriver
 {
@@ -135,5 +143,11 @@ public class UrbanParkStaffMemberDriver
         }
 
         return toPrint;
+    }
+
+    public void displayLogin()
+    {
+        System.out.println(
+                "Welcome Urban Parks Staff Member " + myUser.getEmail() + "!");
     }
 }

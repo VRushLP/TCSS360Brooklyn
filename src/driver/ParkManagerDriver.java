@@ -1,11 +1,26 @@
+package driver;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Scanner;
 
-public class ParkManagerDriver
+import model.Job;
+import model.Park;
+import model.ParkManager;
+import model.UrbanParkCalendar;
+import model.Volunteer;
+
+import exception.CalendarFullException;
+import exception.CalendarWeekFullException;
+import exception.DuplicateJobExistsException;
+import exception.JobTimeTravelException;
+import exception.JobToTheFutureException;
+import exception.JobToThePastException;
+import exception.JobTooLongException;
+
+public class ParkManagerDriver extends SharedUserDriverFunctions
 {
     private static int choice;
 
@@ -39,8 +54,8 @@ public class ParkManagerDriver
             System.out.println("2. Delete a job");
             System.out.println("3. Edit the details of a job.");
             System.out.println("4. View summary of upcoming jobs in my parks.");
-            System.out
-                    .println("5. View the volunteers for a job in the parks that I manage");
+            System.out.println(
+                    "5. View the volunteers for a job in the parks that I manage");
             System.out.println("6. Exit.");
 
             choice = myInput.nextInt();
@@ -67,8 +82,8 @@ public class ParkManagerDriver
                     System.out.println("Goodbye!");
                     break;
                 default:
-                    System.out
-                            .println("Please enter one of the numbered options");
+                    System.out.println(
+                            "Please enter one of the numbered options");
             }
         }
         myInput.close();
@@ -100,8 +115,8 @@ public class ParkManagerDriver
         }
         else
         {
-            System.out
-                    .println("Please select one of the parks you manage to add a job for that park");
+            System.out.println(
+                    "Please select one of the parks you manage to add a job for that park");
 
             ArrayList<Park> parks = new ArrayList<Park>(myUser.getParks());
 
@@ -124,28 +139,8 @@ public class ParkManagerDriver
             System.out.print("Start Date (MM/DD/YYYY): ");
             startDate = myInput.nextLine();
 
-            // Validate entered start date (business rule #5)
-            if (!validateStartDate(startDate))
-            {
-                System.out.println("Error: Start date cannot be in the past or"
-                        + " more than 3 months from today's date. ");
-                System.out.print("Enter new Start Date (MM/DD/YYYY): ");
-                startDate = myInput.nextLine();
-            }
-
             System.out.print("End Date (MM/DD/YYYY): ");
             endDate = myInput.nextLine();
-
-            // Validate entered start and end dates (business rule #4)
-            // TO DO: Keep examining user input even if
-            // an error message has already been displayed
-            if (!validateJobDuration(startDate, endDate))
-            {
-                System.out.println("Error: A job may not be scheduled that "
-                        + "lasts more than two days.");
-                System.out.print("Enter new end date (MM/DD/YYYY): ");
-                endDate = myInput.nextLine();
-            }
 
             System.out.print("Maximum number of volunteers (Up to 30): ");
             maxVolunteers = myInput.nextInt();
@@ -153,8 +148,8 @@ public class ParkManagerDriver
 
             if (maxVolunteers > 30)
             {
-                System.out
-                        .println("A job is allowed a maximum of 30 volunteers.");
+                System.out.println(
+                        "A job is allowed a maximum of 30 volunteers.");
                 maxVolunteers = 30;
             }
 
@@ -169,16 +164,17 @@ public class ParkManagerDriver
                 e.printStackTrace();
             }
             // Update calendar first
-            if (myUPCalendar.addJob(job))
+            try
             {
-                park.addJob(job);
-                System.out.println("Job created!");
-                System.out.println(job.toString());
+                myUPCalendar.addJob(job);
             }
-            else
+            catch (CalendarWeekFullException | CalendarFullException
+                    | JobTooLongException | JobTimeTravelException
+                    | JobToThePastException | JobToTheFutureException
+                    | DuplicateJobExistsException e)
             {
-                System.out
-                        .println("There was a problem adding your job. Please contact an Urban Park Employee.");
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
         }
     }
@@ -197,8 +193,8 @@ public class ParkManagerDriver
         // Desired job to delete
         Job theJob = null;
 
-        System.out
-                .println("Please select one of the parks you manage to delete a job from that park");
+        System.out.println(
+                "Please select one of the parks you manage to delete a job from that park");
 
         ArrayList<Park> parks = new ArrayList<Park>(myUser.getParks());
 
@@ -224,8 +220,8 @@ public class ParkManagerDriver
         }
         else
         {
-            System.out
-                    .println("Please enter the number of the job you would like to delete");
+            System.out.println(
+                    "Please enter the number of the job you would like to delete");
             for (int i = 0; i < jobs.size(); i++)
             {
                 System.out.println((i + 1) + ") " + jobs.get(i));
@@ -265,8 +261,8 @@ public class ParkManagerDriver
 
         System.out.println("Edit a Job");
 
-        System.out
-                .println("Please select one of the parks you manage to edit a job from that park");
+        System.out.println(
+                "Please select one of the parks you manage to edit a job from that park");
 
         ArrayList<Park> parks = new ArrayList<Park>(myUser.getParks());
 
@@ -293,8 +289,8 @@ public class ParkManagerDriver
         }
         else
         {
-            System.out
-                    .println("Please enter the number of the job you would like to edit");
+            System.out.println(
+                    "Please enter the number of the job you would like to edit");
             System.out.println();
             for (int i = 0; i < jobs.size(); i++)
             {
@@ -316,26 +312,8 @@ public class ParkManagerDriver
             System.out.print("Start Date (MM/DD/YYYY): ");
             startDate = myInput.nextLine();
 
-            // Validate entered start date (business rule #5)
-            if (!validateStartDate(startDate))
-            {
-                System.out.println("Error: Start date cannot be in the past or"
-                        + " more than 3 months from today's date. ");
-                System.out.print("Enter new Start Date (MM/DD/YYYY): ");
-                startDate = myInput.nextLine();
-            }
-
             System.out.print("End Date (MM/DD/YYYY): ");
             endDate = myInput.nextLine();
-
-            // Validate entered start and end dates (business rule #4)
-            if (!validateJobDuration(startDate, endDate))
-            {
-                System.out.println("Error: A job may not be scheduled that "
-                        + "lasts more than two days.");
-                System.out.print("Enter new End Date (MM/DD/YYYY): ");
-                endDate = myInput.nextLine();
-            }
 
             System.out
                     .println("Please Enter the maximum number of volunteers:");
@@ -345,8 +323,8 @@ public class ParkManagerDriver
 
             if (maxVolunteers > 30)
             {
-                System.out
-                        .println("A job is allowed a maximum of 30 volunteers.");
+                System.out.println(
+                        "A job is allowed a maximum of 30 volunteers.");
                 maxVolunteers = 30;
             }
 
@@ -411,8 +389,8 @@ public class ParkManagerDriver
         Job job = null;
         int theChoice;
 
-        System.out
-                .println("Please select one of the parks you manage to view the jobs");
+        System.out.println(
+                "Please select one of the parks you manage to view the jobs");
 
         ArrayList<Park> parks = new ArrayList<Park>(myUser.getParks());
 
@@ -464,83 +442,8 @@ public class ParkManagerDriver
         }
     }
 
-    /**
-     * This helper method enforces business rule #5: "A job may not be added
-     * that is in the past or more than three months (90 days) in the future.
-     * 
-     * @author Lachezar
-     */
-    static boolean validateStartDate(String dateStart)
+    public void displayLogin()
     {
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-        float diffDays;
-        Date startDate = null;
-        try
-        {
-            startDate = format.parse(dateStart);
-        }
-        catch (ParseException e)
-        {
-            e.printStackTrace();
-        }
-        // Get system's current date
-        Calendar calobj = Calendar.getInstance();
-
-        // Set current time to 00:00:00 so that we can compare with entered
-        // start date
-        calobj.set(Calendar.HOUR_OF_DAY, 0);
-        calobj.set(Calendar.MINUTE, 0);
-        calobj.set(Calendar.SECOND, 0);
-
-        Date currentDate = calobj.getTime();
-
-        // Get the difference between start date and current date in
-        // milliseconds
-        float diff = startDate.getTime() - currentDate.getTime();
-
-        // Difference in days
-        diffDays = diff / (24 * 60 * 60 * 1000);
-        // System.out.println("Diff in days: " + diffDays);
-        if (diffDays < 0 || diffDays > 90)
-        {
-            return false;
-        }
-        return true;
-
-    }
-
-    /**
-     * This helper method enforces business rule #4.
-     * 
-     * @author Lachezar
-     */
-    static boolean validateJobDuration(String dateStart, String dateEnd)
-    {
-        Date startDate = null;
-        Date endDate = null;
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-
-        try
-        {
-            startDate = format.parse(dateStart);
-            endDate = format.parse(dateEnd);
-        }
-        catch (ParseException e)
-        {
-            e.printStackTrace();
-        }
-        // Get the difference in milliseconds
-        float diff = endDate.getTime() - startDate.getTime();
-
-        // Difference in days
-        // Hours per day * Minutes per hour * Seconds per minute *
-        // milliseconds per second
-        float diffDays = diff / (24 * 60 * 60 * 1000);
-
-        if (diffDays > 2)
-        {
-            return false;
-        }
-        return true;
+        System.out.println("Welcome Park Manager" + myUser.getEmail() + "!");
     }
 }

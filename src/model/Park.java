@@ -1,4 +1,7 @@
+package model;
+
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -13,9 +16,9 @@ public class Park implements Serializable
     public Park(String theParkName, ParkManager theParkManager)
     {
         parkName = theParkName;
-        setParkManagerName(theParkManager.getFirstName() + " "
-                + theParkManager.getLastName());
-        setParkManagerEmail(theParkManager.getEmail());
+        parkManagerName = theParkManager.getFirstName() + " "
+                + theParkManager.getLastName();
+        parkManagerEmail = theParkManager.getEmail();
         parksJobList = new ArrayList<Job>();
     }
 
