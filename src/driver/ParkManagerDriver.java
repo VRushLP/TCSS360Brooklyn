@@ -306,7 +306,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
             for (int i = 0; i < jobs.size(); i++)
             {
                 // Check to see if selected park corresponds to the
-                // associated park for the job we are currently on
+                // associated park for the job we are currently on 
                 if (jobs.get(i).getAssociatedPark() == park.getParkName())
                 {
                     System.out.println((i + 1) + ") " + jobs.get(i));
