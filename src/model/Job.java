@@ -138,8 +138,8 @@ public class Job implements Serializable
             Job compare = (Job) o;
             // Should be the bare minimum to determine if a Job is unique or
             // not.
-            return jobTitle.equals(compare.jobTitle)
-                    && jobDescription.equals(compare.jobDescription)
+            return jobTitle.equalsIgnoreCase(compare.jobTitle)
+                    && jobDescription.equalsIgnoreCase(compare.jobDescription)
                     && parkName.equals(compare.parkName)
                     && startDate.equals(compare.startDate);
         }
