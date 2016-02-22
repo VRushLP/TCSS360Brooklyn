@@ -17,7 +17,7 @@ import model.Volunteer;
  * 
  * @author Lachezar, Bethany
  */
-public class VolunteerDriver
+public class VolunteerDriver extends SharedUserDriverFunctions
 {
 
     static String input;
@@ -61,7 +61,8 @@ public class VolunteerDriver
             switch (choice)
             {
                 case 1:
-                    viewJobs();
+//                    viewAllUpcomingJobs(myUPCalendar);
+                    viewAllJobsView();
                     break;
                 case 2:
                     viewSignedUpJobs();
@@ -74,6 +75,18 @@ public class VolunteerDriver
                             .println("Please enter one of the number options");
             }
         }
+    }
+    
+    public static void viewAllJobsView() {
+        viewAllUpcomingJobs(myUPCalendar);
+        ArrayList<Job> allJobs = new ArrayList<Job>(myUPCalendar.getJobList());
+        System.out.println("Enter a number of job to view more details, or enter "
+                + "B to go back");
+        input = myInput.nextLine();
+        if (!input.equalsIgnoreCase("B")) {
+            viewJobDetails(allJobs.get(Integer.parseInt(input)));
+        }
+        
     }
 
     /**
@@ -95,43 +108,14 @@ public class VolunteerDriver
     }
 
     /**
-     * Allows the current user to view all jobs.
-     */
-    public static void viewJobs()
-    {
-        ArrayList<Job> jobs = new ArrayList<Job>(myUPCalendar.getJobList());
-
-        Date today = new Date();
-        while (!input.equalsIgnoreCase("b"))
-        { // while user wants to view jobs
-            int i = 1;
-            for (Job job : jobs)
-            {
-                if (job.getStartDate().after(today))
-                    ; // only show upcoming days
-                System.out.println(i++ + ") " + job.toString());
-            }
-            System.out.println(
-                    "Enter b to go back, or enter job number to view details & sign up");
-
-            input = myInput.nextLine();
-            if (!input.equalsIgnoreCase("b"))
-            { // user wants to view a jobs details
-                viewJobDetails(jobs.get(Integer.parseInt(input) - 1));
-            }
-        }
-    }
-
-    /**
-     * Shows the details of a job. Not fully working. At this point, it outputs
-     * the first occurrence of a job in the job file.
+     * Allows user to view the details of a job.
      */
     public static void viewJobDetails(Job theJob)
     {
         // allow user to see details of the job and ask to volunteer for a job
         System.out.println(theJob.toString());
         System.out.println("Would you like to volunteer? \n"
-                + "Enter Y for yes, or any other key to go back to summary of jobs");
+                + "Enter Y for yes, or any other key to go back to menu");
 
         input = myInput.nextLine();
         if (input.equalsIgnoreCase("Y"))
@@ -155,9 +139,9 @@ public class VolunteerDriver
         }
         catch (Exception e)
         {
-            // TODO Auto-generated catch block
             System.out.println("Sorry, you were not able to volunteer");
-            e.printStackTrace();
+            //  fix so exception is not printed, instead print a message
+            // associate with the exception ?
         }
 
         System.out.println("Enter b go back to main menu");
