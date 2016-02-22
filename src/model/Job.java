@@ -11,7 +11,7 @@ import java.util.Date;
  * @author Bethany Eastman
  * @version 02/09/2016
  */
-public class Job implements Serializable
+public class Job implements Serializable, Comparable<Job>
 {
     public static final int MAX_VOLUNTEER_NUM = 30;
     public static final int MAX_JOB_LENGTH = 2; // 2 days
@@ -37,6 +37,24 @@ public class Job implements Serializable
         endDate = theEndDate;
         jobTitle = theJobTitle;
         jobDescription = theJobDescription;
+    }
+
+    /**
+     * Copies a Job's information so that it can be edited safely. This
+     * constructor <i>does not</i> copy Volunteers, since jobs should not be
+     * edited if they already have someone Volunteered for them.
+     * 
+     * @param toCopy
+     */
+    public Job(Job toCopy)
+    {
+        volunteers = new ArrayList<>();
+        parkName = toCopy.parkName;
+        maxVolunteers = toCopy.maxVolunteers; // check if max volunteers is 30
+        startDate = toCopy.startDate;
+        endDate = toCopy.endDate;
+        jobTitle = toCopy.jobTitle;
+        jobDescription = toCopy.jobDescription;
     }
 
     @Override
@@ -145,4 +163,11 @@ public class Job implements Serializable
         }
         return false;
     }
+
+    @Override
+    public int compareTo(Job o)
+    {
+        return (int) (startDate.getTime() - ((Job) o).startDate.getTime());
+    }
+
 }

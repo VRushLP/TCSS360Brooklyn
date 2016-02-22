@@ -9,11 +9,12 @@ import model.UrbanParkCalendar;
 
 public abstract class SharedUserDriverFunctions
 {
-    public static void viewJob(Job theJob)
+    public static void viewJobSummary(int index, Job theJob)
     {
         StringBuilder jobSummary = new StringBuilder();
         SimpleDateFormat d = new SimpleDateFormat();
 
+        jobSummary.append(index + ") ");
         jobSummary.append(theJob.getJobTitle());
         jobSummary.append(' ');
         jobSummary.append(theJob.getAssociatedPark());

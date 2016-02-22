@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import exception.CalendarFullException;
@@ -19,7 +20,6 @@ import exception.JobTooLongException;
 
 public class UrbanParkCalendar implements Serializable
 {
-    private static final long serialVersionUID = -6937747495177492138L;
     public static final int MAX_JOBS = 30;
     public static final int MAX_WEEKLY_JOBS = 5;
     public static final int MAX_DATE_FROM_TODAY = 90;
@@ -42,6 +42,8 @@ public class UrbanParkCalendar implements Serializable
         calendar.setTime(new Date());
         ArrayList<Job> jobsToCheck = new ArrayList<>(upcomingJobCollection);
 
+        // Attempting to update upcomingJobCollection while using a for each
+        // loop causes an exception.
         for (Job j : jobsToCheck)
         {
             if (j.getStartDate().before(calendar.getTime()))
@@ -50,6 +52,7 @@ public class UrbanParkCalendar implements Serializable
                 upcomingJobCollection.remove(j);
             }
         }
+        Collections.sort((List<Job>) upcomingJobCollection);
     }
 
     public Collection<Volunteer> getAllUsers()
@@ -77,21 +80,25 @@ public class UrbanParkCalendar implements Serializable
             JobTooLongException, JobTimeTravelException, JobToThePastException,
             JobToTheFutureException, DuplicateJobExistsException
     {
+        checkForDuplicates(theJob);
         checkJobDate(theJob);
         checkForRoomThatWeek(theJob);
         checkJobCapacity();
-
         return upcomingJobCollection.add(theJob);
     }
 
-    private void checkJobDate(Job theJob) throws DuplicateJobExistsException,
-            JobToThePastException, JobToTheFutureException, JobTooLongException
+    private void checkForDuplicates(Job theJob)
+            throws DuplicateJobExistsException
     {
         if (upcomingJobCollection.contains(theJob))
         {
             throw new DuplicateJobExistsException();
         }
+    }
 
+    private void checkJobDate(Job theJob) throws JobToThePastException,
+            JobToTheFutureException, JobTooLongException
+    {
         if (theJob.getEndDate().getTime()
                 - theJob.getStartDate().getTime() > TimeUnit.DAYS
                         .toMillis(Job.MAX_JOB_LENGTH))
@@ -123,24 +130,22 @@ public class UrbanParkCalendar implements Serializable
     {
         ArrayList<Job> check = new ArrayList<>(upcomingJobCollection);
 
-        check.add(theJob);
-
+        // Three days on either side.
         Date minDate = new Date(theJob.getStartDate().getTime()
                 - TimeUnit.DAYS.toMillis(3) - 1);
         Date maxDate = new Date(theJob.getStartDate().getTime()
                 + TimeUnit.DAYS.toMillis(3) + 1);
-        // Three days on either side.
+
         int jobsThatWeek = 0;
 
         for (Job j : check)
         {
             if (j.getStartDate().after(minDate)
-                    && j.getStartDate().before(maxDate) && !j.equals(theJob))
+                    && j.getStartDate().before(maxDate))
             {
                 jobsThatWeek++;
             }
         }
-        check.remove(check.indexOf(theJob));
 
         if (jobsThatWeek >= MAX_WEEKLY_JOBS)
         {
@@ -151,5 +156,79 @@ public class UrbanParkCalendar implements Serializable
     public boolean removeJob(Job theJob)
     {
         return upcomingJobCollection.remove(theJob);
+    }
+
+    public Job editJobTitle(Job jobToEdit, String jobTitle)
+            throws DuplicateJobExistsException
+    {
+        Job tempJob = new Job(jobToEdit);
+        tempJob.setJobTitle(jobTitle);
+
+        checkForDuplicates(tempJob);
+
+        upcomingJobCollection.remove(jobToEdit);
+        upcomingJobCollection.add(tempJob);
+
+        return tempJob;
+    }
+
+    public Job editJobDesc(Job jobToEdit, String jobDescription)
+            throws DuplicateJobExistsException
+    {
+        Job tempJob = new Job(jobToEdit);
+        tempJob.setJobDescription(jobDescription);
+
+        checkForDuplicates(tempJob);
+
+        upcomingJobCollection.remove(jobToEdit);
+        upcomingJobCollection.add(tempJob);
+
+        return tempJob;
+    }
+
+    public Job editJobStartDate(Job jobToEdit, Date startDate)
+            throws JobToThePastException, JobToTheFutureException,
+            JobTooLongException, CalendarWeekFullException
+    {
+        Job tempJob = new Job(jobToEdit);
+        tempJob.setStartDate(startDate);
+
+        checkJobDate(tempJob);
+        checkForRoomThatWeek(tempJob);
+
+        upcomingJobCollection.remove(jobToEdit);
+        upcomingJobCollection.add(tempJob);
+
+        return tempJob;
+    }
+
+    public Job editJobEndDate(Job jobToEdit, Date endDate)
+            throws JobToThePastException, JobToTheFutureException,
+            JobTooLongException, CalendarWeekFullException
+    {
+        Job tempJob = new Job(jobToEdit);
+        tempJob.setEndDate(endDate);
+
+        checkJobDate(tempJob);
+        checkForRoomThatWeek(tempJob);
+
+        upcomingJobCollection.remove(jobToEdit);
+        upcomingJobCollection.add(tempJob);
+
+        return tempJob;
+    }
+
+    public Job editMaxVol(Job jobToEdit, int maxVolunteers)
+    {
+        if (maxVolunteers > Job.MAX_VOLUNTEER_NUM)
+            maxVolunteers = Job.MAX_VOLUNTEER_NUM;
+
+        Job tempJob = new Job(jobToEdit);
+        tempJob.setMaxVolunteers(maxVolunteers);
+
+        upcomingJobCollection.remove(jobToEdit);
+        upcomingJobCollection.add(tempJob);
+
+        return tempJob;
     }
 }

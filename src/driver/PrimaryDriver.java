@@ -21,7 +21,10 @@ import exception.JobToTheFutureException;
 import exception.JobToThePastException;
 import exception.JobTooLongException;
 import model.AbstractUser;
+<<<<<<< HEAD
 import model.Job;
+=======
+>>>>>>> master
 import model.Park;
 import model.ParkManager;
 import model.UrbanParkCalendar;
@@ -52,7 +55,6 @@ public class PrimaryDriver
     /*
      * Main begins here!
      */
-    @SuppressWarnings("unchecked")
     public static void main(String[] args)
     {
         UPCalendar = new UrbanParkCalendar();
@@ -64,7 +66,9 @@ public class PrimaryDriver
 
         Scanner in = new Scanner(System.in);
 
-        // Prompt user to log
+        // Prompt user to log in
+        // TODO Remove this before Deliverable 3
+        System.out.println(loginList.keySet());
         System.out.println("Please enter your email to log in: ");
         String userInput;
 
@@ -114,7 +118,14 @@ public class PrimaryDriver
 
     private static void fabricateInformation()
     {
+<<<<<<< HEAD
         
+=======
+        ParkManager dude = new ParkManager("thedude", "a", "b");
+        loginList.put(dude.getEmail(), dude);
+        Park examplePark = new Park("example", dude);
+        dude.addParkToManager(examplePark);
+>>>>>>> master
     }
 
     private static void deserializeData()
