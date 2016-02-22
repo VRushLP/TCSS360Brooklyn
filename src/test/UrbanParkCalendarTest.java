@@ -124,11 +124,18 @@ public class UrbanParkCalendarTest
             calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM, today,
                     tomorrow, "Uh oh", "This Job should trigger an exception"));
         }
-        catch (Exception e)
+        catch (CalendarWeekFullException e)
         {
             assertTrue(e.getClass().getSimpleName(),
                     e instanceof CalendarWeekFullException);
         }
+        catch (CalendarFullException | JobTooLongException
+                | JobTimeTravelException | JobToThePastException
+                | JobToTheFutureException | DuplicateJobExistsException e)
+        {
+            fail(e.getClass().getName());
+        }
+
     }
 
     @Test
@@ -152,11 +159,18 @@ public class UrbanParkCalendarTest
             calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM, today,
                     tomorrow, "Uh oh", "This Job should trigger an exception"));
         }
-        catch (Exception e)
+        catch (CalendarFullException e)
         {
             assertTrue(e.getClass().getSimpleName(),
                     e instanceof CalendarFullException);
         }
+        catch (CalendarWeekFullException | JobTooLongException
+                | JobTimeTravelException | JobToThePastException
+                | JobToTheFutureException | DuplicateJobExistsException e)
+        {
+            fail(e.getClass().getName());
+        }
+
     }
 
     @Test
@@ -177,7 +191,7 @@ public class UrbanParkCalendarTest
                 | JobTimeTravelException | JobToThePastException
                 | JobToTheFutureException | DuplicateJobExistsException e)
         {
-            fail(e.getMessage());
+            fail(e.getClass().getName());
         }
     }
 
@@ -197,7 +211,7 @@ public class UrbanParkCalendarTest
                 | JobTimeTravelException | CalendarFullException
                 | JobToTheFutureException | DuplicateJobExistsException e)
         {
-            fail(e.getMessage());
+            fail(e.getClass().getName());
         }
     }
 
@@ -224,7 +238,7 @@ public class UrbanParkCalendarTest
                 | JobTimeTravelException | CalendarFullException
                 | JobToThePastException | DuplicateJobExistsException e)
         {
-            fail(e.getMessage());
+            fail(e.getClass().getName());
         }
     }
 
@@ -245,7 +259,7 @@ public class UrbanParkCalendarTest
                 | JobTimeTravelException | CalendarFullException
                 | JobToThePastException | DuplicateJobExistsException e)
         {
-            fail(e.getMessage());
+            fail(e.getClass().getName());
         }
     }
 
@@ -268,7 +282,7 @@ public class UrbanParkCalendarTest
                 | JobTimeTravelException | CalendarFullException
                 | JobToThePastException | JobTooLongException e)
         {
-            fail(e.getMessage());
+            fail(e.getClass().getName());
         }
     }
 

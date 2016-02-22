@@ -81,4 +81,21 @@ public class Park implements Serializable
     {
         this.parkManagerName = parkManagerName;
     }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (o instanceof Park)
+        {
+            Park compare = (Park) o;
+            // Should be the bare minimum to determine if a Park is equal to
+            // another
+            return parkName.equals(compare.parkName)
+                    && this.parkManagerName
+                            .equalsIgnoreCase(compare.parkManagerName)
+                    && this.parkManagerEmail
+                            .equalsIgnoreCase(compare.parkManagerEmail);
+        }
+        return false;
+    }
 }

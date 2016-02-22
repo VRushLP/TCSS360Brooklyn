@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import model.AbstractUser;
+import model.Park;
 import model.ParkManager;
 import model.UrbanParkCalendar;
 import model.UrbanParkStaffMember;
@@ -43,7 +44,6 @@ public class PrimaryDriver
     /*
      * Main begins here!
      */
-    @SuppressWarnings("unchecked")
     public static void main(String[] args)
     {
         UPCalendar = new UrbanParkCalendar();
@@ -55,7 +55,9 @@ public class PrimaryDriver
 
         Scanner in = new Scanner(System.in);
 
-        // Prompt user to log
+        // Prompt user to log in
+        // TODO Remove this before Deliverable 3
+        System.out.println(loginList.keySet());
         System.out.println("Please enter your email to log in: ");
         String userInput;
 
@@ -105,7 +107,10 @@ public class PrimaryDriver
 
     private static void fabricateInformation()
     {
-
+        ParkManager dude = new ParkManager("thedude", "a", "b");
+        loginList.put(dude.getEmail(), dude);
+        Park examplePark = new Park("example", dude);
+        dude.addParkToManager(examplePark);
     }
 
     private static void deserializeData()
