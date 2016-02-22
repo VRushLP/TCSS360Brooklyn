@@ -21,10 +21,8 @@ import exception.JobToTheFutureException;
 import exception.JobToThePastException;
 import exception.JobTooLongException;
 import model.AbstractUser;
-<<<<<<< HEAD
+
 import model.Job;
-=======
->>>>>>> master
 import model.Park;
 import model.ParkManager;
 import model.UrbanParkCalendar;
@@ -118,14 +116,10 @@ public class PrimaryDriver
 
     private static void fabricateInformation()
     {
-<<<<<<< HEAD
-        
-=======
         ParkManager dude = new ParkManager("thedude", "a", "b");
         loginList.put(dude.getEmail(), dude);
         Park examplePark = new Park("example", dude);
         dude.addParkToManager(examplePark);
->>>>>>> master
     }
 
     private static void deserializeData()
