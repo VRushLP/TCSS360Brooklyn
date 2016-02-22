@@ -39,6 +39,24 @@ public class Job implements Serializable
         jobDescription = theJobDescription;
     }
 
+    /**
+     * Copies a Job's information so that it can be edited safely. This
+     * constructor <i>does not</i> copy Volunteers, since jobs should not be
+     * edited if they already have someone Volunteered for them.
+     * 
+     * @param toCopy
+     */
+    public Job(Job toCopy)
+    {
+        volunteers = new ArrayList<>();
+        parkName = toCopy.parkName;
+        maxVolunteers = toCopy.maxVolunteers; // check if max volunteers is 30
+        startDate = toCopy.startDate;
+        endDate = toCopy.endDate;
+        jobTitle = toCopy.jobTitle;
+        jobDescription = toCopy.jobDescription;
+    }
+
     @Override
     public String toString()
     {

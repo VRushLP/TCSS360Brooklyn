@@ -52,11 +52,13 @@ public class PrimaryDriver
 
         // Only call one of these!
         fabricateInformation();
-        //deserializeData();
+        // deserializeData();
 
         Scanner in = new Scanner(System.in);
 
         // Prompt user to log
+        System.out.println(loginList.keySet()); // TODO Remove this before
+                                                // Deliverable 3
         System.out.println("Please enter your email to log in: ");
         String userInput;
 
@@ -106,6 +108,10 @@ public class PrimaryDriver
 
     private static void fabricateInformation()
     {
+        ParkManager dude = new ParkManager("thedude", "a", "b");
+        loginList.put(dude.getEmail(), dude);
+        Park examplePark = new Park("example", dude);
+        dude.addParkToManager(examplePark);
     }
 
     private static void deserializeData()

@@ -21,7 +21,6 @@ import exception.JobTooLongException;
 
 public class UrbanParkCalendar implements Serializable
 {
-    private static final long serialVersionUID = -6937747495177492138L;
     public static final int MAX_JOBS = 30;
     public static final int MAX_WEEKLY_JOBS = 5;
     public static final int MAX_DATE_FROM_TODAY = 90;
@@ -44,6 +43,8 @@ public class UrbanParkCalendar implements Serializable
         calendar.setTime(new Date());
         ArrayList<Job> jobsToCheck = new ArrayList<>(upcomingJobCollection);
 
+        // Attempting to update upcomingJobCollection while using a for each
+        // loop causes an exception.
         for (Job j : jobsToCheck)
         {
             if (j.getStartDate().before(calendar.getTime()))
@@ -79,23 +80,25 @@ public class UrbanParkCalendar implements Serializable
             JobTooLongException, JobTimeTravelException, JobToThePastException,
             JobToTheFutureException, DuplicateJobExistsException
     {
+        checkForDuplicates(theJob);
         checkJobDate(theJob);
         checkForRoomThatWeek(theJob);
         checkJobCapacity();
-
         return upcomingJobCollection.add(theJob);
     }
 
-    private void checkJobDate(Job theJob) throws DuplicateJobExistsException,
-            JobToThePastException, JobToTheFutureException, JobTooLongException
+    private void checkForDuplicates(Job theJob)
+            throws DuplicateJobExistsException
     {
-        // Figure out a way to edit a job's start date and not throw 
-        // the DuplicateJobExistsException
-//        if (upcomingJobCollection.contains(theJob))
-//        {
-//            throw new DuplicateJobExistsException();
-//        }
+        if (upcomingJobCollection.contains(theJob))
+        {
+            throw new DuplicateJobExistsException();
+        }
+    }
 
+    private void checkJobDate(Job theJob) throws JobToThePastException,
+            JobToTheFutureException, JobTooLongException
+    {
         if (theJob.getEndDate().getTime()
                 - theJob.getStartDate().getTime() > TimeUnit.DAYS
                         .toMillis(Job.MAX_JOB_LENGTH))
@@ -127,24 +130,22 @@ public class UrbanParkCalendar implements Serializable
     {
         ArrayList<Job> check = new ArrayList<>(upcomingJobCollection);
 
-        check.add(theJob);
-
+        // Three days on either side.
         Date minDate = new Date(theJob.getStartDate().getTime()
                 - TimeUnit.DAYS.toMillis(3) - 1);
         Date maxDate = new Date(theJob.getStartDate().getTime()
                 + TimeUnit.DAYS.toMillis(3) + 1);
-        // Three days on either side.
+
         int jobsThatWeek = 0;
 
         for (Job j : check)
         {
             if (j.getStartDate().after(minDate)
-                    && j.getStartDate().before(maxDate) && !j.equals(theJob))
+                    && j.getStartDate().before(maxDate))
             {
                 jobsThatWeek++;
             }
         }
-        check.remove(check.indexOf(theJob));
 
         if (jobsThatWeek >= MAX_WEEKLY_JOBS)
         {
@@ -158,122 +159,67 @@ public class UrbanParkCalendar implements Serializable
     }
 
     public void editJobTitle(Job jobToEdit, String jobTitle)
+            throws DuplicateJobExistsException
     {
-        Iterator<Job> itr = upcomingJobCollection.iterator();
-        while (itr.hasNext())
-        {
-            Job j = itr.next();
-            if (j.getJobTitle() == jobToEdit.getJobTitle())
-            {
-                j.setJobTitle(jobTitle);
-                break;
-            }
-            
-        }
-        
-    }
-    
-    public void editJobDesc(Job jobToEdit, String jobDescription)
-    {
-        Iterator<Job> itr = upcomingJobCollection.iterator();
-        while (itr.hasNext())
-        {
-            Job j = itr.next();
-            if (j.getJobTitle() == jobToEdit.getJobTitle())
-            {
-                j.setJobDescription(jobDescription);
-                break;
-            }
-            
-        }
-        
-    }
-    public boolean editJobStartDate(Job jobToEdit, String startDate)
-    {
-        boolean result = false;
-        Iterator<Job> itr = upcomingJobCollection.iterator();
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-        
-        // Get current start date in case editing fails
-        Date currentStartDate = jobToEdit.getStartDate();
-        
-        while (itr.hasNext())
-        {
-            Job j = itr.next();
-            if (j.getJobTitle() == jobToEdit.getJobTitle())
-            {
-                try
-                {
-                    j.setStartDate(format.parse(startDate));
-                    checkJobDate(j);
-                    result = true;
-                    
-                }
-                catch (ParseException | DuplicateJobExistsException | JobToThePastException 
-                                      | JobToTheFutureException | JobTooLongException e)
-                {
-                    // Restore start date
-                    j.setStartDate(currentStartDate);
-                    e.printStackTrace();
-                }
-                
-                break;
-            }
-            
-        }
-        return result;
-        
+        Job tempJob = new Job(jobToEdit);
+        tempJob.setJobTitle(jobTitle);
+
+        checkForDuplicates(tempJob);
+
+        upcomingJobCollection.remove(jobToEdit);
+        upcomingJobCollection.add(tempJob);
     }
 
-    public boolean editJobEndDate(Job jobToEdit, String endDate)
+    public void editJobDesc(Job jobToEdit, String jobDescription)
+            throws DuplicateJobExistsException
     {
-        Iterator<Job> itr = upcomingJobCollection.iterator();
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-        boolean result = false;
-        
-        // Get current end date in case editing fails
-        Date currentEndDate = jobToEdit.getEndDate();
-        
-        while (itr.hasNext())
-        {
-            Job j = itr.next();
-            if (j.getJobTitle() == jobToEdit.getJobTitle())
-            {
-                try
-                {
-                    j.setEndDate(format.parse(endDate));
-                    // Validate date
-                    checkJobDate(j);
-                    result = true;
-                }
-                catch (ParseException | DuplicateJobExistsException | JobToThePastException 
-                                      | JobToTheFutureException | JobTooLongException e)
-                {
-                    // Restore end date
-                    j.setEndDate(currentEndDate);
-                    e.printStackTrace();
-                }
-                break;
-            }
-            
-        }
-        return result;
+        Job tempJob = new Job(jobToEdit);
+        tempJob.setJobDescription(jobDescription);
+
+        checkForDuplicates(tempJob);
+
+        upcomingJobCollection.remove(jobToEdit);
+        upcomingJobCollection.add(tempJob);
+    }
+
+    public void editJobStartDate(Job jobToEdit, Date startDate)
+            throws JobToThePastException, JobToTheFutureException,
+            JobTooLongException, CalendarWeekFullException
+    {
+        Job tempJob = new Job(jobToEdit);
+        tempJob.setStartDate(startDate);
+
+        checkJobDate(tempJob);
+        checkForRoomThatWeek(tempJob);
+
+        upcomingJobCollection.remove(jobToEdit);
+        upcomingJobCollection.add(tempJob);
+    }
+
+    public void editJobEndDate(Job jobToEdit, Date endDate)
+            throws JobToThePastException, JobToTheFutureException,
+            JobTooLongException, CalendarWeekFullException
+    {
+        Job tempJob = new Job(jobToEdit);
+        tempJob.setEndDate(endDate);
+
+        checkJobDate(tempJob);
+        checkForRoomThatWeek(tempJob);
+
+        upcomingJobCollection.remove(jobToEdit);
+        upcomingJobCollection.add(tempJob);
     }
 
     public void editMaxVol(Job jobToEdit, int maxVolunteers)
     {
-        Iterator<Job> itr = upcomingJobCollection.iterator();
-        while (itr.hasNext())
-        {
-            Job j = itr.next();
-            if (j.getJobTitle() == jobToEdit.getJobTitle())
-            {
-                j.setMaxVolunteers(maxVolunteers);
-                break;
-            }
-            
-        }
-        
-    }
+        if (maxVolunteers > Job.MAX_VOLUNTEER_NUM)
+            maxVolunteers = Job.MAX_VOLUNTEER_NUM;
 
+        Job tempJob = new Job(jobToEdit);
+        tempJob.setMaxVolunteers(maxVolunteers);
+
+        upcomingJobCollection.remove(jobToEdit);
+        upcomingJobCollection.add(tempJob);
+
+    }
 }
