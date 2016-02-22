@@ -62,7 +62,6 @@ public class PrimaryDriver
         UPCalendar = new UrbanParkCalendar();
         loginList = new HashMap<>();
 
-        // Only call one of these!
         // fabricateInformation();
         deserializeData();
 
@@ -199,6 +198,7 @@ public class PrimaryDriver
     @SuppressWarnings("unchecked")
     private static void deserializeData()
     {
+        System.out.println("Attempting to read data from files.");
         try
         {
             Object readObject = new Object();
@@ -246,6 +246,8 @@ public class PrimaryDriver
                     UPCalendar.addVolunteer((Volunteer) current);
                 }
             }
+
+            System.out.println("Objects read successfully.");
         }
         catch (ClassNotFoundException e)
         {

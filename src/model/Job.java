@@ -144,7 +144,7 @@ public class Job implements Serializable, Comparable<Job>
         return Collections.unmodifiableCollection(volunteers);
     }
 
-    public String getAssociatedPark()
+    public String getParkName()
     {
         return parkName;
     }
