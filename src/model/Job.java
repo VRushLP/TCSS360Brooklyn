@@ -11,7 +11,7 @@ import java.util.Date;
  * @author Bethany Eastman
  * @version 02/09/2016
  */
-public class Job implements Serializable
+public class Job implements Serializable, Comparable<Job>
 {
     public static final int MAX_VOLUNTEER_NUM = 30;
     public static final int MAX_JOB_LENGTH = 2; // 2 days
@@ -163,4 +163,11 @@ public class Job implements Serializable
         }
         return false;
     }
+
+    @Override
+    public int compareTo(Job o)
+    {
+        return (int) (startDate.getTime() - ((Job) o).startDate.getTime());
+    }
+
 }

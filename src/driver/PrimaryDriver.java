@@ -44,7 +44,6 @@ public class PrimaryDriver
     /*
      * Main begins here!
      */
-    @SuppressWarnings("unchecked")
     public static void main(String[] args)
     {
         UPCalendar = new UrbanParkCalendar();
@@ -56,9 +55,9 @@ public class PrimaryDriver
 
         Scanner in = new Scanner(System.in);
 
-        // Prompt user to log
-        System.out.println(loginList.keySet()); // TODO Remove this before
-                                                // Deliverable 3
+        // Prompt user to log in
+        // TODO Remove this before Deliverable 3
+        System.out.println(loginList.keySet());
         System.out.println("Please enter your email to log in: ");
         String userInput;
 

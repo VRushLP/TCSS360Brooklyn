@@ -1,14 +1,13 @@
 package model;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import exception.CalendarFullException;
@@ -53,6 +52,7 @@ public class UrbanParkCalendar implements Serializable
                 upcomingJobCollection.remove(j);
             }
         }
+        Collections.sort((List<Job>) upcomingJobCollection);
     }
 
     public Collection<Volunteer> getAllUsers()
@@ -158,7 +158,7 @@ public class UrbanParkCalendar implements Serializable
         return upcomingJobCollection.remove(theJob);
     }
 
-    public void editJobTitle(Job jobToEdit, String jobTitle)
+    public Job editJobTitle(Job jobToEdit, String jobTitle)
             throws DuplicateJobExistsException
     {
         Job tempJob = new Job(jobToEdit);
@@ -168,9 +168,11 @@ public class UrbanParkCalendar implements Serializable
 
         upcomingJobCollection.remove(jobToEdit);
         upcomingJobCollection.add(tempJob);
+
+        return tempJob;
     }
 
-    public void editJobDesc(Job jobToEdit, String jobDescription)
+    public Job editJobDesc(Job jobToEdit, String jobDescription)
             throws DuplicateJobExistsException
     {
         Job tempJob = new Job(jobToEdit);
@@ -180,9 +182,11 @@ public class UrbanParkCalendar implements Serializable
 
         upcomingJobCollection.remove(jobToEdit);
         upcomingJobCollection.add(tempJob);
+
+        return tempJob;
     }
 
-    public void editJobStartDate(Job jobToEdit, Date startDate)
+    public Job editJobStartDate(Job jobToEdit, Date startDate)
             throws JobToThePastException, JobToTheFutureException,
             JobTooLongException, CalendarWeekFullException
     {
@@ -194,9 +198,11 @@ public class UrbanParkCalendar implements Serializable
 
         upcomingJobCollection.remove(jobToEdit);
         upcomingJobCollection.add(tempJob);
+
+        return tempJob;
     }
 
-    public void editJobEndDate(Job jobToEdit, Date endDate)
+    public Job editJobEndDate(Job jobToEdit, Date endDate)
             throws JobToThePastException, JobToTheFutureException,
             JobTooLongException, CalendarWeekFullException
     {
@@ -208,9 +214,11 @@ public class UrbanParkCalendar implements Serializable
 
         upcomingJobCollection.remove(jobToEdit);
         upcomingJobCollection.add(tempJob);
+
+        return tempJob;
     }
 
-    public void editMaxVol(Job jobToEdit, int maxVolunteers)
+    public Job editMaxVol(Job jobToEdit, int maxVolunteers)
     {
         if (maxVolunteers > Job.MAX_VOLUNTEER_NUM)
             maxVolunteers = Job.MAX_VOLUNTEER_NUM;
@@ -221,5 +229,6 @@ public class UrbanParkCalendar implements Serializable
         upcomingJobCollection.remove(jobToEdit);
         upcomingJobCollection.add(tempJob);
 
+        return tempJob;
     }
 }
