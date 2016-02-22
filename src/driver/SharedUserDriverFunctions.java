@@ -17,7 +17,7 @@ public abstract class SharedUserDriverFunctions
         jobSummary.append(index + ") ");
         jobSummary.append(theJob.getJobTitle());
         jobSummary.append(' ');
-        jobSummary.append(theJob.getAssociatedPark());
+        jobSummary.append(theJob.getParkName());
         jobSummary.append(' ');
         jobSummary.append(d.format(theJob.getStartDate()));
         jobSummary.append('-');

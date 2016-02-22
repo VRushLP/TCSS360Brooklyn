@@ -13,9 +13,10 @@ import java.util.Date;
  */
 public class Job implements Serializable, Comparable<Job>
 {
+    private static final long serialVersionUID = 9061001735234100580L;
     public static final int MAX_VOLUNTEER_NUM = 30;
     public static final int MAX_JOB_LENGTH = 2; // 2 days
-    
+
     private Collection<Volunteer> volunteers;
     private String parkName;
     private int maxVolunteers;
@@ -143,7 +144,7 @@ public class Job implements Serializable, Comparable<Job>
         return Collections.unmodifiableCollection(volunteers);
     }
 
-    public String getAssociatedPark()
+    public String getParkName()
     {
         return parkName;
     }
@@ -169,5 +170,4 @@ public class Job implements Serializable, Comparable<Job>
     {
         return (int) (startDate.getTime() - ((Job) o).startDate.getTime());
     }
-
 }

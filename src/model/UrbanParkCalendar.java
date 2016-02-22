@@ -20,6 +20,7 @@ import exception.JobTooLongException;
 
 public class UrbanParkCalendar implements Serializable
 {
+    private static final long serialVersionUID = 3638477910314787711L;
     public static final int MAX_JOBS = 30;
     public static final int MAX_WEEKLY_JOBS = 5;
     public static final int MAX_DATE_FROM_TODAY = 90;
@@ -55,7 +56,7 @@ public class UrbanParkCalendar implements Serializable
         Collections.sort((List<Job>) upcomingJobCollection);
     }
 
-    public Collection<Volunteer> getAllUsers()
+    public Collection<Volunteer> getAllVolunteers()
     {
         return Collections.unmodifiableCollection(allVolunteers);
     }
@@ -230,5 +231,16 @@ public class UrbanParkCalendar implements Serializable
         upcomingJobCollection.add(tempJob);
 
         return tempJob;
+    }
+
+    public void getJobsFromSerFile(String filePath)
+    {
+
+    }
+
+    public void overrideJobCollection(Collection<Job> theJobs)
+    {
+        upcomingJobCollection = new ArrayList<>(theJobs);
+        updateCalendar();
     }
 }

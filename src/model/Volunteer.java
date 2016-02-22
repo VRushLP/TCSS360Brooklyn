@@ -16,6 +16,7 @@ import exception.JobToThePastException;
  */
 public class Volunteer extends AbstractUser
 {
+    private static final long serialVersionUID = -3492237092177579789L;
     private Collection<Job> myJobs;
 
     public Volunteer(String theEmail, String theFirstName, String theLastName)
