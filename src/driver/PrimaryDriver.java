@@ -8,12 +8,21 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import exception.CalendarFullException;
+import exception.CalendarWeekFullException;
+import exception.DuplicateJobExistsException;
+import exception.JobTimeTravelException;
+import exception.JobToTheFutureException;
+import exception.JobToThePastException;
+import exception.JobTooLongException;
 import model.AbstractUser;
+import model.Job;
+import model.Park;
 import model.ParkManager;
 import model.UrbanParkCalendar;
 import model.UrbanParkStaffMember;
@@ -105,6 +114,23 @@ public class PrimaryDriver
 
     private static void fabricateInformation()
     {
+        Volunteer r = new Volunteer("rmfarc@email.net", "Kim", "Kardashian");
+        ParkManager parkM = new ParkManager("presidenttheo@whitehouse.gov", "Barry", "Obamas");
+        Park newPark = new Park("Park Park", parkM);
+        Job jobOne = new Job(newPark, 3, new Date(System.currentTimeMillis()), 
+                new Date(System.currentTimeMillis()), "Clean bathrroms",
+                "Clean the bathrooms in the park");
+        
+        loginList.put("rmfarc@email.net", r);
+        
+        try
+        {
+            UPCalendar.addJob(jobOne);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
     }
 

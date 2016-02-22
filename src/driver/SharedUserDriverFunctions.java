@@ -28,6 +28,8 @@ public abstract class SharedUserDriverFunctions
     public static void viewAllUpcomingJobs(UrbanParkCalendar theCalendar)
     {
         ArrayList<Job> allJobs = (ArrayList<Job>) theCalendar.getJobList();
+        
+        if (theCalendar.getJobList().isEmpty()) System.out.println("Sorry, there are no upcoming jobs");   
 
         for (int i = 0; i < allJobs.size(); i++)
         {
