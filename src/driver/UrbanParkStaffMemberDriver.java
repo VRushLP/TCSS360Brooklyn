@@ -131,7 +131,7 @@ public class UrbanParkStaffMemberDriver
     static Collection<Volunteer> scanVolunteers(String lastName)
     {
         ArrayList<Volunteer> toPrint = new ArrayList<>();
-        ArrayList<User> iterable = new ArrayList<>(myUPCalendar.getAllUsers());
+        ArrayList<User> iterable = new ArrayList<>(myUPCalendar.getAllVolunteers());
 
         for (User currentUser : iterable)
         {

@@ -7,6 +7,7 @@ import java.util.Collection;
 
 public class ParkManager extends AbstractUser
 {
+    private static final long serialVersionUID = 4121511740399438884L;
     private Collection<Park> myParks;
 
     public ParkManager(String theEmail, String theFirstName, String theLastName)

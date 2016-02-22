@@ -8,10 +8,17 @@ import java.util.Collections;
 
 public class Park implements Serializable
 {
+    private static final long serialVersionUID = -4808769468460385164L;
     private String parkName;
     private String parkManagerName;
     private String parkManagerEmail;
     private Collection<Job> parksJobList;
+
+    public Park(String theParkName)
+    {
+        parkName = theParkName;
+        parksJobList = new ArrayList<Job>();
+    }
 
     public Park(String theParkName, ParkManager theParkManager)
     {

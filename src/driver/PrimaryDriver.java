@@ -8,10 +8,14 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.sql.Date;
+
+import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import exception.CalendarFullException;
 import exception.CalendarWeekFullException;
@@ -20,8 +24,8 @@ import exception.JobTimeTravelException;
 import exception.JobToTheFutureException;
 import exception.JobToThePastException;
 import exception.JobTooLongException;
-import model.AbstractUser;
 
+import model.AbstractUser;
 import model.Job;
 import model.Park;
 import model.ParkManager;
@@ -35,8 +39,8 @@ public class PrimaryDriver
     private static final String EXIT_STRING = "quit";
 
     // Input file name.
-    private static final String[] filePaths = { "jobList.ser",
-            "loginList.ser" };
+    private static final String[] filePaths = { "calendar.ser", "loginList.ser",
+            "jobList.ser" };
 
     // Data Structure to store everything in
     private static Map<String, AbstractUser> loginList;
@@ -59,14 +63,16 @@ public class PrimaryDriver
         loginList = new HashMap<>();
 
         // Only call one of these!
-        fabricateInformation();
-        // deserializeData();
+        // fabricateInformation();
+        deserializeData();
 
         Scanner in = new Scanner(System.in);
 
         // Prompt user to log in
         // TODO Remove this before Deliverable 3
         System.out.println(loginList.keySet());
+        System.out.println(UPCalendar.getJobList().size());
+        System.out.println(UPCalendar.getAllVolunteers().size());
         System.out.println("Please enter your email to log in: ");
         String userInput;
 
@@ -84,15 +90,18 @@ public class PrimaryDriver
             {
                 ParkManagerDriver.run((ParkManager) currentUser, in,
                         UPCalendar);
+                break;
             }
             else if (currentUser instanceof UrbanParkStaffMember)
             {
                 UrbanParkStaffMemberDriver.run(
                         (UrbanParkStaffMember) currentUser, in, UPCalendar);
+                break;
             }
             else if (currentUser instanceof Volunteer)
             {
                 VolunteerDriver.run((Volunteer) currentUser, in, UPCalendar);
+                break;
             }
             else if (!userInput.equalsIgnoreCase(EXIT_STRING))
             {
@@ -116,30 +125,127 @@ public class PrimaryDriver
 
     private static void fabricateInformation()
     {
-        ParkManager dude = new ParkManager("thedude", "a", "b");
-        loginList.put(dude.getEmail(), dude);
-        Park examplePark = new Park("example", dude);
-        dude.addParkToManager(examplePark);
+        // userName = "thedude@aol.com"; //Park Manager
+        // userName = "potus@whitehouse.gov"; //Urban Park Staff Member
+        // userName = "rmfarc@uw.ed"; //Volunteer
+
+        // Users
+        ParkManager theDude = new ParkManager("thedude@aol.com", "Jeff",
+                "Bridges");
+        addUserInformation(theDude);
+        Park wildWaves = new Park("Wild Waves Theme Park");
+        Park dashPoint = new Park("Dash Point State Park");
+        theDude.addParkToManager(wildWaves);
+        theDude.addParkToManager(dashPoint);
+
+        UrbanParkStaffMember obama = new UrbanParkStaffMember(
+                "potus@whitehouse.gov", "Barack", "Obama");
+        addUserInformation(obama);
+
+        Volunteer robert = new Volunteer("rmfarc@uw.edu", "Robert", "Ferguson");
+        addUserInformation(robert);
+
+        // Dates so jobs are always in the future.
+        Date tomorrow = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1));
+        Date dayAfterTomorrow = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(2));
+        Date twoDaysAfterTomorrow = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(3));
+        Date threeDaysAfterTomorrow = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(4));
+
+        // Actual jobs
+        Job bigfoot = new Job(dashPoint, 30, tomorrow, tomorrow,
+                "Bigfoot Hunting", "We'll get him this time.");
+        Job yetis = new Job(dashPoint, 30, dayAfterTomorrow, dayAfterTomorrow,
+                "Yeti Extermination", "They're everywhere!.");
+        Job garbageCollect = new Job(wildWaves, 30, dayAfterTomorrow,
+                twoDaysAfterTomorrow, "Garbage Collection",
+                "Not as exciting, I know");
+        Job sweep = new Job(wildWaves, 30, twoDaysAfterTomorrow,
+                threeDaysAfterTomorrow, "Sweeping up the beach.",
+                "Getting rid of the sand. It gets /everywhere/");
+
+        try
+        {
+            UPCalendar.addJob(bigfoot);
+            UPCalendar.addJob(yetis);
+            UPCalendar.addJob(garbageCollect);
+            UPCalendar.addJob(sweep);
+        }
+        catch (CalendarWeekFullException | CalendarFullException
+                | JobTooLongException | JobTimeTravelException
+                | JobToThePastException | JobToTheFutureException
+                | DuplicateJobExistsException e)
+        {
+            System.err.println("Error in Fabricating Jobs.");
+            System.err.println(e.getClass().getSimpleName());
+            System.err.println(e.getCause());
+            e.printStackTrace();
+        }
+        serializeData();
     }
 
+    private static void addUserInformation(AbstractUser theUser)
+    {
+        loginList.put(theUser.getEmail(), theUser);
+        if (theUser instanceof Volunteer)
+        {
+            UPCalendar.addVolunteer((Volunteer) theUser);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
     private static void deserializeData()
     {
         try
         {
+            Object readObject = new Object();
+
             inputFileReader = new FileInputStream(filePaths[0]);
             ObjectInputStream objectReader = new ObjectInputStream(
                     inputFileReader);
-            UPCalendar = (UrbanParkCalendar) objectReader.readObject();
-
+            readObject = objectReader.readObject();
+            if (readObject instanceof UrbanParkCalendar)
+            {
+                UPCalendar = (UrbanParkCalendar) readObject;
+                readObject = new Object();
+            }
             objectReader.close();
             inputFileReader.close();
 
             inputFileReader = new FileInputStream(filePaths[1]);
             objectReader = new ObjectInputStream(inputFileReader);
-            loginList = (HashMap<String, AbstractUser>) objectReader
-                    .readObject();
+            readObject = objectReader.readObject();
+            if (readObject instanceof HashMap)
+            {
+                loginList = (Map<String, AbstractUser>) readObject;
+                readObject = new Object();
+            }
             objectReader.close();
             inputFileReader.close();
+
+            inputFileReader = new FileInputStream(filePaths[2]);
+            objectReader = new ObjectInputStream(inputFileReader);
+            readObject = objectReader.readObject();
+            if (readObject instanceof Collection)
+            {
+                UPCalendar.overrideJobCollection((Collection<Job>) readObject);
+            }
+            objectReader.close();
+            inputFileReader.close();
+
+            Set<String> allLogins = loginList.keySet();
+
+            for (String s : allLogins)
+            {
+                User current = loginList.get(s);
+                if (current instanceof Volunteer)
+                {
+                    UPCalendar.addVolunteer((Volunteer) current);
+                }
+            }
         }
         catch (ClassNotFoundException e)
         {
@@ -170,6 +276,12 @@ public class PrimaryDriver
             outputFileWriter = new FileOutputStream(filePaths[1]);
             objectWriter = new ObjectOutputStream(outputFileWriter);
             objectWriter.writeObject(loginList);
+            objectWriter.close();
+            outputFileWriter.close();
+
+            outputFileWriter = new FileOutputStream(filePaths[2]);
+            objectWriter = new ObjectOutputStream(outputFileWriter);
+            objectWriter.writeObject(UPCalendar.getJobList());
             objectWriter.close();
             outputFileWriter.close();
         }

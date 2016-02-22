@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public abstract class AbstractUser implements User, Serializable
 {
+    private static final long serialVersionUID = -8113206652437221361L;
     private String lastName;
     private String firstName;
     private String email;
