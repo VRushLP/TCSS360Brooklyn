@@ -87,6 +87,10 @@ public class Job implements Serializable, Comparable<Job>
         }
         return false;
     }
+    
+    public boolean removeVolunteer(Volunteer theVolunteer) {
+        return volunteers.remove(theVolunteer);
+    }
 
     public int getMaxVolunteers()
     {

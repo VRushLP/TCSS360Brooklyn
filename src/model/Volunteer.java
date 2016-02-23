@@ -30,11 +30,13 @@ public class Volunteer extends AbstractUser
             JobToThePastException
     {
         checkForConflicts(theJob);
+        theJob.addVolunteer(this);
         return myJobs.add(theJob);
     }
 
     public boolean removeJob(Job theJob)
     {
+        theJob.removeVolunteer(this);
         return myJobs.remove(theJob);
     }
 

@@ -116,6 +116,23 @@ public class VolunteerTest
             assertEquals(AlreadyVolunteeredException.class, e.getClass());
         }
     }
+    
+    /**
+     * Test that a job is full.
+     */
+    @Test
+    public void testJobIsFullException() {
+        try
+        {
+            joblessVolunteer.volunteerForJob(newJob);
+            sameVolunteer.volunteerForJob(newJob);
+            fail();
+        }
+        catch (Exception e)
+        {
+            assertEquals(JobIsFullException.class, e.getClass());
+        }
+    }
 
     /**
      * Tests exception thrown for jobs that interfere.
