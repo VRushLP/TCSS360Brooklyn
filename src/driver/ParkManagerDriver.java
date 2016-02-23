@@ -242,7 +242,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         // Get desired park
         park = parks.get(theChoice - 1);
 
-        ArrayList<Job> jobs = new ArrayList<Job>(myUPCalendar.getJobList());
+        ArrayList<Job> jobs = new ArrayList<Job>(park.getJobList());
 
         if (jobs.size() == 0)
         {
@@ -254,12 +254,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                     "\nPlease enter the number of the job you would like to delete\n");
             for (int i = 0; i < jobs.size(); i++)
             {
-                // Check to see if selected park corresponds to the
-                // associated park for the job we are currently on
-                if (jobs.get(i).getAssociatedPark() == park.getParkName())
-                {
-                    viewJobSummary(i + 1, jobs.get(i));
-                }
+                viewJobSummary(i + 1, jobs.get(i));
             }
             System.out.print("Enter job number:");
 
@@ -271,6 +266,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
 
             // Delete job from Calendar
             myUPCalendar.removeJob(theJob);
+            park.removeJob(theJob);
 
             // Display message to user to indicate that the operation was
             // successful
@@ -324,7 +320,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
 
         for (Job j : temp)
         {
-            if (j.getAssociatedPark().equals(park.getParkName()))
+            if (j.getParkName().equals(park.getParkName()))
             {
                 jobs.add(j);
             }
@@ -488,7 +484,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         // Get desired park
         park = parks.get(theChoice - 1);
 
-        ArrayList<Job> jobs = new ArrayList<Job>(myUPCalendar.getJobList());
+        ArrayList<Job> jobs = new ArrayList<Job>(park.getJobList());
 
         if (jobs.size() == 0)
         {
@@ -499,12 +495,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
             System.out.println("\nJob(s) in " + park.getParkName() + ":");
             for (int i = 0; i < jobs.size(); i++)
             {
-                // Check to see if selected park corresponds to the
-                // associated park for the job we are currently on
-                if (jobs.get(i).getAssociatedPark() == park.getParkName())
-                {
-                    System.out.println((i + 1) + ") " + jobs.get(i));
-                }
+                viewJobSummary(i + 1, jobs.get(i));
             }
         }
     }
@@ -555,7 +546,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                 // Check to see if selected park corresponds to the
                 // associated park for the job we are currently on
 
-                if (jobs.get(i).getAssociatedPark().equals(park))
+                if (jobs.get(i).getParkName().equals(park))
                 {
                     System.out.println((i + 1) + ") " + jobs.get(i));
                     System.out.println();

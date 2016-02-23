@@ -1,13 +1,12 @@
 package driver;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
 
 import exception.AlreadyVolunteeredException;
 import exception.ConflictingJobCommitmentException;
 import exception.JobIsFullException;
-
+import exception.JobToThePastException;
 import model.Job;
 import model.UrbanParkCalendar;
 import model.Volunteer;
@@ -55,13 +54,13 @@ public class VolunteerDriver extends SharedUserDriverFunctions
             }
             catch (NumberFormatException e)
             {
-                e.printStackTrace();
+                System.out.println("Please type in a number");
             }
 
             switch (choice)
             {
                 case 1:
-//                    viewAllUpcomingJobs(myUPCalendar);
+                    // viewAllUpcomingJobs(myUPCalendar);
                     viewAllJobsView();
                     break;
                 case 2:
@@ -76,17 +75,20 @@ public class VolunteerDriver extends SharedUserDriverFunctions
             }
         }
     }
-    
-    public static void viewAllJobsView() {
+
+    public static void viewAllJobsView()
+    {
         viewAllUpcomingJobs(myUPCalendar);
         ArrayList<Job> allJobs = new ArrayList<Job>(myUPCalendar.getJobList());
-        System.out.println("Enter a number of job to view more details, or enter "
-                + "B to go back");
+        System.out
+                .println("Enter a number of job to view more details, or enter "
+                        + "B to go back");
         input = myInput.nextLine();
-        if (!input.equalsIgnoreCase("B")) {
+        if (!input.equalsIgnoreCase("B"))
+        {
             viewJobDetails(allJobs.get(Integer.parseInt(input)));
         }
-        
+
     }
 
     /**
@@ -131,17 +133,28 @@ public class VolunteerDriver extends SharedUserDriverFunctions
      */
     public static void volunteer(Job theJob)
     {
-        theJob.addVolunteer(myUser);
         try
         {
             myUser.volunteerForJob(theJob);
+            theJob.addVolunteer(myUser);
             System.out.println("Congratulations! You have volunteered");
         }
-        catch (Exception e)
+        catch (AlreadyVolunteeredException e)
         {
-            System.out.println("Sorry, you were not able to volunteer");
-            //  fix so exception is not printed, instead print a message
-            // associate with the exception ?
+            System.out.println("You already volunteered for that Job!");
+        }
+        catch (ConflictingJobCommitmentException e)
+        {
+            System.out.println(
+                    "Sorry, you already have another Job scheduled for the same date.");
+        }
+        catch (JobIsFullException e)
+        {
+            System.out.println("Sorry, that Job is full.");
+        }
+        catch (JobToThePastException e)
+        {
+            System.out.println("Sorry, that Job has already occured.");
         }
 
         System.out.println("Enter b go back to main menu");

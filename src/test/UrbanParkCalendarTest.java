@@ -2,7 +2,6 @@ package test;
 
 import static org.junit.Assert.*;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -56,17 +55,17 @@ public class UrbanParkCalendarTest
         assertTrue(calendar.addVolunteer(local));
         assertFalse(calendar.addVolunteer(local)); // Calendars do not allow
                                                    // duplicate Volunteers
-        assertTrue(calendar.getAllUsers().contains(local));
-        assertEquals(1, calendar.getAllUsers().size());
+        assertTrue(calendar.getAllVolunteers().contains(local));
+        assertEquals(1, calendar.getAllVolunteers().size());
     }
 
     @Test
     public void testGetAllUsers()
     {
-        assertNotNull(calendar.getAllUsers());
-        assertEquals(0, calendar.getAllUsers().size());
+        assertNotNull(calendar.getAllVolunteers());
+        assertEquals(0, calendar.getAllVolunteers().size());
         calendar.addVolunteer(new Volunteer(null, null, null));
-        assertEquals(1, calendar.getAllUsers().size());
+        assertEquals(1, calendar.getAllVolunteers().size());
     }
 
     @Test
