@@ -76,10 +76,10 @@ public class UrbanParkCalendar implements Serializable
         return Collections.unmodifiableCollection(upcomingJobCollection);
     }
 
-    public boolean addJob(Job theJob)
-            throws CalendarWeekFullException, CalendarFullException,
-            JobTooLongException, JobTimeTravelException, JobToThePastException,
-            JobToTheFutureException, DuplicateJobExistsException
+    public boolean addJob(Job theJob) throws CalendarWeekFullException,
+            CalendarFullException, JobTooLongException, JobTimeTravelException,
+            JobToThePastException, JobToTheFutureException,
+            DuplicateJobExistsException
     {
         checkForDuplicates(theJob);
         checkJobDate(theJob);
@@ -100,9 +100,8 @@ public class UrbanParkCalendar implements Serializable
     private void checkJobDate(Job theJob) throws JobToThePastException,
             JobToTheFutureException, JobTooLongException
     {
-        if (theJob.getEndDate().getTime()
-                - theJob.getStartDate().getTime() > TimeUnit.DAYS
-                        .toMillis(Job.MAX_JOB_LENGTH))
+        if (theJob.getEndDate().getTime() - theJob.getStartDate().getTime() > TimeUnit.DAYS
+                .toMillis(Job.MAX_JOB_LENGTH))
         {
             throw new JobTooLongException();
         }
@@ -112,9 +111,8 @@ public class UrbanParkCalendar implements Serializable
             throw new JobToThePastException();
         }
 
-        if (theJob.getStartDate().getTime()
-                - calendar.getTime().getTime() > TimeUnit.DAYS
-                        .toMillis(MAX_DATE_FROM_TODAY))
+        if (theJob.getStartDate().getTime() - calendar.getTime().getTime() > TimeUnit.DAYS
+                .toMillis(MAX_DATE_FROM_TODAY))
         {
             throw new JobToTheFutureException();
         }
@@ -187,27 +185,12 @@ public class UrbanParkCalendar implements Serializable
         return tempJob;
     }
 
-    public Job editJobStartDate(Job jobToEdit, Date startDate)
+    public Job editJobDates(Job jobToEdit, Date startDate, Date endDate)
             throws JobToThePastException, JobToTheFutureException,
             JobTooLongException, CalendarWeekFullException
     {
         Job tempJob = new Job(jobToEdit);
         tempJob.setStartDate(startDate);
-
-        checkJobDate(tempJob);
-        checkForRoomThatWeek(tempJob);
-
-        upcomingJobCollection.remove(jobToEdit);
-        upcomingJobCollection.add(tempJob);
-
-        return tempJob;
-    }
-
-    public Job editJobEndDate(Job jobToEdit, Date endDate)
-            throws JobToThePastException, JobToTheFutureException,
-            JobTooLongException, CalendarWeekFullException
-    {
-        Job tempJob = new Job(jobToEdit);
         tempJob.setEndDate(endDate);
 
         checkJobDate(tempJob);

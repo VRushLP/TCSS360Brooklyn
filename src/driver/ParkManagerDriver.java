@@ -21,7 +21,7 @@ import exception.JobTooLongException;
 public class ParkManagerDriver extends SharedUserDriverFunctions
 {
     private static int MAIN_MENU_CHOICES = 6;
-    private static int EDIT_MENU_CHOICES = 6;
+    private static int EDIT_MENU_CHOICES = 5;
     private static int choice;
 
     // Data Structure to store everything in
@@ -283,13 +283,11 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                 System.out.println("Enter one of the options below:");
                 System.out.println("1. Edit job title");
                 System.out.println("2. Edit job description");
-                System.out.println("3. Edit start date");
-                System.out.println("4. Edit end date");
-                System.out.println("5. Edit maximum number of volunteers");
-                System.out.println("6. Finish");
+                System.out.println("3. Edit job date(s)");
+                System.out.println("4. Edit maximum number of volunteers");
+                System.out.println("5. Finish");
 
-                choice = myInput.nextInt();
-                myInput.nextLine();
+                choice = getIntegerInput(myInput, EDIT_MENU_CHOICES);
 
                 switch (choice)
                 {
@@ -332,11 +330,14 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
 
                         break;
                     case 3:
-                        System.out.print("Start Date (MM/DD/YYYY): ");
+                        System.out.print("New start date (MM/DD/YYYY): ");
                         Date startDate = getDateInput(myInput);
+                        System.out.print("New end date (MM/DD/YYYY): ");
+                        Date endDate = getDateInput(myInput);
                         try
                         {
-                            myUPCalendar.editJobStartDate(jobToEdit, startDate);
+                            myUPCalendar.editJobDates(jobToEdit, startDate,
+                                    endDate);
                             // Display message to user to indicate that the edit
                             // was successful
                             System.out
@@ -365,38 +366,6 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
 
                         break;
                     case 4:
-                        System.out.print("End Date (MM/DD/YYYY): ");
-                        Date endDate = getDateInput(myInput);
-
-                        try
-                        {
-                            myUPCalendar.editJobEndDate(jobToEdit, endDate);
-                            System.out
-                                    .println("Job end date was modified successfully.\n");
-                        }
-                        catch (JobToThePastException e)
-                        {
-                            System.out
-                                    .println("Your edit would cause the job to have already occured!");
-                        }
-                        catch (JobToTheFutureException e)
-                        {
-                            System.out
-                                    .println("Your edit puts the job too far out in the future.");
-                        }
-                        catch (JobTooLongException e)
-                        {
-                            System.out
-                                    .println("Your edit causes the job to last too long.");
-                        }
-                        catch (CalendarWeekFullException e)
-                        {
-                            System.out
-                                    .println("Your edit causes an overflow in that calendar week.");
-                        }
-
-                        break;
-                    case 5:
                         System.out
                                 .println("Please enter the a new maximum number of volunteers (Up to 30):");
 
@@ -410,16 +379,15 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                                         + "was changed to "
                                         + jobToEdit.getMaxVolunteers() + ".\n");
                         break;
-                    case 6:
+                    case 5:
                         System.out.println("Finished editting job");
                         break;
                     default:
                         System.out
                                 .println("Please enter one of the numbered options");
+                        break;
                 }
             } while (choice != EDIT_MENU_CHOICES);
-            choice = 0;
-            // reset choice
         }
     }
 
@@ -476,11 +444,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         }
         else
         {
-            System.out.println();
-            for (int i = 0; i < jobs.size(); i++)
-            {
-                printJobSummary(i, jobs.get(i));
-            }
+            printJobs(jobs);
             System.out.print("Enter job number:");
             choice = getIntegerInput(myInput, jobs.size());
 
