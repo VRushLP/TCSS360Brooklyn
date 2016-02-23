@@ -18,6 +18,7 @@ import model.Volunteer;
  */
 public class VolunteerDriver extends SharedUserDriverFunctions
 {
+    private static int MAX_MENU_OPTION = 3;
 
     static String input;
     static int choice;
@@ -37,31 +38,20 @@ public class VolunteerDriver extends SharedUserDriverFunctions
 
         System.out.println("Welcome " + myUser.getEmail());
 
-        while (choice != 3)
+        while (choice != MAX_MENU_OPTION)
         {
             System.out.println("Enter one of the options below:");
             System.out.println("1. View a summary of upcoming jobs");
             System.out.println("2. View jobs I am signed up for");
             System.out.println("3. Exit");
 
-            input = myInput.nextLine();
-            parsedInput = input.split(" ");
-
-            try
-            {
-                choice = Integer.parseInt(
-                        parsedInput[0].substring(0, parsedInput[0].length()));
-            }
-            catch (NumberFormatException e)
-            {
-                System.out.println("Please type in a number");
-            }
+            choice = getIntegerInput(myInput, MAX_MENU_OPTION);
 
             switch (choice)
             {
                 case 1:
                     // viewAllUpcomingJobs(myUPCalendar);
-                    viewAllJobsView();
+                    viewUpcomingJobs();
                     break;
                 case 2:
                     viewSignedUpJobs();
@@ -76,9 +66,9 @@ public class VolunteerDriver extends SharedUserDriverFunctions
         }
     }
 
-    public static void viewAllJobsView()
+    public static void viewUpcomingJobs()
     {
-        viewAllUpcomingJobs(myUPCalendar);
+        printAllUpcomingJobs(myUPCalendar);
         ArrayList<Job> allJobs = new ArrayList<Job>(myUPCalendar.getJobList());
         System.out
                 .println("Enter a number of job to view more details, or enter "
@@ -88,7 +78,6 @@ public class VolunteerDriver extends SharedUserDriverFunctions
         {
             viewJobDetails(allJobs.get(Integer.parseInt(input)));
         }
-
     }
 
     /**
@@ -145,8 +134,8 @@ public class VolunteerDriver extends SharedUserDriverFunctions
         }
         catch (ConflictingJobCommitmentException e)
         {
-            System.out.println(
-                    "Sorry, you already have another Job scheduled for the same date.");
+            System.out
+                    .println("Sorry, you already have another Job scheduled for the same date.");
         }
         catch (JobIsFullException e)
         {
@@ -161,8 +150,10 @@ public class VolunteerDriver extends SharedUserDriverFunctions
         input = myInput.nextLine();
     }
 
-    public void displayLogin()
+    public static void displayLogin()
     {
-        System.out.println("Welcome Volunteer " + myUser.getEmail() + "!");
+        System.out.println("Welcome " + myUser.getFirstName() + " "
+                + myUser.getLastName() + "!\n" + "Logged in as: "
+                + myUser.getEmail() + " (Volunteer)\n");
     }
 }
