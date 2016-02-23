@@ -49,7 +49,8 @@ public class Volunteer extends AbstractUser
             ConflictingJobCommitmentException, JobIsFullException,
             JobToThePastException
     {
-        if (isPastJob(theJob))
+        
+        if (theJob.isPastJob())
         {
             throw new JobToThePastException();
         }
@@ -85,53 +86,16 @@ public class Volunteer extends AbstractUser
         for (Job otherJob : myJobs)
         {
             // if start / end days overlap with first day
-            if (startDayOverlaps(theJob, otherJob))
+            if (theJob.startDayOverlaps(otherJob))
                 isFree = false;
             // if start / end days overlap with last day
-            if (endDayOverlaps(theJob, otherJob))
+            if (theJob.endDayOverlaps(otherJob))
                 isFree = false;
             // if start or end days are the same
-            if (shareDates(theJob, otherJob))
+            if (theJob.shareDates(otherJob))
                 isFree = false;
         }
 
         return isFree;
-    }
-
-    /**
-     * Return true if the job already happened.
-     */
-    public boolean isPastJob(Job theJob)
-    {
-        return theJob.getStartDate().before(new Date());
-    }
-
-    /**
-     * Return true if a job overlaps with another jobs start date.
-     */
-    public boolean startDayOverlaps(Job theJob, Job theOtherJob)
-    {
-        return theJob.getStartDate().before(theOtherJob.getStartDate())
-                && theJob.getEndDate().after(theOtherJob.getStartDate());
-    }
-
-    /**
-     * Return true if a job overlaps with another jobs end date.
-     */
-    public boolean endDayOverlaps(Job theJob, Job theOtherJob)
-    {
-        return theJob.getStartDate().before(theOtherJob.getEndDate())
-                && theJob.getEndDate().after(theOtherJob.getEndDate());
-    }
-
-    /**
-     * Return true if two jobs share any start or end dates.
-     */
-    public boolean shareDates(Job theJob, Job theOtherJob)
-    {
-        return theJob.getStartDate().equals(theOtherJob.getStartDate())
-                || theJob.getStartDate().equals(theOtherJob.getEndDate())
-                || theJob.getEndDate().equals(theOtherJob.getStartDate())
-                || theJob.getEndDate().equals(theOtherJob.getEndDate());
     }
 }
