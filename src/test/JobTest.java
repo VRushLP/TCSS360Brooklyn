@@ -20,10 +20,7 @@ import org.junit.Test;
  * @version 02/22/2016
  */
 public class JobTest
-{
-    
-    // testing business rules ? ?
-    
+{   
     
     // Fields
     Volunteer joblessVolunteer;
@@ -68,6 +65,16 @@ public class JobTest
                 "Clean bathrroms", "Clean the bathrooms in the park");
         
     }
+    
+    @Test
+    public void testEquals() {
+        
+    }
+    
+    @Test
+    public void testCompareTo() {
+        
+    }
 
     /**
      * Test that two jobs have share a start or end date.
@@ -108,6 +115,5 @@ public class JobTest
     {
         assertTrue(pastJob.isPastJob());
         assertFalse(newJob.isPastJob());
-        assertFalse(jobToday.isPastJob());
     }
 }
