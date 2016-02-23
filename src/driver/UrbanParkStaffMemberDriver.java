@@ -10,7 +10,7 @@ import model.UrbanParkStaffMember;
 import model.User;
 import model.Volunteer;
 
-public class UrbanParkStaffMemberDriver
+public class UrbanParkStaffMemberDriver extends SharedUserDriverFunctions
 {
     static String input;
     static int choice;
@@ -119,11 +119,7 @@ public class UrbanParkStaffMemberDriver
         {
             System.out.println(toPrint.size() + " result(s) for last name "
                     + toSearch);
-
-            for (Volunteer v : toPrint)
-            {
-                System.out.println(v.toString());
-            }
+            printVolunteers(toPrint);
         }
     }
 

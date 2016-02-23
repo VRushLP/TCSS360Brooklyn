@@ -50,7 +50,6 @@ public class VolunteerDriver extends SharedUserDriverFunctions
             switch (choice)
             {
                 case 1:
-                    // viewAllUpcomingJobs(myUPCalendar);
                     viewUpcomingJobs();
                     break;
                 case 2:

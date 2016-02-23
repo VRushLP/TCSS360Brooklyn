@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -24,6 +25,7 @@ import exception.JobTimeTravelException;
 import exception.JobToTheFutureException;
 import exception.JobToThePastException;
 import exception.JobTooLongException;
+
 import model.AbstractUser;
 import model.Job;
 import model.Park;
@@ -123,10 +125,6 @@ public class PrimaryDriver
 
     private static void fabricateInformation()
     {
-        // userName = "thedude@aol.com"; //Park Manager
-        // userName = "potus@whitehouse.gov"; //Urban Park Staff Member
-        // userName = "rmfarc@uw.ed"; //Volunteer
-
         // Users
         ParkManager theDude = new ParkManager("thedude@aol.com", "Jeff",
                 "Bridges");
@@ -244,23 +242,23 @@ public class PrimaryDriver
                 {
                     UPCalendar.addVolunteer((Volunteer) current);
                 }
-                if (current instanceof ParkManager)
-                {
-                    // ArrayList<Park> parks = new ArrayList<>(
-                    // ((ParkManager) current).getParks());
-                    //
-                    // for (Park p : parks)
-                    // {
-                    // for (Job j : UPCalendar.getJobList())
-                    // {
-                    // if (p.getParkName().equalsIgnoreCase(
-                    // j.getParkName()))
-                    // {
-                    // p.addJob(j);
-                    // }
-                    // }
-                    // }
-                }
+                // if (current instanceof ParkManager)
+                // {
+                // ArrayList<Park> parks = new ArrayList<>(
+                // ((ParkManager) current).getParks());
+                //
+                // for (Park p : parks)
+                // {
+                // for (Job j : UPCalendar.getJobList())
+                // {
+                // if (p.getParkName().equalsIgnoreCase(
+                // j.getParkName()))
+                // {
+                // p.addJob(j);
+                // }
+                // }
+                // }
+                // }
             }
 
             System.out.println("Objects read successfully.");

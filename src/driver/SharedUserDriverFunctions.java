@@ -53,7 +53,7 @@ public abstract class SharedUserDriverFunctions
         StringBuilder jobSummary = new StringBuilder();
         SimpleDateFormat dateFormat = new SimpleDateFormat();
 
-        jobSummary.append(index + ") ");
+        jobSummary.append(index + ". ");
         jobSummary.append(theJob.getJobTitle());
         jobSummary.append(' ');
         jobSummary.append(theJob.getParkName());
@@ -99,7 +99,7 @@ public abstract class SharedUserDriverFunctions
     {
         StringBuilder vSummary = new StringBuilder();
 
-        vSummary.append(index + ") ");
+        vSummary.append(index + ". ");
         vSummary.append(theVolunteer.getLastName());
         vSummary.append(", ");
         vSummary.append(theVolunteer.getFirstName());
@@ -218,7 +218,7 @@ public abstract class SharedUserDriverFunctions
         System.out.println();
         for (int i = 0; i < theParks.size(); i++)
         {
-            System.out.println((i + 1) + ") " + theParks.get(i));
+            System.out.println((i + 1) + ". " + theParks.get(i));
         }
         System.out.println();
     }
@@ -233,11 +233,11 @@ public abstract class SharedUserDriverFunctions
         System.out.println();
         if (volunteers.isEmpty())
         {
-            System.out.println("There are no volunteers to view");
+            System.out.println("There are no volunteers to view.");
         }
         for (int i = 0; i < volunteers.size(); i++)
         {
-            printVolunteerSummary(i, volunteers.get(i));
+            printVolunteerSummary(i + 1, volunteers.get(i));
         }
         System.out.println();
     }
