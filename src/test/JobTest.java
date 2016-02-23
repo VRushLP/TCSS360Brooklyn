@@ -8,7 +8,6 @@ import java.util.Date;
 import model.Job;
 import model.Park;
 import model.ParkManager;
-import model.UrbanParkCalendar;
 import model.Volunteer;
 
 import org.junit.Before;

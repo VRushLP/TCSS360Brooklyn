@@ -3,7 +3,6 @@ package model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 
 import exception.AlreadyVolunteeredException;
 import exception.ConflictingJobCommitmentException;
@@ -85,15 +84,12 @@ public class Volunteer extends AbstractUser
 
         for (Job otherJob : myJobs)
         {
-            // if start / end days overlap with first day
-            if (theJob.startDayOverlaps(otherJob))
-                isFree = false;
-            // if start / end days overlap with last day
-            if (theJob.endDayOverlaps(otherJob))
-                isFree = false;
+            // if start / end days overlap with first or last day
             // if start or end days are the same
-            if (theJob.shareDates(otherJob))
-                isFree = false;
+            
+            if (theJob.shareDates(otherJob) || theJob.endDayOverlaps(otherJob) 
+                    || theJob.startDayOverlaps(otherJob))
+                isFree = false;;
         }
 
         return isFree;

@@ -168,8 +168,7 @@ public class Job implements Serializable, Comparable<Job>
     public int compareTo(Job o)
     {
         return (int) (startDate.getTime() - ((Job) o).startDate.getTime());
-    }
-    
+    }   
     
     /**
      * Return true if the job already happened.
