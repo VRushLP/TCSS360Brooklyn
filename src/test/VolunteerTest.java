@@ -78,8 +78,6 @@ public class VolunteerTest
         }
         catch (Exception e)
         {
-            assertEquals("You have already signed up for this job.",
-                    e.getMessage());
             fail();
         }
     }
