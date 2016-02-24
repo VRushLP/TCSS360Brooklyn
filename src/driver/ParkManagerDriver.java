@@ -89,9 +89,6 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
      */
     public static void submitNewJob()
     {
-        // TODO Maybe we should attempt to check this with the exception
-        // instead.
-        // It is nice to be told this before entering all the information though
         myUPCalendar.updateCalendar();
         if (myUPCalendar.getJobList().size() == UrbanParkCalendar.MAX_JOBS)
         {
@@ -374,6 +371,11 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                     {
                         System.out
                                 .println("Your edit causes an overflow in that calendar week.");
+                    }
+                    catch (JobTimeTravelException e)
+                    {
+                        System.out
+                                .println("Your edit would cause your job to end before it began!");
                     }
 
                     break;

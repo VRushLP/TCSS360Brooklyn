@@ -59,6 +59,11 @@ public class Park implements Serializable
         return parksJobList.remove(theJob);
     }
 
+    public boolean hasJob(Job theJob)
+    {
+        return parksJobList.contains(theJob);
+    }
+
     @Override
     public String toString()
     {

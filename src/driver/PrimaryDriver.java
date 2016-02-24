@@ -63,14 +63,12 @@ public class PrimaryDriver
         UPCalendar = new UrbanParkCalendar();
         loginList = new HashMap<>();
 
-        // fabricateInformation();
+        // fabricateInformation(); //TODO
         deserializeData();
 
         Scanner in = new Scanner(System.in);
 
         // Prompt user to log in
-        // TODO Remove this before Deliverable 3
-        System.out.println(loginList.keySet());
         System.out.println(UPCalendar.getJobList().size());
         System.out.println(UPCalendar.getAllVolunteers().size());
         System.out.println("Please enter your email to log in: ");
@@ -242,23 +240,24 @@ public class PrimaryDriver
                 {
                     UPCalendar.addVolunteer((Volunteer) current);
                 }
-                // if (current instanceof ParkManager)
-                // {
-                // ArrayList<Park> parks = new ArrayList<>(
-                // ((ParkManager) current).getParks());
-                //
-                // for (Park p : parks)
-                // {
-                // for (Job j : UPCalendar.getJobList())
-                // {
-                // if (p.getParkName().equalsIgnoreCase(
-                // j.getParkName()))
-                // {
-                // p.addJob(j);
-                // }
-                // }
-                // }
-                // }
+                if (current instanceof ParkManager)
+                {
+                    ArrayList<Park> parks = new ArrayList<>(
+                            ((ParkManager) current).getParks());
+
+                    for (Park p : parks)
+                    {
+                        for (Job j : UPCalendar.getJobList())
+                        {
+                            if (p.getParkName().equalsIgnoreCase(
+                                    j.getParkName())
+                                    && !p.hasJob(j))
+                            {
+                                p.addJob(j);
+                            }
+                        }
+                    }
+                }
             }
 
             System.out.println("Objects read successfully.");

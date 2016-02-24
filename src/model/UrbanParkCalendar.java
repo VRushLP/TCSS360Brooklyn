@@ -98,7 +98,8 @@ public class UrbanParkCalendar implements Serializable
     }
 
     private void checkJobDate(Job theJob) throws JobToThePastException,
-            JobToTheFutureException, JobTooLongException
+            JobToTheFutureException, JobTooLongException,
+            JobTimeTravelException
     {
         if (theJob.getEndDate().getTime() - theJob.getStartDate().getTime() > TimeUnit.DAYS
                 .toMillis(Job.MAX_JOB_LENGTH))
@@ -115,6 +116,11 @@ public class UrbanParkCalendar implements Serializable
                 .toMillis(MAX_DATE_FROM_TODAY))
         {
             throw new JobToTheFutureException();
+        }
+
+        if (theJob.getEndDate().before(theJob.getStartDate()))
+        {
+            throw new JobTimeTravelException();
         }
     }
 
@@ -194,7 +200,7 @@ public class UrbanParkCalendar implements Serializable
     public Job editJobDates(Park park, Job jobToEdit, Date startDate,
             Date endDate) throws JobToThePastException,
             JobToTheFutureException, JobTooLongException,
-            CalendarWeekFullException
+            CalendarWeekFullException, JobTimeTravelException
     {
         Job tempJob = new Job(jobToEdit);
         tempJob.setStartDate(startDate);
