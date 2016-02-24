@@ -9,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -39,8 +40,8 @@ public class PrimaryDriver
     private static final String EXIT_STRING = "quit";
 
     // Input file name.
-    private static final String[] filePaths = { "calendar.ser", "loginList.ser",
-            "jobList.ser" };
+    private static final String[] filePaths = { "calendar.ser",
+            "loginList.ser", "jobList.ser" };
 
     // Data Structure to store everything in
     private static Map<String, AbstractUser> loginList;
@@ -62,14 +63,12 @@ public class PrimaryDriver
         UPCalendar = new UrbanParkCalendar();
         loginList = new HashMap<>();
 
-        // fabricateInformation();
+        // fabricateInformation(); //TODO
         deserializeData();
 
         Scanner in = new Scanner(System.in);
 
         // Prompt user to log in
-        // TODO Remove this before Deliverable 3
-        System.out.println(loginList.keySet());
         System.out.println(UPCalendar.getJobList().size());
         System.out.println(UPCalendar.getAllVolunteers().size());
         System.out.println("Please enter your email to log in: ");
@@ -87,8 +86,8 @@ public class PrimaryDriver
 
             if (currentUser instanceof ParkManager)
             {
-                ParkManagerDriver.run((ParkManager) currentUser, in,
-                        UPCalendar);
+                ParkManagerDriver
+                        .run((ParkManager) currentUser, in, UPCalendar);
                 break;
             }
             else if (currentUser instanceof UrbanParkStaffMember)
@@ -104,8 +103,8 @@ public class PrimaryDriver
             }
             else if (!userInput.equalsIgnoreCase(EXIT_STRING))
             {
-                System.out.println(
-                        "Login failed. Please try again or type 'Quit' to terminate the program.");
+                System.out
+                        .println("Login failed. Please try again or type 'Quit' to terminate the program.");
             }
             else
             {
@@ -124,10 +123,6 @@ public class PrimaryDriver
 
     private static void fabricateInformation()
     {
-        // userName = "thedude@aol.com"; //Park Manager
-        // userName = "potus@whitehouse.gov"; //Urban Park Staff Member
-        // userName = "rmfarc@uw.ed"; //Volunteer
-
         // Users
         ParkManager theDude = new ParkManager("thedude@aol.com", "Jeff",
                 "Bridges");
@@ -145,14 +140,14 @@ public class PrimaryDriver
         addUserInformation(robert);
 
         // Dates so jobs are always in the future.
-        Date tomorrow = new Date(
-                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1));
-        Date dayAfterTomorrow = new Date(
-                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(2));
-        Date twoDaysAfterTomorrow = new Date(
-                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(3));
-        Date threeDaysAfterTomorrow = new Date(
-                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(4));
+        Date tomorrow = new Date(System.currentTimeMillis()
+                + TimeUnit.DAYS.toMillis(1));
+        Date dayAfterTomorrow = new Date(System.currentTimeMillis()
+                + TimeUnit.DAYS.toMillis(2));
+        Date twoDaysAfterTomorrow = new Date(System.currentTimeMillis()
+                + TimeUnit.DAYS.toMillis(3));
+        Date threeDaysAfterTomorrow = new Date(System.currentTimeMillis()
+                + TimeUnit.DAYS.toMillis(4));
 
         // Actual jobs
         Job bigfoot = new Job(dashPoint, 30, tomorrow, tomorrow,
@@ -244,6 +239,24 @@ public class PrimaryDriver
                 if (current instanceof Volunteer)
                 {
                     UPCalendar.addVolunteer((Volunteer) current);
+                }
+                if (current instanceof ParkManager)
+                {
+                    ArrayList<Park> parks = new ArrayList<>(
+                            ((ParkManager) current).getParks());
+
+                    for (Park p : parks)
+                    {
+                        for (Job j : UPCalendar.getJobList())
+                        {
+                            if (p.getParkName().equalsIgnoreCase(
+                                    j.getParkName())
+                                    && !p.hasJob(j))
+                            {
+                                p.addJob(j);
+                            }
+                        }
+                    }
                 }
             }
 
