@@ -78,8 +78,6 @@ public class VolunteerTest
         }
         catch (Exception e)
         {
-            assertEquals("You have already signed up for this job.",
-                    e.getMessage());
             fail();
         }
     }
@@ -116,6 +114,23 @@ public class VolunteerTest
         catch (Exception e)
         {
             assertEquals(AlreadyVolunteeredException.class, e.getClass());
+        }
+    }
+    
+    /**
+     * Test that a job is full.
+     */
+    @Test
+    public void testJobIsFullException() {
+        try
+        {
+            joblessVolunteer.volunteerForJob(newJob);
+            sameVolunteer.volunteerForJob(newJob);
+            fail();
+        }
+        catch (Exception e)
+        {
+            assertEquals(JobIsFullException.class, e.getClass());
         }
     }
 
@@ -201,7 +216,7 @@ public class VolunteerTest
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            fail();
         }
         assertTrue(oneJobVolunteer.getVolunteeredForJobs().contains(newJob));
         assertTrue(oneJobVolunteer.removeJob(newJob));
@@ -226,52 +241,6 @@ public class VolunteerTest
         {
             fail();
         }
-    }
-
-    /**
-     * Test that two jobs have share a start or end date.
-     */
-    @Test
-    public void testShareDates()
-    {
-        assertTrue(oneJobVolunteer.shareDates(newJob, conflictingJob));
-        assertFalse(oneJobVolunteer.shareDates(newJob, pastJob));
-    }
-
-    /**
-     * Tests that a job conflicts with another job, if job occurs during the
-     * other job.
-     */
-    @Test
-    public void testStartDayOverlaps()
-    {
-        assertTrue(oneJobVolunteer.startDayOverlaps(jobConflictsBeforeStart,
-                newJob));
-        assertFalse(oneJobVolunteer.startDayOverlaps(jobConflictsAfterStart,
-                newJob));
-    }
-
-    /**
-     * Tests that a job conflicts with another job, if job starts during job.
-     */
-    @Test
-    public void testEndDayOverlaps()
-    {
-        assertTrue(oneJobVolunteer.endDayOverlaps(jobConflictsAfterStart,
-                newJob));
-        assertFalse(oneJobVolunteer.endDayOverlaps(jobConflictsBeforeStart,
-                newJob));
-    }
-
-    /**
-     * Tests that a job is in the past.
-     */
-    @Test
-    public void testIsPastJob()
-    {
-        assertTrue(oneJobVolunteer.isPastJob(pastJob));
-        assertFalse(oneJobVolunteer.isPastJob(newJob));
-        assertFalse(oneJobVolunteer.isPastJob(jobToday));
     }
 
 }

@@ -125,7 +125,6 @@ public class VolunteerDriver extends SharedUserDriverFunctions
         try
         {
             myUser.volunteerForJob(theJob);
-            theJob.addVolunteer(myUser);
             System.out.println("Congratulations! You have volunteered");
         }
         catch (AlreadyVolunteeredException e)

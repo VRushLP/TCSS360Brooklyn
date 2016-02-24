@@ -1,14 +1,13 @@
 package model;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 
 /**
- * @author Bethany Eastman
+ * @author Robert, Bethany
  * @version 02/09/2016
  */
 public class Job implements Serializable, Comparable<Job>
@@ -87,6 +86,10 @@ public class Job implements Serializable, Comparable<Job>
             return volunteers.add(theVolunteer);
         }
         return false;
+    }
+    
+    public boolean removeVolunteer(Volunteer theVolunteer) {
+        return volunteers.remove(theVolunteer);
     }
 
     public int getMaxVolunteers()
@@ -169,5 +172,42 @@ public class Job implements Serializable, Comparable<Job>
     public int compareTo(Job o)
     {
         return (int) (startDate.getTime() - ((Job) o).startDate.getTime());
+    }   
+    
+    /**
+     * Return true if the job already happened.
+     */
+    public boolean isPastJob()
+    {
+        return startDate.before(new Date());
+    }
+
+    /**
+     * Return true if a job overlaps with another jobs start date.
+     */
+    public boolean startDayOverlaps(Job theOtherJob)
+    {
+        return startDate.before(theOtherJob.getStartDate())
+                && endDate.after(theOtherJob.getStartDate());
+    }
+
+    /**
+     * Return true if a job overlaps with another jobs end date.
+     */
+    public boolean endDayOverlaps(Job theOtherJob)
+    {
+        return startDate.before(theOtherJob.getEndDate())
+                && endDate.after(theOtherJob.getEndDate());
+    }
+
+    /**
+     * Return true if two jobs share any start or end dates.
+     */
+    public boolean shareDates(Job theOtherJob)
+    {
+        return startDate.equals(theOtherJob.getStartDate())
+                || startDate.equals(theOtherJob.getEndDate())
+                || endDate.equals(theOtherJob.getStartDate())
+                || endDate.equals(theOtherJob.getEndDate());
     }
 }

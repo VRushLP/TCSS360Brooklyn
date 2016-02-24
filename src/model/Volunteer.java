@@ -3,7 +3,6 @@ package model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 
 import exception.AlreadyVolunteeredException;
 import exception.ConflictingJobCommitmentException;
@@ -31,11 +30,13 @@ public class Volunteer extends AbstractUser
             JobToThePastException
     {
         checkForConflicts(theJob);
+        theJob.addVolunteer(this);
         return myJobs.add(theJob);
     }
 
     public boolean removeJob(Job theJob)
     {
+        theJob.removeVolunteer(this);
         return myJobs.remove(theJob);
     }
 
@@ -49,7 +50,8 @@ public class Volunteer extends AbstractUser
             ConflictingJobCommitmentException, JobIsFullException,
             JobToThePastException
     {
-        if (isPastJob(theJob))
+        
+        if (theJob.isPastJob())
         {
             throw new JobToThePastException();
         }
@@ -84,54 +86,14 @@ public class Volunteer extends AbstractUser
 
         for (Job otherJob : myJobs)
         {
-            // if start / end days overlap with first day
-            if (startDayOverlaps(theJob, otherJob))
-                isFree = false;
-            // if start / end days overlap with last day
-            if (endDayOverlaps(theJob, otherJob))
-                isFree = false;
+            // if start / end days overlap with first or last day
             // if start or end days are the same
-            if (shareDates(theJob, otherJob))
-                isFree = false;
+            
+            if (theJob.shareDates(otherJob) || theJob.endDayOverlaps(otherJob) 
+                    || theJob.startDayOverlaps(otherJob))
+                isFree = false;;
         }
 
         return isFree;
-    }
-
-    /**
-     * Return true if the job already happened.
-     */
-    public boolean isPastJob(Job theJob)
-    {
-        return theJob.getStartDate().before(new Date());
-    }
-
-    /**
-     * Return true if a job overlaps with another jobs start date.
-     */
-    public boolean startDayOverlaps(Job theJob, Job theOtherJob)
-    {
-        return theJob.getStartDate().before(theOtherJob.getStartDate())
-                && theJob.getEndDate().after(theOtherJob.getStartDate());
-    }
-
-    /**
-     * Return true if a job overlaps with another jobs end date.
-     */
-    public boolean endDayOverlaps(Job theJob, Job theOtherJob)
-    {
-        return theJob.getStartDate().before(theOtherJob.getEndDate())
-                && theJob.getEndDate().after(theOtherJob.getEndDate());
-    }
-
-    /**
-     * Return true if two jobs share any start or end dates.
-     */
-    public boolean shareDates(Job theJob, Job theOtherJob)
-    {
-        return theJob.getStartDate().equals(theOtherJob.getStartDate())
-                || theJob.getStartDate().equals(theOtherJob.getEndDate())
-                || theJob.getEndDate().equals(theOtherJob.getStartDate())
-                || theJob.getEndDate().equals(theOtherJob.getEndDate());
     }
 }
