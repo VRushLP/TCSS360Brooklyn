@@ -24,7 +24,6 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
     private static int EDIT_MENU_CHOICES = 5;
     private static int choice;
 
-    // Data Structure to store everything in
     private static ParkManager myUser;
     private static UrbanParkCalendar myUPCalendar;
     private static Scanner myInput;
@@ -48,7 +47,6 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
 
         while (choice != MAIN_MENU_CHOICES)
         {
-            // Display appropriate welcoming message first
             displayLogin();
             System.out.println("Enter one of the options below:");
             System.out.println("1. Submit a new job");
@@ -111,12 +109,11 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
 
             System.out.print("Please enter job title: ");
             String jobTitle = myInput.nextLine();
-            // System.out.println();
             System.out.print("Job description: ");
             String jobDescription = myInput.nextLine();
+
             System.out.print("Start Date (MM/DD/YYYY): ");
             Date startDate = getDateInput(myInput);
-
             System.out.print("End Date (MM/DD/YYYY): ");
             Date endDate = getDateInput(myInput);
 
@@ -134,7 +131,6 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
             Job jobToAdd = new Job(park, maxVolunteers, startDate, endDate,
                     jobTitle, jobDescription);
 
-            // Attempt to schedule job.
             attemptToAddJob(park, jobToAdd);
         }
     }
@@ -152,9 +148,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         System.out.print("Enter park number:");
         choice = getIntegerInput(myInput, parks.size());
 
-        // Get desired park
         Park park = parks.get(choice - 1);
-        // Get list of jobs that are in that park.
         ArrayList<Job> jobs = new ArrayList<Job>(park.getJobList());
 
         if (jobs.size() == 0)
@@ -166,19 +160,16 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
             System.out
                     .println("\nPlease enter the number of the job you would like to delete\n");
             printJobs(jobs);
-            System.out.print("Enter job number:");
+            System.out.println("Enter job number:");
 
             choice = getIntegerInput(myInput, jobs.size());
 
             // Get desired job to delete
             Job theJob = jobs.get(choice - 1);
-
-            // Delete job from Calendar
+            // Delete job from Calendar first
             myUPCalendar.removeJob(theJob);
             // Then delete it from the park
             park.removeJob(theJob);
-
-            // Display message that the request was successful
             System.out.println("Job was deleted successfully.\n");
         }
     }
@@ -196,7 +187,6 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         System.out.print("Enter park number:");
         choice = getIntegerInput(myInput, parks.size());
 
-        // Get desired park
         Park park = parks.get(choice - 1);
         ArrayList<Job> jobs = new ArrayList<Job>(park.getJobList());
 
@@ -216,7 +206,6 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
 
             // Get desired job to delete
             Job jobToEdit = jobs.get(choice - 1);
-
             attemptToEditJob(park, jobToEdit);
         }
     }
@@ -233,8 +222,6 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
 
         printParks(parks);
         System.out.print("Enter park number:");
-
-        // Get desired park
         choice = getIntegerInput(myInput, parks.size());
         Park park = parks.get(choice - 1);
 
@@ -251,13 +238,11 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         System.out
                 .println("Please select one of the parks you manage to view the jobs");
 
-        // Get desired park
         ArrayList<Park> parks = new ArrayList<Park>(myUser.getParks());
         printParks(parks);
         System.out.print("Enter park number:");
         choice = getIntegerInput(myInput, parks.size());
         Park park = parks.get(choice - 1);
-        // Get jobs from that park
         ArrayList<Job> jobs = new ArrayList<Job>(park.getJobList());
 
         if (jobs.size() == 0)
@@ -269,20 +254,14 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
             printJobs(jobs);
             System.out.print("Enter job number:");
             choice = getIntegerInput(myInput, jobs.size());
-
-            // Get desired job
             Job job = jobs.get(choice - 1);
 
             ArrayList<Volunteer> volunteers = new ArrayList<Volunteer>(
                     job.getVolunteers());
-
-            // Print volunteer information from collection of volunteers for
-            // selected job
             printVolunteers(volunteers);
         }
     }
 
-    // TODO Not sure this saves jobs properly in the park.
     /**
      * Prompts the user for job edits until they are done.
      */
@@ -326,8 +305,6 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                     {
                         jobToEdit = myUPCalendar.editJobDesc(park, jobToEdit,
                                 newJobDescription);
-                        // Display message to user to indicate that the edit
-                        // was successful
                         System.out
                                 .println("Job description was modified successfully.\n");
                     }
@@ -347,8 +324,6 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                     {
                         jobToEdit = myUPCalendar.editJobDates(park, jobToEdit,
                                 startDate, endDate);
-                        // Display message to user to indicate that the edit
-                        // was successful
                         System.out
                                 .println("Job start date was modified successfully.\n");
                     }
@@ -414,7 +389,6 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         {
             myUPCalendar.addJob(jobToAdd);
             park.addJob(jobToAdd);
-            // Display message to indicate that the add was successful
             System.out.println("Job was added successfully!\n");
 
         }
