@@ -16,38 +16,23 @@ public class Job implements Serializable, Comparable<Job>
     public static final int MAX_VOLUNTEER_NUM = 30;
     public static final int MAX_JOB_LENGTH = 2; // 2 days
 
-    private Collection<Volunteer> volunteers;
     private String parkName;
-    private int maxVolunteers;
 
     private Date startDate;
     private Date endDate;
 
     private String jobTitle;
     private String jobDescription;
-    
+
     // work categories
-    
+
     private Collection<Volunteer> lightVolunteers;
     private Collection<Volunteer> mediumVolunteers;
     private Collection<Volunteer> difficultVolunteers;
-    
+
     private int maxLightVolunteers;
     private int maxDifficultVolunteers;
     private int maxMediumVolunteers;
-
-    public Job(Park thePark, int theMaxVolunteers, Date theStartDate,
-            Date theEndDate, String theJobTitle, String theJobDescription)
-    {
-        // volunteer list starts empty
-        volunteers = new ArrayList<>();
-        parkName = thePark.getParkName();
-        maxVolunteers = theMaxVolunteers; // check if max volunteers is 30
-        startDate = theStartDate;
-        endDate = theEndDate;
-        jobTitle = theJobTitle;
-        jobDescription = theJobDescription;
-    }
 
     /**
      * Copies a Job's information so that it can be edited safely. This
@@ -58,39 +43,48 @@ public class Job implements Serializable, Comparable<Job>
      */
     public Job(Job toCopy)
     {
-        volunteers = new ArrayList<>();
+        lightVolunteers = new ArrayList<Volunteer>();
+        mediumVolunteers = new ArrayList<Volunteer>();
+        difficultVolunteers = new ArrayList<Volunteer>();
+        maxLightVolunteers = toCopy.maxLightVolunteers;
+        maxMediumVolunteers = toCopy.maxMediumVolunteers;
+        maxDifficultVolunteers = toCopy.maxDifficultVolunteers;
+
         parkName = toCopy.parkName;
-        maxVolunteers = toCopy.maxVolunteers; // check if max volunteers is 30
         startDate = toCopy.startDate;
         endDate = toCopy.endDate;
         jobTitle = toCopy.jobTitle;
         jobDescription = toCopy.jobDescription;
+
     }
-    
-    public Job(Park thePark, int theMaxLight, int theMaxMed, int theMaxDifficult, 
-            Date theStartDate, Date theEndDate, String theJobTitle, String theJobDescription)
+
+    public Job(Park thePark, int theMaxLight, int theMaxMed,
+            int theMaxDifficult, Date theStartDate, Date theEndDate,
+            String theJobTitle, String theJobDescription)
     {
         lightVolunteers = new ArrayList<Volunteer>();
         mediumVolunteers = new ArrayList<Volunteer>();
         difficultVolunteers = new ArrayList<Volunteer>();
-        
-        parkName = thePark.getParkName();
-        
         maxLightVolunteers = theMaxLight;
         maxMediumVolunteers = theMaxMed;
         maxDifficultVolunteers = theMaxDifficult;
-        
+
+        parkName = thePark.getParkName();
         startDate = theStartDate;
         endDate = theEndDate;
         jobTitle = theJobTitle;
         jobDescription = theJobDescription;
     }
-    
+
     // work categories
-    
-    public Collection<Volunteer> getAllVolunteers()
+
+    /**
+     * Returns a list of all volunteers from all work categories.
+     */
+    public Collection<Volunteer> getVolunteers()
     {
-        Collection<Volunteer> allVolunteers = new ArrayList<Volunteer>(lightVolunteers);
+        Collection<Volunteer> allVolunteers = new ArrayList<Volunteer>(
+                lightVolunteers);
         allVolunteers.addAll(mediumVolunteers);
         allVolunteers.addAll(difficultVolunteers);
         return Collections.unmodifiableCollection(allVolunteers);
@@ -122,31 +116,48 @@ public class Job implements Serializable, Comparable<Job>
         }
         return false;
     }
-    
-    public int getMaxLightVolunteers() {
+
+    public int getMaxLightVolunteers()
+    {
         return maxLightVolunteers;
     }
-    
-    public int getMaxMediumVolunteers() {
+
+    public int getMaxMediumVolunteers()
+    {
         return maxMediumVolunteers;
     }
-    
-    public int getMaxDifficultVolunteers() {
+
+    public int getMaxDifficultVolunteers()
+    {
         return maxDifficultVolunteers;
     }
-    
-    public void setMaxLightVolunteers(int theMax) {
+
+    public void setMaxLightVolunteers(int theMax)
+    {
         maxLightVolunteers = theMax;
     }
-    
-    public void setMaxMediumVolunteers(int theMax) {
+
+    public void setMaxMediumVolunteers(int theMax)
+    {
         maxMediumVolunteers = theMax;
     }
-    
-    public void setMaxDifficultVolunteers(int theMax) {
+
+    public void setMaxDifficultVolunteers(int theMax)
+    {
         maxDifficultVolunteers = theMax;
     }
     
+    public boolean removeVolunteer(Volunteer theVolunteer) {
+        if (lightVolunteers.contains(theVolunteer)) {
+            return lightVolunteers.remove(theVolunteer);
+        } else if (mediumVolunteers.contains(theVolunteer)) {
+            return mediumVolunteers.remove(theVolunteer);
+        } else if (difficultVolunteers.contains(theVolunteer)) {
+            return difficultVolunteers.remove(theVolunteer);
+        }
+        return false;
+    }
+
     // end work categories
 
     @Override
@@ -159,10 +170,22 @@ public class Job implements Serializable, Comparable<Job>
         jobDetails.append(jobDescription);
         jobDetails.append("\nLocation: ");
         jobDetails.append(parkName);
-        jobDetails.append("\nVolunteers: ");
-        jobDetails.append(volunteers.size());
+
+        jobDetails.append("\nLight Volunteers Needed: ");
+        jobDetails.append(lightVolunteers.size());
         jobDetails.append("/");
-        jobDetails.append(maxVolunteers);
+        jobDetails.append(maxLightVolunteers);
+
+        jobDetails.append("\nMedium Volunteers Needed: ");
+        jobDetails.append(mediumVolunteers.size());
+        jobDetails.append("/");
+        jobDetails.append(maxMediumVolunteers);
+
+        jobDetails.append("\nDifficult Volunteers Needed: ");
+        jobDetails.append(difficultVolunteers.size());
+        jobDetails.append("/");
+        jobDetails.append(maxDifficultVolunteers);
+
         jobDetails.append("\nStart Date: ");
         jobDetails.append(startDate);
         jobDetails.append(" End Date: ");
@@ -170,30 +193,7 @@ public class Job implements Serializable, Comparable<Job>
         jobDetails.append("\n");
         return jobDetails.toString();
     }
-
-    public boolean addVolunteer(Volunteer theVolunteer)
-    {
-        if (volunteers.size() < maxVolunteers)
-        {
-            return volunteers.add(theVolunteer);
-        }
-        return false;
-    }
-    
-    public boolean removeVolunteer(Volunteer theVolunteer) {
-        return volunteers.remove(theVolunteer);
-    }
-
-    public int getMaxVolunteers()
-    {
-        return maxVolunteers;
-    }
-
-    public void setMaxVolunteers(int maxVolunteers)
-    {
-        this.maxVolunteers = maxVolunteers;
-    }
-
+   
     public Date getStartDate()
     {
         return startDate;
@@ -234,11 +234,6 @@ public class Job implements Serializable, Comparable<Job>
         this.jobDescription = jobDescription;
     }
 
-    public Collection<Volunteer> getVolunteers()
-    {
-        return Collections.unmodifiableCollection(volunteers);
-    }
-
     public String getParkName()
     {
         return parkName;
@@ -264,8 +259,8 @@ public class Job implements Serializable, Comparable<Job>
     public int compareTo(Job o)
     {
         return (int) (startDate.getTime() - ((Job) o).startDate.getTime());
-    }   
-    
+    }
+
     /**
      * Return true if the job already happened.
      */
