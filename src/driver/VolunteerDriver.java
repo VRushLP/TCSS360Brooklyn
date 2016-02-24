@@ -75,7 +75,8 @@ public class VolunteerDriver extends SharedUserDriverFunctions
         input = myInput.nextLine();
         if (!input.equalsIgnoreCase("B"))
         {
-            viewJobDetails(allJobs.get(Integer.parseInt(input)));
+            viewJobDetails(allJobs
+                    .get(getIntegerInput(myInput, allJobs.size())));
         }
     }
 

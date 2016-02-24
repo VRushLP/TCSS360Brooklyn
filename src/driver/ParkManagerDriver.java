@@ -308,7 +308,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                     String newJobTitle = myInput.nextLine();
                     try
                     {
-                        jobToEdit = myUPCalendar.editJobTitle(jobToEdit,
+                        jobToEdit = myUPCalendar.editJobTitle(park, jobToEdit,
                                 newJobTitle);
                         // Display message to user to indicate that the edit
                         // was successful
@@ -327,7 +327,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                     String newJobDescription = myInput.nextLine();
                     try
                     {
-                        jobToEdit = myUPCalendar.editJobDesc(jobToEdit,
+                        jobToEdit = myUPCalendar.editJobDesc(park, jobToEdit,
                                 newJobDescription);
                         // Display message to user to indicate that the edit
                         // was successful
@@ -348,7 +348,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                     Date endDate = getDateInput(myInput);
                     try
                     {
-                        jobToEdit = myUPCalendar.editJobDates(jobToEdit,
+                        jobToEdit = myUPCalendar.editJobDates(park, jobToEdit,
                                 startDate, endDate);
                         // Display message to user to indicate that the edit
                         // was successful
@@ -384,7 +384,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                     int maxVolunteers = getIntegerInput(myInput,
                             Job.MAX_VOLUNTEER_NUM);
 
-                    jobToEdit = myUPCalendar.editMaxVol(jobToEdit,
+                    jobToEdit = myUPCalendar.editMaxVol(park, jobToEdit,
                             maxVolunteers);
                     System.out
                             .println("Maximum number of volunteers for selected job "

@@ -157,7 +157,7 @@ public class UrbanParkCalendar implements Serializable
         return upcomingJobCollection.remove(theJob);
     }
 
-    public Job editJobTitle(Job jobToEdit, String jobTitle)
+    public Job editJobTitle(Park park, Job jobToEdit, String jobTitle)
             throws DuplicateJobExistsException
     {
         Job tempJob = new Job(jobToEdit);
@@ -168,10 +168,13 @@ public class UrbanParkCalendar implements Serializable
         upcomingJobCollection.remove(jobToEdit);
         upcomingJobCollection.add(tempJob);
 
+        park.removeJob(jobToEdit);
+        park.addJob(tempJob);
+
         return tempJob;
     }
 
-    public Job editJobDesc(Job jobToEdit, String jobDescription)
+    public Job editJobDesc(Park park, Job jobToEdit, String jobDescription)
             throws DuplicateJobExistsException
     {
         Job tempJob = new Job(jobToEdit);
@@ -182,12 +185,16 @@ public class UrbanParkCalendar implements Serializable
         upcomingJobCollection.remove(jobToEdit);
         upcomingJobCollection.add(tempJob);
 
+        park.removeJob(jobToEdit);
+        park.addJob(tempJob);
+
         return tempJob;
     }
 
-    public Job editJobDates(Job jobToEdit, Date startDate, Date endDate)
-            throws JobToThePastException, JobToTheFutureException,
-            JobTooLongException, CalendarWeekFullException
+    public Job editJobDates(Park park, Job jobToEdit, Date startDate,
+            Date endDate) throws JobToThePastException,
+            JobToTheFutureException, JobTooLongException,
+            CalendarWeekFullException
     {
         Job tempJob = new Job(jobToEdit);
         tempJob.setStartDate(startDate);
@@ -199,10 +206,13 @@ public class UrbanParkCalendar implements Serializable
         upcomingJobCollection.remove(jobToEdit);
         upcomingJobCollection.add(tempJob);
 
+        park.removeJob(jobToEdit);
+        park.addJob(tempJob);
+
         return tempJob;
     }
 
-    public Job editMaxVol(Job jobToEdit, int maxVolunteers)
+    public Job editMaxVol(Park park, Job jobToEdit, int maxVolunteers)
     {
         if (maxVolunteers > Job.MAX_VOLUNTEER_NUM)
             maxVolunteers = Job.MAX_VOLUNTEER_NUM;
@@ -213,12 +223,10 @@ public class UrbanParkCalendar implements Serializable
         upcomingJobCollection.remove(jobToEdit);
         upcomingJobCollection.add(tempJob);
 
+        park.removeJob(jobToEdit);
+        park.addJob(tempJob);
+
         return tempJob;
-    }
-
-    public void getJobsFromSerFile(String filePath)
-    {
-
     }
 
     public void overrideJobCollection(Collection<Job> theJobs)
