@@ -25,6 +25,16 @@ public class Job implements Serializable, Comparable<Job>
 
     private String jobTitle;
     private String jobDescription;
+    
+    // work categories
+    
+    private Collection<Volunteer> lightVolunteers;
+    private Collection<Volunteer> mediumVolunteers;
+    private Collection<Volunteer> difficultVolunteers;
+    
+    private int maxLightVolunteers;
+    private int maxDifficultVolunteers;
+    private int maxMediumVolunteers;
 
     public Job(Park thePark, int theMaxVolunteers, Date theStartDate,
             Date theEndDate, String theJobTitle, String theJobDescription)
@@ -56,6 +66,88 @@ public class Job implements Serializable, Comparable<Job>
         jobTitle = toCopy.jobTitle;
         jobDescription = toCopy.jobDescription;
     }
+    
+    public Job(Park thePark, int theMaxLight, int theMaxMed, int theMaxDifficult, 
+            Date theStartDate, Date theEndDate, String theJobTitle, String theJobDescription)
+    {
+        lightVolunteers = new ArrayList<Volunteer>();
+        mediumVolunteers = new ArrayList<Volunteer>();
+        difficultVolunteers = new ArrayList<Volunteer>();
+        
+        parkName = thePark.getParkName();
+        
+        maxLightVolunteers = theMaxLight;
+        maxMediumVolunteers = theMaxMed;
+        maxDifficultVolunteers = theMaxDifficult;
+        
+        startDate = theStartDate;
+        endDate = theEndDate;
+        jobTitle = theJobTitle;
+        jobDescription = theJobDescription;
+    }
+    
+    // work categories
+    
+    public Collection<Volunteer> getAllVolunteers()
+    {
+        Collection<Volunteer> allVolunteers = new ArrayList<Volunteer>(lightVolunteers);
+        allVolunteers.addAll(mediumVolunteers);
+        allVolunteers.addAll(difficultVolunteers);
+        return Collections.unmodifiableCollection(allVolunteers);
+    }
+
+    public boolean addLightVolunteer(Volunteer theVolunteer)
+    {
+        if (lightVolunteers.size() < maxLightVolunteers)
+        {
+            return lightVolunteers.add(theVolunteer);
+        }
+        return false;
+    }
+
+    public boolean addDifficultVolunteer(Volunteer theVolunteer)
+    {
+        if (difficultVolunteers.size() < maxDifficultVolunteers)
+        {
+            return difficultVolunteers.add(theVolunteer);
+        }
+        return false;
+    }
+
+    public boolean addMediumVolunteer(Volunteer theVolunteer)
+    {
+        if (mediumVolunteers.size() < maxMediumVolunteers)
+        {
+            return mediumVolunteers.add(theVolunteer);
+        }
+        return false;
+    }
+    
+    public int getMaxLightVolunteers() {
+        return maxLightVolunteers;
+    }
+    
+    public int getMaxMediumVolunteers() {
+        return maxMediumVolunteers;
+    }
+    
+    public int getMaxDifficultVolunteers() {
+        return maxDifficultVolunteers;
+    }
+    
+    public void setMaxLightVolunteers(int theMax) {
+        maxLightVolunteers = theMax;
+    }
+    
+    public void setMaxMediumVolunteers(int theMax) {
+        maxMediumVolunteers = theMax;
+    }
+    
+    public void setMaxDifficultVolunteers(int theMax) {
+        maxDifficultVolunteers = theMax;
+    }
+    
+    // end work categories
 
     @Override
     public String toString()
