@@ -118,8 +118,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
             Date endDate = getDateInput(myInput);
 
             System.out.print("Maximum number of volunteers (Up to 30): ");
-            int maxVolunteers = myInput.nextInt();
-            myInput.nextLine();
+            int maxVolunteers = getIntegerInput(myInput, 30);
 
             if (maxVolunteers > Job.MAX_VOLUNTEER_NUM)
             {
@@ -206,7 +205,15 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
 
             // Get desired job to delete
             Job jobToEdit = jobs.get(choice - 1);
-            attemptToEditJob(park, jobToEdit);
+            if (jobToEdit.canEdit())
+            {
+                attemptToEditJob(park, jobToEdit);
+            }
+            else
+            {
+                System.out
+                        .println("You cannot edit a Job that already has Volunteers");
+            }
         }
     }
 
@@ -228,6 +235,8 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         ArrayList<Job> jobs = new ArrayList<Job>(park.getJobList());
         System.out.println("Jobs in " + park.getParkName());
         printJobs(jobs);
+
+        // TODO Allow a user to view jobs in greater detail until they're done.
     }
 
     /**

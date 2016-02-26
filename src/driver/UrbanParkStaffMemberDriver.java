@@ -37,6 +37,8 @@ public class UrbanParkStaffMemberDriver extends SharedUserDriverFunctions
 
         while (choice != 3)
         {
+            displayLogin();
+            
             System.out.println("Enter one of the options below:");
             System.out.println("1. Search volunteers by last name");
             System.out.println("2. View Jobs");

@@ -36,10 +36,10 @@ public class VolunteerDriver extends SharedUserDriverFunctions
         myUser = theCurrentUser;
         myInput = in;
 
-        System.out.println("Welcome " + myUser.getEmail());
-
         while (choice != MAX_MENU_OPTION)
         {
+            displayLogin();
+
             System.out.println("Enter one of the options below:");
             System.out.println("1. View a summary of upcoming jobs");
             System.out.println("2. View jobs I am signed up for");
@@ -65,18 +65,24 @@ public class VolunteerDriver extends SharedUserDriverFunctions
         }
     }
 
+    // TODO
+    /*
+     * Change this so it stops looping on 0 instead of B Change this so parks
+     * start listing at 1 instead of 0 This method eats an input.
+     */
     public static void viewUpcomingJobs()
     {
         printAllUpcomingJobs(myUPCalendar);
-        ArrayList<Job> allJobs = new ArrayList<Job>(myUPCalendar.getJobList());
+        ArrayList<Job> upcomingJobs = new ArrayList<Job>(
+                myUPCalendar.getJobList());
         System.out
                 .println("Enter a number of job to view more details, or enter "
                         + "B to go back");
         input = myInput.nextLine();
         if (!input.equalsIgnoreCase("B"))
         {
-            viewJobDetails(allJobs
-                    .get(getIntegerInput(myInput, allJobs.size())));
+            viewJobDetails(upcomingJobs.get(getIntegerInput(myInput,
+                    upcomingJobs.size())));
         }
     }
 

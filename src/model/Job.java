@@ -87,8 +87,9 @@ public class Job implements Serializable, Comparable<Job>
         }
         return false;
     }
-    
-    public boolean removeVolunteer(Volunteer theVolunteer) {
+
+    public boolean removeVolunteer(Volunteer theVolunteer)
+    {
         return volunteers.remove(theVolunteer);
     }
 
@@ -152,6 +153,12 @@ public class Job implements Serializable, Comparable<Job>
         return parkName;
     }
 
+    // TODO Change this when WorkCategories are in
+    public boolean canEdit()
+    {
+        return true;
+    }
+
     @Override
     public boolean equals(Object o)
     {
@@ -172,8 +179,8 @@ public class Job implements Serializable, Comparable<Job>
     public int compareTo(Job o)
     {
         return (int) (startDate.getTime() - ((Job) o).startDate.getTime());
-    }   
-    
+    }
+
     /**
      * Return true if the job already happened.
      */
