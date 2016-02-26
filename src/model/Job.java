@@ -206,35 +206,7 @@ public class Job implements Serializable, Comparable<Job>
         jobDetails.append("\n");
         return jobDetails.toString();
     }
-<<<<<<< HEAD
-   
-=======
 
-    public boolean addVolunteer(Volunteer theVolunteer)
-    {
-        if (volunteers.size() < maxVolunteers)
-        {
-            return volunteers.add(theVolunteer);
-        }
-        return false;
-    }
-
-    public boolean removeVolunteer(Volunteer theVolunteer)
-    {
-        return volunteers.remove(theVolunteer);
-    }
-
-    public int getMaxVolunteers()
-    {
-        return maxVolunteers;
-    }
-
-    public void setMaxVolunteers(int maxVolunteers)
-    {
-        this.maxVolunteers = maxVolunteers;
-    }
-
->>>>>>> master
     public Date getStartDate()
     {
         return startDate;
