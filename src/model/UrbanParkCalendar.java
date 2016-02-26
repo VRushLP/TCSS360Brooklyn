@@ -224,7 +224,8 @@ public class UrbanParkCalendar implements Serializable
             maxVolunteers = Job.MAX_VOLUNTEER_NUM;
 
         Job tempJob = new Job(jobToEdit);
-        tempJob.setMaxVolunteers(maxVolunteers);
+        // set max volunteers needs to be changed for work categories
+//        tempJob.setMaxVolunteers(maxVolunteers);
 
         upcomingJobCollection.remove(jobToEdit);
         upcomingJobCollection.add(tempJob);

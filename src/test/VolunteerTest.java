@@ -51,18 +51,18 @@ public class VolunteerTest
         oneJobVolunteer = new Volunteer("b@uw.edu", "Jane", "Does");
         tom = new ParkManager("tom@uw.edu", "Tom", "Hanks");
         newPark = new Park("Tom's Park", tom);
-        newJob = new Job(newPark, 1, fourDays, fiveDays, "Pick up trash",
+        newJob = new Job(newPark, 1, 1, 1, fourDays, fiveDays, "Pick up trash",
                 "Clean up trash from Park");
-        conflictingJob = new Job(newPark, 3, fourDays, fiveDays,
+        conflictingJob = new Job(newPark, 3 , 3, 3, fourDays, fiveDays,
                 "Clean bathrroms", "Clean the bathrooms in the park");
-        pastJob = new Job(newPark, 3, sevenDays, sevenDays, "Clean bathrroms",
+        pastJob = new Job(newPark, 3, 3, 3, sevenDays, sevenDays, "Clean bathrroms",
                 "Clean the bathrooms in the park");
-        jobToday = new Job(newPark, 3, new Date(), new Date(),
+        jobToday = new Job(newPark, 3, 3, 3, new Date(), new Date(),
                 "Clean bathrroms", "Clean the bathrooms in the park");
-        jobConflictsBeforeStart = new Job(newPark, 3, threeDays, fiveDays,
-                "Clean bathrroms", "Clean the bathrooms in the park");
-        jobConflictsAfterStart = new Job(newPark, 3, fourDays, sixDays,
-                "Clean bathrroms", "Clean the bathrooms in the park");
+        jobConflictsBeforeStart = new Job(newPark, 3, 3, 3, threeDays, fiveDays,
+                "Clean bathrooms", "Clean the bathrooms in the park");
+        jobConflictsAfterStart = new Job(newPark, 3, 3, 3, fourDays, sixDays,
+                "Clean bathrooms", "Clean the bathrooms in the park");
     }
 
     /**
