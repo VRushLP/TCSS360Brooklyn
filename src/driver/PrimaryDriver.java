@@ -150,14 +150,14 @@ public class PrimaryDriver
                 + TimeUnit.DAYS.toMillis(4));
 
         // Actual jobs
-        Job bigfoot = new Job(dashPoint, 30, tomorrow, tomorrow,
+        Job bigfoot = new Job(dashPoint, 10, 10, 10, tomorrow, tomorrow,
                 "Bigfoot Hunting", "We'll get him this time.");
-        Job yetis = new Job(dashPoint, 30, dayAfterTomorrow, dayAfterTomorrow,
+        Job yetis = new Job(dashPoint, 10, 10, 10, dayAfterTomorrow, dayAfterTomorrow,
                 "Yeti Extermination", "They're everywhere!.");
-        Job garbageCollect = new Job(wildWaves, 30, dayAfterTomorrow,
+        Job garbageCollect = new Job(wildWaves, 10, 10, 10, dayAfterTomorrow,
                 twoDaysAfterTomorrow, "Garbage Collection",
                 "Not as exciting, I know");
-        Job sweep = new Job(wildWaves, 30, twoDaysAfterTomorrow,
+        Job sweep = new Job(wildWaves, 10, 10, 10, twoDaysAfterTomorrow,
                 threeDaysAfterTomorrow, "Sweeping up the beach.",
                 "Getting rid of the sand. It gets /everywhere/");
 

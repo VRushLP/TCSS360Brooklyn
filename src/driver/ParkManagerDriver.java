@@ -128,7 +128,9 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                 maxVolunteers = Job.MAX_VOLUNTEER_NUM;
             }
 
-            Job jobToAdd = new Job(park, maxVolunteers, startDate, endDate,
+//             needs to be changed for multiple workload types
+            
+            Job jobToAdd = new Job(park, maxVolunteers, maxVolunteers, maxVolunteers, startDate, endDate,
                     jobTitle, jobDescription);
 
             attemptToAddJob(park, jobToAdd);
