@@ -218,6 +218,7 @@ public class UrbanParkCalendar implements Serializable
         return tempJob;
     }
 
+    //TODO Change this to accept 3 numbers and edit all job categories
     public Job editMaxVol(Park park, Job jobToEdit, int maxVolunteers)
     {
         if (maxVolunteers > Job.MAX_VOLUNTEER_NUM)

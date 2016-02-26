@@ -63,7 +63,7 @@ public class PrimaryDriver
         UPCalendar = new UrbanParkCalendar();
         loginList = new HashMap<>();
 
-        // fabricateInformation(); //TODO
+        // fabricateInformation(); // TODO reset the .ser files
         deserializeData();
 
         Scanner in = new Scanner(System.in);
@@ -74,6 +74,8 @@ public class PrimaryDriver
         System.out.println("Please enter your email to log in: ");
         String userInput;
 
+        System.out.println(loginList.keySet());
+        
         do
         {
             userInput = in.nextLine();
