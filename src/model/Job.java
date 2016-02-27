@@ -113,8 +113,9 @@ public class Job implements Serializable, Comparable<Job>
                 return maxMediumVolunteers == mediumVolunteers.size();
             case DIFFICULT:
                 return maxDifficultVolunteers == difficultVolunteers.size();
+            default:
+                return true;
         }
-        return false;
     }
     
     public boolean removeVolunteer(Volunteer theVolunteer) {

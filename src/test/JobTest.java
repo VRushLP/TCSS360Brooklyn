@@ -67,7 +67,7 @@ public class JobTest
     }
     
     /**
-     * Test a job returns appropraite value for max volunteers of a work category.
+     * Test a job returns appropriate value for max volunteers of a work category.
      */
     @Test
     public void testHasMaxVolunteersNoVolunteers() {
@@ -77,7 +77,8 @@ public class JobTest
     }
     
     /**
-     * Test a job returns appropraite value for max volunteers of a work category.
+     * Test a job returns appropriate value for max volunteers of a work category,
+     * tests that hasMaxVolunteers will return full when a work category is full.
      */
     @Test
     public void testHasMaxVolunteersFullVolunteers() {

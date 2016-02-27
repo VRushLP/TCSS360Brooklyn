@@ -33,15 +33,17 @@ public class Volunteer extends AbstractUser
 
         if (theJob.hasMaxVolunteers(theWorkLoad)) throw new JobIsFullException();
 
-        
         switch (theWorkLoad)
         {
             case LIGHT:
                 theJob.addLightVolunteer(this);
+                break;
             case MEDIUM:
                 theJob.addMediumVolunteer(this);
+                break;
             case DIFFICULT:
                 theJob.addDifficultVolunteer(this);
+                break;
         }
 
         return myJobs.add(theJob);
