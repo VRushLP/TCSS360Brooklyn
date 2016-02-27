@@ -124,7 +124,6 @@ public class JobTest
             sameVolunteer.volunteerForJob(newJob, WorkLoad.MEDIUM);
             oneJobVolunteer.volunteerForJob(newJob, WorkLoad.DIFFICULT);
         } catch (Exception e) {
-            System.out.println(e.getClass());
             fail();
         }
         assertTrue(newJob.hasMaxVolunteers(WorkLoad.LIGHT));
