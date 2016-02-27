@@ -92,29 +92,17 @@ public class Job implements Serializable, Comparable<Job>
 
     public boolean addLightVolunteer(Volunteer theVolunteer)
     {
-        if (lightVolunteers.size() < maxLightVolunteers)
-        {
-            return lightVolunteers.add(theVolunteer);
-        }
-        return false;
+        return lightVolunteers.add(theVolunteer);
+    }
+    
+    public boolean addMediumVolunteer(Volunteer theVolunteer)
+    { 
+        return mediumVolunteers.add(theVolunteer);
     }
 
     public boolean addDifficultVolunteer(Volunteer theVolunteer)
     {
-        if (difficultVolunteers.size() < maxDifficultVolunteers)
-        {
-            return difficultVolunteers.add(theVolunteer);
-        }
-        return false;
-    }
-
-    public boolean addMediumVolunteer(Volunteer theVolunteer)
-    {
-        if (mediumVolunteers.size() < maxMediumVolunteers)
-        {
-            return mediumVolunteers.add(theVolunteer);
-        }
-        return false;
+        return difficultVolunteers.add(theVolunteer);
     }
     
     public boolean hasMaxVolunteers(WorkLoad theWorkLoad) {
@@ -125,9 +113,31 @@ public class Job implements Serializable, Comparable<Job>
                 return maxMediumVolunteers == mediumVolunteers.size();
             case DIFFICULT:
                 return maxDifficultVolunteers == difficultVolunteers.size();
-            default:
-                return false;
         }
+        return false;
+    }
+    
+    public boolean removeVolunteer(Volunteer theVolunteer) {
+        if (lightVolunteers.contains(theVolunteer)) {
+            return lightVolunteers.remove(theVolunteer);
+        } else if (mediumVolunteers.contains(theVolunteer)) {
+            return mediumVolunteers.remove(theVolunteer);
+        } else if (difficultVolunteers.contains(theVolunteer)) {
+            return difficultVolunteers.remove(theVolunteer);
+        }
+        return false;
+    }
+    
+    public int getLightVolunteerCount() {
+        return lightVolunteers.size();
+    }
+    
+    public int getMediumVolunteerCount() {
+        return mediumVolunteers.size();
+    }
+    
+    public int getDifficultVolunteerCount() {
+        return difficultVolunteers.size();
     }
 
     public int getMaxLightVolunteers()
@@ -158,17 +168,6 @@ public class Job implements Serializable, Comparable<Job>
     public void setMaxDifficultVolunteers(int theMax)
     {
         maxDifficultVolunteers = theMax;
-    }
-    
-    public boolean removeVolunteer(Volunteer theVolunteer) {
-        if (lightVolunteers.contains(theVolunteer)) {
-            return lightVolunteers.remove(theVolunteer);
-        } else if (mediumVolunteers.contains(theVolunteer)) {
-            return mediumVolunteers.remove(theVolunteer);
-        } else if (difficultVolunteers.contains(theVolunteer)) {
-            return difficultVolunteers.remove(theVolunteer);
-        }
-        return false;
     }
 
     // end work categories
@@ -255,7 +254,7 @@ public class Job implements Serializable, Comparable<Job>
     // TODO Change this when WorkCategories are in
     public boolean canEdit()
     {
-        return true;
+        return lightVolunteers.isEmpty() && mediumVolunteers.isEmpty() && difficultVolunteers.isEmpty();
     }
 
     @Override

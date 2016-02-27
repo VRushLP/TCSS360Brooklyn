@@ -31,11 +31,9 @@ public class Volunteer extends AbstractUser
     {
         checkForConflicts(theJob);
 
-        if (theJob.hasMaxVolunteers(theWorkLoad))
-        {
-            throw new JobIsFullException();
-        }
+        if (theJob.hasMaxVolunteers(theWorkLoad)) throw new JobIsFullException();
 
+        
         switch (theWorkLoad)
         {
             case LIGHT:
