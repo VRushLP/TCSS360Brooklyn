@@ -23,7 +23,7 @@ public class Volunteer extends AbstractUser
         super(theEmail, theFirstName, theLastName);
         myJobs = new ArrayList<>();
     }
-
+    
     public boolean volunteerForJob(Job theJob, WorkLoad theWorkLoad)
             throws AlreadyVolunteeredException,
             ConflictingJobCommitmentException, JobIsFullException,
@@ -60,10 +60,20 @@ public class Volunteer extends AbstractUser
         return Collections.unmodifiableCollection(myJobs);
     }
 
+    /**
+     * Checks if a volunteer has conflicts with a job, and  will throw the appropriate 
+     * exception if the job has conflicts.
+     * 
+     * @param theJob - job to be volunteered for.
+     * @throws AlreadyVolunteeredException - thrown if the user has already signed up
+     * for this job.
+     * @throws ConflictingJobCommitmentException - thrown if the job dates conflict with
+     * another job the user already has volunteer for.
+     * @throws JobToThePastException - thrown if the jobs start date has already passed.
+     */
     private void checkForConflicts(Job theJob)
             throws AlreadyVolunteeredException,
-            ConflictingJobCommitmentException, JobIsFullException,
-            JobToThePastException
+            ConflictingJobCommitmentException, JobToThePastException
     {
 
         if (theJob.isPastJob())

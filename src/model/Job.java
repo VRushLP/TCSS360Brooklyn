@@ -105,6 +105,10 @@ public class Job implements Serializable, Comparable<Job>
         return difficultVolunteers.add(theVolunteer);
     }
     
+    /**
+     * @param theWorkLoad - the work load type category of volunteers.
+     * @return if the workload category has the maximum amount of volunteers.
+     */
     public boolean hasMaxVolunteers(WorkLoad theWorkLoad) {
         switch (theWorkLoad) {
             case LIGHT:
@@ -118,6 +122,12 @@ public class Job implements Serializable, Comparable<Job>
         }
     }
     
+    /**
+     * Remove the volunteer from the appropriate category, if the volunteer
+     * exists in any lists of volunteers.
+     * 
+     * @return true if the volunteer was removed from a list of volunteers.
+     */
     public boolean removeVolunteer(Volunteer theVolunteer) {
         if (lightVolunteers.contains(theVolunteer)) {
             return lightVolunteers.remove(theVolunteer);
@@ -141,21 +151,6 @@ public class Job implements Serializable, Comparable<Job>
         return difficultVolunteers.size();
     }
 
-    public int getMaxLightVolunteers()
-    {
-        return maxLightVolunteers;
-    }
-
-    public int getMaxMediumVolunteers()
-    {
-        return maxMediumVolunteers;
-    }
-
-    public int getMaxDifficultVolunteers()
-    {
-        return maxDifficultVolunteers;
-    }
-
     public void setMaxLightVolunteers(int theMax)
     {
         maxLightVolunteers = theMax;
@@ -170,8 +165,6 @@ public class Job implements Serializable, Comparable<Job>
     {
         maxDifficultVolunteers = theMax;
     }
-
-    // end work categories
 
     @Override
     public String toString()
