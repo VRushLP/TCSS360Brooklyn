@@ -27,7 +27,7 @@ public class ParkTest
     Date threeDays;
     Job j1, j2;
     ArrayList<Job> jobs;
-    
+
     @Before
     public void setUp() throws Exception
     {
@@ -37,20 +37,20 @@ public class ParkTest
         prk1Dupl = new Park("Gas works park", pm1);
         prk2 = new Park("Ravenna Park");
         prk3 = new Park("Gas works park", pm2);
-        today = new Date(
-                System.currentTimeMillis() + TimeUnit.HOURS.toMillis(1));
-        tomorrow = new Date(
-                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1));
-        twoDays = new Date(
-                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(2));
-        threeDays = new Date(
-                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(3));
-        j1 = new Job(prk1, 5, tomorrow, twoDays, "Test Job 1 Title"
-                , "Test Job 1 Description");
-        j2 = new Job(prk2, 5, twoDays, threeDays, "Test Job 2 Title"
-                , "Test Job 2 Description");
-        
+        today = new Date(System.currentTimeMillis()
+                + TimeUnit.HOURS.toMillis(1));
+        tomorrow = new Date(System.currentTimeMillis()
+                + TimeUnit.DAYS.toMillis(1));
+        twoDays = new Date(System.currentTimeMillis()
+                + TimeUnit.DAYS.toMillis(2));
+        threeDays = new Date(System.currentTimeMillis()
+                + TimeUnit.DAYS.toMillis(3));
+        j1 = new Job(prk1, 5, 5, 5, tomorrow, twoDays, "Test Job 1 Title",
+                "Test Job 1 Description");
+        j2 = new Job(prk2, 5, 5, 5, twoDays, threeDays, "Test Job 2 Title",
+                "Test Job 2 Description");
     }
+
     @Test
     public void testAssertEquals()
     {
@@ -65,6 +65,7 @@ public class ParkTest
         assertTrue(prk1.getJobList() != null);
         assertTrue(prk2.getJobList() != null);
     }
+
     @Test
     public void testAddJob()
     {
@@ -74,19 +75,22 @@ public class ParkTest
         assertTrue(jobs.get(0).equals(j2));
         assertTrue(jobs.get(1).equals(j1));
     }
+
     @Test
     public void testGetJobList2()
     {
-       prk1.addJob(j1);
-       prk1.addJob(j2);
-       assertTrue(prk1.getJobList().size() > 0);   
+        prk1.addJob(j1);
+        prk1.addJob(j2);
+        assertTrue(prk1.getJobList().size() > 0);
     }
+
     @Test
-    public void testCheckForJob()
+    public void testHasJob()
     {
-       prk1.addJob(j1);
-       assertTrue(prk1.checkForJob(j1));
+        prk1.addJob(j1);
+        assertTrue(prk1.hasJob(j1));
     }
+
     @Test
     public void testRemoveJob()
     {

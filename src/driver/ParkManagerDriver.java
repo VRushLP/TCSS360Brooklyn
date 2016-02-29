@@ -9,7 +9,6 @@ import model.Park;
 import model.ParkManager;
 import model.UrbanParkCalendar;
 import model.Volunteer;
-
 import exception.CalendarFullException;
 import exception.CalendarWeekFullException;
 import exception.DuplicateJobExistsException;
@@ -17,6 +16,7 @@ import exception.JobTimeTravelException;
 import exception.JobToTheFutureException;
 import exception.JobToThePastException;
 import exception.JobTooLongException;
+import exception.JobWorksTooHardException;
 
 public class ParkManagerDriver extends SharedUserDriverFunctions
 {
@@ -127,10 +127,10 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                 maxVolunteers = Job.MAX_VOLUNTEER_NUM;
             }
 
-//             needs to be changed for multiple workload types
-            
-            Job jobToAdd = new Job(park, maxVolunteers, maxVolunteers, maxVolunteers, startDate, endDate,
-                    jobTitle, jobDescription);
+            // needs to be changed for multiple workload types
+
+            Job jobToAdd = new Job(park, maxVolunteers, maxVolunteers,
+                    maxVolunteers, startDate, endDate, jobTitle, jobDescription);
 
             attemptToAddJob(park, jobToAdd);
         }
@@ -368,16 +368,33 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                 case 4:
                     System.out
                             .println("Please enter the a new maximum number of volunteers (Up to 30):");
-
-                    int maxVolunteers = getIntegerInput(myInput,
+                    System.out.println("Light work:");
+                    int newLight = getIntegerInput(myInput,
+                            Job.MAX_VOLUNTEER_NUM);
+                    System.out.println("Medium work:");
+                    int newMed = getIntegerInput(myInput, Job.MAX_VOLUNTEER_NUM);
+                    System.out.println("Hard work:");
+                    int newHard = getIntegerInput(myInput,
                             Job.MAX_VOLUNTEER_NUM);
 
-                    jobToEdit = myUPCalendar.editMaxVol(park, jobToEdit,
-                            maxVolunteers);
-                    System.out
-                            .println("Maximum number of volunteers for selected job "
-                                    + "was changed to "
-                                    + jobToEdit.getMaxVolunteers() + ".\n");
+                    try
+                    {
+                        jobToEdit = myUPCalendar.editMaxVol(park, jobToEdit,
+                                newLight, newMed, newHard);
+                        System.out
+                                .println("Maximum number of volunteers for selected job was changed to: "
+                                        + newLight
+                                        + ", "
+                                        + newMed
+                                        + ", "
+                                        + newHard + ".\n");
+                    }
+                    catch (JobWorksTooHardException e)
+                    {
+                        System.out
+                                .println("Your input would cause too many volunteer slots to be available.");
+                    }
+
                     break;
                 case 5:
                     System.out.println("Finished editing job");

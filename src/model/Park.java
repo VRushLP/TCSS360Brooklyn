@@ -44,11 +44,6 @@ public class Park implements Serializable
         parksJobList.add(theJob);
     }
 
-    public boolean checkForJob(Job theJob)
-    {
-        return parksJobList.contains(theJob);
-    }
-
     /**
      * Removes the job from the parks collection of jobs.
      * 

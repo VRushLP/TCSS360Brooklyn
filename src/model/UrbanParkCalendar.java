@@ -1,7 +1,6 @@
 package model;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -17,6 +16,7 @@ import exception.JobToThePastException;
 import exception.JobTimeTravelException;
 import exception.JobToTheFutureException;
 import exception.JobTooLongException;
+import exception.JobWorksTooHardException;
 
 public class UrbanParkCalendar implements Serializable
 {
@@ -218,15 +218,17 @@ public class UrbanParkCalendar implements Serializable
         return tempJob;
     }
 
-    //TODO Change this to accept 3 numbers and edit all job categories
-    public Job editMaxVol(Park park, Job jobToEdit, int maxVolunteers)
+    public Job editMaxVol(Park park, Job jobToEdit, int newLightWork,
+            int newMedWork, int newHardWork) throws JobWorksTooHardException
     {
-        if (maxVolunteers > Job.MAX_VOLUNTEER_NUM)
-            maxVolunteers = Job.MAX_VOLUNTEER_NUM;
+        if (newLightWork + newMedWork + newHardWork > Job.MAX_VOLUNTEER_NUM)
+            throw new JobWorksTooHardException();
 
         Job tempJob = new Job(jobToEdit);
         // set max volunteers needs to be changed for work categories
-//        tempJob.setMaxVolunteers(maxVolunteers);
+        tempJob.setMaxLightVolunteers(newLightWork);
+        tempJob.setMaxMediumVolunteers(newMedWork);
+        tempJob.setMaxDifficultVolunteers(newHardWork);
 
         upcomingJobCollection.remove(jobToEdit);
         upcomingJobCollection.add(tempJob);

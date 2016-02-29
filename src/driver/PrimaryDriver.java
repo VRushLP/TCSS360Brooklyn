@@ -38,6 +38,7 @@ import model.Volunteer;
 public class PrimaryDriver
 {
     private static final String EXIT_STRING = "quit";
+    private static final String RESET_FILES = "reset";
 
     // Input file name.
     private static final String[] filePaths = { "calendar.ser",
@@ -63,7 +64,6 @@ public class PrimaryDriver
         UPCalendar = new UrbanParkCalendar();
         loginList = new HashMap<>();
 
-        // fabricateInformation(); // TODO reset the .ser files
         deserializeData();
 
         Scanner in = new Scanner(System.in);
@@ -75,7 +75,7 @@ public class PrimaryDriver
         String userInput;
 
         System.out.println(loginList.keySet());
-        
+
         do
         {
             userInput = in.nextLine();
@@ -103,6 +103,10 @@ public class PrimaryDriver
                 VolunteerDriver.run((Volunteer) currentUser, in, UPCalendar);
                 break;
             }
+            else if (userInput.equalsIgnoreCase(RESET_FILES))
+            {
+                fabricateInformation();
+            }
             else if (!userInput.equalsIgnoreCase(EXIT_STRING))
             {
                 System.out
@@ -125,6 +129,8 @@ public class PrimaryDriver
 
     private static void fabricateInformation()
     {
+        UPCalendar = new UrbanParkCalendar();
+        
         // Users
         ParkManager theDude = new ParkManager("thedude@aol.com", "Jeff",
                 "Bridges");
@@ -154,8 +160,8 @@ public class PrimaryDriver
         // Actual jobs
         Job bigfoot = new Job(dashPoint, 10, 10, 10, tomorrow, tomorrow,
                 "Bigfoot Hunting", "We'll get him this time.");
-        Job yetis = new Job(dashPoint, 10, 10, 10, dayAfterTomorrow, dayAfterTomorrow,
-                "Yeti Extermination", "They're everywhere!.");
+        Job yetis = new Job(dashPoint, 10, 10, 10, dayAfterTomorrow,
+                dayAfterTomorrow, "Yeti Extermination", "They're everywhere!.");
         Job garbageCollect = new Job(wildWaves, 10, 10, 10, dayAfterTomorrow,
                 twoDaysAfterTomorrow, "Garbage Collection",
                 "Not as exciting, I know");

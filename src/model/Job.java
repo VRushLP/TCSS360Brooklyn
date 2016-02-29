@@ -25,7 +25,6 @@ public class Job implements Serializable, Comparable<Job>
     private String jobDescription;
 
     // work categories
-
     private Collection<Volunteer> lightVolunteers;
     private Collection<Volunteer> mediumVolunteers;
     private Collection<Volunteer> difficultVolunteers;
@@ -76,8 +75,6 @@ public class Job implements Serializable, Comparable<Job>
         jobDescription = theJobDescription;
     }
 
-    // work categories
-
     /**
      * Returns a list of all volunteers from all work categories.
      */
@@ -94,9 +91,9 @@ public class Job implements Serializable, Comparable<Job>
     {
         return lightVolunteers.add(theVolunteer);
     }
-    
+
     public boolean addMediumVolunteer(Volunteer theVolunteer)
-    { 
+    {
         return mediumVolunteers.add(theVolunteer);
     }
 
@@ -104,13 +101,16 @@ public class Job implements Serializable, Comparable<Job>
     {
         return difficultVolunteers.add(theVolunteer);
     }
-    
+
     /**
-     * @param theWorkLoad - the work load type category of volunteers.
+     * @param theWorkLoad
+     *            - the work load type category of volunteers.
      * @return if the workload category has the maximum amount of volunteers.
      */
-    public boolean hasMaxVolunteers(WorkLoad theWorkLoad) {
-        switch (theWorkLoad) {
+    public boolean hasMaxVolunteers(WorkLoad theWorkLoad)
+    {
+        switch (theWorkLoad)
+        {
             case LIGHT:
                 return maxLightVolunteers == lightVolunteers.size();
             case MEDIUM:
@@ -121,33 +121,42 @@ public class Job implements Serializable, Comparable<Job>
                 return true;
         }
     }
-    
+
     /**
      * Remove the volunteer from the appropriate category, if the volunteer
      * exists in any lists of volunteers.
      * 
      * @return true if the volunteer was removed from a list of volunteers.
      */
-    public boolean removeVolunteer(Volunteer theVolunteer) {
-        if (lightVolunteers.contains(theVolunteer)) {
+    public boolean removeVolunteer(Volunteer theVolunteer)
+    {
+        if (lightVolunteers.contains(theVolunteer))
+        {
             return lightVolunteers.remove(theVolunteer);
-        } else if (mediumVolunteers.contains(theVolunteer)) {
+        }
+        else if (mediumVolunteers.contains(theVolunteer))
+        {
             return mediumVolunteers.remove(theVolunteer);
-        } else if (difficultVolunteers.contains(theVolunteer)) {
+        }
+        else if (difficultVolunteers.contains(theVolunteer))
+        {
             return difficultVolunteers.remove(theVolunteer);
         }
         return false;
     }
-    
-    public int getLightVolunteerCount() {
+
+    public int getLightVolunteerCount()
+    {
         return lightVolunteers.size();
     }
-    
-    public int getMediumVolunteerCount() {
+
+    public int getMediumVolunteerCount()
+    {
         return mediumVolunteers.size();
     }
-    
-    public int getDifficultVolunteerCount() {
+
+    public int getDifficultVolunteerCount()
+    {
         return difficultVolunteers.size();
     }
 
@@ -248,7 +257,8 @@ public class Job implements Serializable, Comparable<Job>
     // TODO Change this when WorkCategories are in
     public boolean canEdit()
     {
-        return lightVolunteers.isEmpty() && mediumVolunteers.isEmpty() && difficultVolunteers.isEmpty();
+        return lightVolunteers.isEmpty() && mediumVolunteers.isEmpty()
+                && difficultVolunteers.isEmpty();
     }
 
     @Override
