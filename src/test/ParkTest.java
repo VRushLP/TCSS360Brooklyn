@@ -15,28 +15,35 @@ import model.ParkManager;
 
 public class ParkTest
 {
-    Park prk1;
-    Park prk2;
-    Park prk1Dupl;
-    Park prk3;
-    ParkManager pm1;
-    ParkManager pm2;
+    Park park1Duplicate; // duplicate park with park2Duplicate
+    Park park2;
+    Park parkDuplicate;
+    Park parkWithNoJobs;
+    Park parkWithOneJob;
+    Park parkWithNJobs;
+    ParkManager pm1, pm2, pm3, pm4, pm5;
     Date today;
     Date tomorrow;
     Date twoDays;
-    Date threeDays;
-    Job j1, j2;
+    Date threeDays, fourDays, fiveDays, sixDays;
+    Job j1, j2, j3, j4, j5;
     ArrayList<Job> jobs;
-    
+
     @Before
     public void setUp() throws Exception
     {
         pm1 = new ParkManager("pm@test.org", "John", "Doe");
         pm2 = new ParkManager("pm2@test.org", "Jonny", "Smith");
-        prk1 = new Park("Gas works park", pm1);
-        prk1Dupl = new Park("Gas works park", pm1);
-        prk2 = new Park("Ravenna Park");
-        prk3 = new Park("Gas works park", pm2);
+        pm3 = new ParkManager("pm3@test.org", "Steven", "Broyle");
+        pm4 = new ParkManager("pm4@test.org", "Steven", "Broyle");
+        pm5 = new ParkManager("pm5@test.org", "Hannah", "Stevens");
+        park1Duplicate = new Park("Gas works park", pm1);
+        parkDuplicate = new Park("Gas works park", pm1);
+        park2 = new Park("Ravenna Park", pm3);
+        parkWithNoJobs = new Park("Ravenna Park2", pm5);
+        parkWithOneJob = new Park("Fremont Park", pm2);
+        parkWithNJobs = new Park("North Passage Point Park", pm4);
+
         today = new Date(
                 System.currentTimeMillis() + TimeUnit.HOURS.toMillis(1));
         tomorrow = new Date(
@@ -45,52 +52,134 @@ public class ParkTest
                 System.currentTimeMillis() + TimeUnit.DAYS.toMillis(2));
         threeDays = new Date(
                 System.currentTimeMillis() + TimeUnit.DAYS.toMillis(3));
-        j1 = new Job(prk1, 5, tomorrow, twoDays, "Test Job 1 Title"
-                , "Test Job 1 Description");
-        j2 = new Job(prk2, 5, twoDays, threeDays, "Test Job 2 Title"
-                , "Test Job 2 Description");
-        
-    }
-    @Test
-    public void testAssertEquals()
-    {
-        assertTrue(prk1.equals(prk1Dupl));
-        assertFalse(prk1.equals(prk2));
-        assertFalse(prk3.equals(prk1));
+        fourDays = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(4));
+        fiveDays = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(5));
+        j1 = new Job(park1Duplicate, 5, tomorrow, twoDays, "Test Job 1 Title",
+                "Test Job 1 Description");
+        j2 = new Job(park2, 5, twoDays, threeDays, "Test Job 2 Title",
+                "Test Job 2 Description");
+        j3 = new Job(park2, 6, threeDays, fourDays, "Test Job 3 Title",
+                "Test Job 3 Description");
+        j4 = new Job(park2, 7, fourDays, fiveDays, "Test Job 4 Title",
+                "Test Job 4 Description");
+        j5 = new Job(park2, 8, fiveDays, sixDays, "Test Job 5 Title",
+                "Test Job 5 Description");
+        parkWithOneJob.addJob(j1);
+        parkWithNJobs.addJob(j1);
+        parkWithNJobs.addJob(j2);
+        parkWithNJobs.addJob(j3);
+        parkWithNJobs.addJob(j4);
+
     }
 
     @Test
-    public void testGetJobList1()
+    public void testEqualsOnDuplicateParks()
     {
-        assertTrue(prk1.getJobList() != null);
-        assertTrue(prk2.getJobList() != null);
+        assertTrue(park1Duplicate.equals(parkDuplicate));
     }
+
+    /**
+     * Test when two parks are unique from one another.
+     */
     @Test
-    public void testAddJob()
+    public void testEqualsOnUniqueParks()
     {
-        prk1.addJob(j2);
-        prk1.addJob(j1);
-        jobs = new ArrayList<Job>(prk1.getJobList());
-        assertTrue(jobs.get(0).equals(j2));
-        assertTrue(jobs.get(1).equals(j1));
+        assertFalse(park2.equals(parkWithNoJobs));
     }
+
     @Test
-    public void testGetJobList2()
+    public void testAddJobOnEmptyJobList()
     {
-       prk1.addJob(j1);
-       prk1.addJob(j2);
-       assertTrue(prk1.getJobList().size() > 0);   
+        // park1Duplicate.addJob(j2);
+        park1Duplicate.addJob(j1);
+        jobs = new ArrayList<Job>(park1Duplicate.getJobList());
+        // assertTrue(jobs.get(0).equals(j2));
+        assertTrue(jobs.get(0).equals(j1));
+        assertEquals(jobs.size(), 1);
     }
+
     @Test
-    public void testCheckForJob()
+    public void testAddJobOnJobListWithOneJob()
     {
-       prk1.addJob(j1);
-       assertTrue(prk1.checkForJob(j1));
+
+        parkWithOneJob.addJob(j2);
+        jobs = new ArrayList<Job>(parkWithOneJob.getJobList());
+        assertFalse(jobs.get(0).equals(j2));
+        assertTrue(jobs.get(jobs.size() - 1).equals(j2));
+        assertEquals(jobs.size(), 2);
     }
+
     @Test
-    public void testRemoveJob()
+    public void testAddJobOnJobListWithNJobs()
     {
-        prk1.addJob(j2);
-        assertTrue(prk1.removeJob(j2));
+        parkWithNJobs.addJob(j5);
+        jobs = new ArrayList<Job>(parkWithNJobs.getJobList());
+        assertFalse(jobs.get(0).equals(j2));
+        assertFalse(jobs.get(jobs.size() - 2).equals(j2));
+        assertTrue(jobs.get(jobs.size() - 1).equals(j5));
+        assertTrue(jobs.size() > 1);
+    }
+
+    @Test
+    public void testGetJobListOnNoJobs()
+    {
+        assertTrue(parkWithNoJobs.getJobList().isEmpty());
+    }
+
+    @Test
+    public void testGetJobListOnOneJob()
+    {
+        assertTrue(parkWithOneJob.getJobList().size() == 1);
+    }
+
+    @Test
+    public void testGetJobListOnNJobs()
+    {
+        park2.addJob(j2);
+        park2.addJob(j3);
+        park2.addJob(j4);
+        park2.addJob(j5);
+        assertTrue(park2.getJobList().size() > 1);
+    }
+
+    @Test
+    public void testCheckForJobOnParkWithNoJobs()
+    {
+        assertFalse(parkWithNoJobs.checkForJob(j1));
+        assertTrue(parkWithNoJobs.getJobList().isEmpty());
+    }
+
+    @Test
+    public void testCheckForJobOnParkWithOneJob()
+    {
+        assertTrue(parkWithOneJob.checkForJob(j1));
+    }
+
+    @Test
+    public void testCheckForJobOnParkWithNJobs()
+    {
+        assertTrue(parkWithNJobs.checkForJob(j1));
+        assertTrue(parkWithNJobs.checkForJob(j3));
+        assertTrue(parkWithNJobs.checkForJob(j4));
+    }
+
+    @Test
+    public void testRemoveJobOnParkWithNoJobs()
+    {
+        assertFalse(parkWithNoJobs.removeJob(j2));
+    }
+
+    @Test
+    public void testRemoveJobOnParkWithOneJob()
+    {
+        assertTrue(parkWithOneJob.removeJob(j1));
+    }
+
+    @Test
+    public void testRemoveJobOnParkWithNJobs()
+    {
+        assertTrue(parkWithNJobs.removeJob(j4));
     }
 }
