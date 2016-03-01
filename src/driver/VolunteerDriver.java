@@ -10,6 +10,7 @@ import exception.JobToThePastException;
 import model.Job;
 import model.UrbanParkCalendar;
 import model.Volunteer;
+import model.WorkLoad;
 
 /**
  * Driver for Volunteer class
@@ -117,8 +118,19 @@ public class VolunteerDriver extends SharedUserDriverFunctions
         input = myInput.nextLine();
         if (input.equalsIgnoreCase("Y"))
         {
+            System.out.println("Enter 1 to volunteer for light work, 2 for medium, 3 for difficult work");
+            input = myInput.nextLine();
             System.out.println("Checking if you can Volunteer.");
-            volunteer(theJob);
+            switch(input) {
+                case "1":
+                    volunteer(theJob, WorkLoad.LIGHT);
+                case "2":
+                    volunteer(theJob, WorkLoad.MEDIUM);
+                case "3":
+                    volunteer(theJob, WorkLoad.DIFFICULT);
+                default:
+                    System.out.println("Sorry, this is not a valid input");
+            }
         }
     }
 
@@ -126,11 +138,11 @@ public class VolunteerDriver extends SharedUserDriverFunctions
      * Allows the user to sign up for a job if the job if they have not already
      * signed up for this job and the job is not full of volunteers.
      */
-    public static void volunteer(Job theJob)
+    public static void volunteer(Job theJob, WorkLoad theWorkLoad)
     {
         try
         {
-            myUser.volunteerForJob(theJob);
+            myUser.volunteerForJob(theJob, theWorkLoad);
             System.out.println("Congratulations! You have volunteered");
         }
         catch (AlreadyVolunteeredException e)

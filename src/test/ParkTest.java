@@ -44,34 +44,33 @@ public class ParkTest
         parkWithOneJob = new Park("Fremont Park", pm2);
         parkWithNJobs = new Park("North Passage Point Park", pm4);
 
-        today = new Date(
-                System.currentTimeMillis() + TimeUnit.HOURS.toMillis(1));
-        tomorrow = new Date(
-                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1));
-        twoDays = new Date(
-                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(2));
-        threeDays = new Date(
-                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(3));
-        fourDays = new Date(
-                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(4));
-        fiveDays = new Date(
-                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(5));
-        j1 = new Job(park1Duplicate, 5, tomorrow, twoDays, "Test Job 1 Title",
-                "Test Job 1 Description");
-        j2 = new Job(park2, 5, twoDays, threeDays, "Test Job 2 Title",
+        today = new Date(System.currentTimeMillis()
+                + TimeUnit.HOURS.toMillis(1));
+        tomorrow = new Date(System.currentTimeMillis()
+                + TimeUnit.DAYS.toMillis(1));
+        twoDays = new Date(System.currentTimeMillis()
+                + TimeUnit.DAYS.toMillis(2));
+        threeDays = new Date(System.currentTimeMillis()
+                + TimeUnit.DAYS.toMillis(3));
+        fourDays = new Date(System.currentTimeMillis()
+                + TimeUnit.DAYS.toMillis(4));
+        fiveDays = new Date(System.currentTimeMillis()
+                + TimeUnit.DAYS.toMillis(5));
+        j1 = new Job(park1Duplicate, 5, 0, 0, tomorrow, twoDays,
+                "Test Job 1 Title", "Test Job 1 Description");
+        j2 = new Job(park2, 5, 0, 0, twoDays, threeDays, "Test Job 2 Title",
                 "Test Job 2 Description");
-        j3 = new Job(park2, 6, threeDays, fourDays, "Test Job 3 Title",
+        j3 = new Job(park2, 6, 0, 0, threeDays, fourDays, "Test Job 3 Title",
                 "Test Job 3 Description");
-        j4 = new Job(park2, 7, fourDays, fiveDays, "Test Job 4 Title",
+        j4 = new Job(park2, 7, 0, 0, fourDays, fiveDays, "Test Job 4 Title",
                 "Test Job 4 Description");
-        j5 = new Job(park2, 8, fiveDays, sixDays, "Test Job 5 Title",
+        j5 = new Job(park2, 8, 0, 0, fiveDays, sixDays, "Test Job 5 Title",
                 "Test Job 5 Description");
         parkWithOneJob.addJob(j1);
         parkWithNJobs.addJob(j1);
         parkWithNJobs.addJob(j2);
         parkWithNJobs.addJob(j3);
         parkWithNJobs.addJob(j4);
-
     }
 
     @Test
@@ -103,7 +102,6 @@ public class ParkTest
     @Test
     public void testAddJobOnJobListWithOneJob()
     {
-
         parkWithOneJob.addJob(j2);
         jobs = new ArrayList<Job>(parkWithOneJob.getJobList());
         assertFalse(jobs.get(0).equals(j2));
@@ -147,22 +145,22 @@ public class ParkTest
     @Test
     public void testCheckForJobOnParkWithNoJobs()
     {
-        assertFalse(parkWithNoJobs.checkForJob(j1));
+        assertFalse(parkWithNoJobs.hasJob(j1));
         assertTrue(parkWithNoJobs.getJobList().isEmpty());
     }
 
     @Test
     public void testCheckForJobOnParkWithOneJob()
     {
-        assertTrue(parkWithOneJob.checkForJob(j1));
+        assertTrue(parkWithOneJob.hasJob(j1));
     }
 
     @Test
     public void testCheckForJobOnParkWithNJobs()
     {
-        assertTrue(parkWithNJobs.checkForJob(j1));
-        assertTrue(parkWithNJobs.checkForJob(j3));
-        assertTrue(parkWithNJobs.checkForJob(j4));
+        assertTrue(parkWithNJobs.hasJob(j1));
+        assertTrue(parkWithNJobs.hasJob(j3));
+        assertTrue(parkWithNJobs.hasJob(j4));
     }
 
     @Test

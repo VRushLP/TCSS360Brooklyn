@@ -23,14 +23,29 @@ public class Volunteer extends AbstractUser
         super(theEmail, theFirstName, theLastName);
         myJobs = new ArrayList<>();
     }
-
-    public boolean volunteerForJob(Job theJob)
+    
+    public boolean volunteerForJob(Job theJob, WorkLoad theWorkLoad)
             throws AlreadyVolunteeredException,
             ConflictingJobCommitmentException, JobIsFullException,
             JobToThePastException
     {
         checkForConflicts(theJob);
-        theJob.addVolunteer(this);
+
+        if (theJob.hasMaxVolunteers(theWorkLoad)) throw new JobIsFullException();
+
+        switch (theWorkLoad)
+        {
+            case LIGHT:
+                theJob.addLightVolunteer(this);
+                break;
+            case MEDIUM:
+                theJob.addMediumVolunteer(this);
+                break;
+            case DIFFICULT:
+                theJob.addDifficultVolunteer(this);
+                break;
+        }
+
         return myJobs.add(theJob);
     }
 
@@ -45,12 +60,22 @@ public class Volunteer extends AbstractUser
         return Collections.unmodifiableCollection(myJobs);
     }
 
+    /**
+     * Checks if a volunteer has conflicts with a job, and  will throw the appropriate 
+     * exception if the job has conflicts.
+     * 
+     * @param theJob - job to be volunteered for.
+     * @throws AlreadyVolunteeredException - thrown if the user has already signed up
+     * for this job.
+     * @throws ConflictingJobCommitmentException - thrown if the job dates conflict with
+     * another job the user already has volunteer for.
+     * @throws JobToThePastException - thrown if the jobs start date has already passed.
+     */
     private void checkForConflicts(Job theJob)
             throws AlreadyVolunteeredException,
-            ConflictingJobCommitmentException, JobIsFullException,
-            JobToThePastException
+            ConflictingJobCommitmentException, JobToThePastException
     {
-        
+
         if (theJob.isPastJob())
         {
             throw new JobToThePastException();
@@ -68,12 +93,6 @@ public class Volunteer extends AbstractUser
             throw new ConflictingJobCommitmentException();
         }
 
-        // make sure job is not full already
-        // TODO Change this so it works for multiple work categories.
-        if (theJob.getVolunteers().size() == theJob.getMaxVolunteers())
-        {
-            throw new JobIsFullException();
-        }
     }
 
     /**
@@ -88,10 +107,11 @@ public class Volunteer extends AbstractUser
         {
             // if start / end days overlap with first or last day
             // if start or end days are the same
-            
-            if (theJob.shareDates(otherJob) || theJob.endDayOverlaps(otherJob) 
+
+            if (theJob.shareDates(otherJob) || theJob.endDayOverlaps(otherJob)
                     || theJob.startDayOverlaps(otherJob))
-                isFree = false;;
+                isFree = false;
+            ;
         }
 
         return isFree;

@@ -1,7 +1,6 @@
 package test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.Date;
 
@@ -9,15 +8,18 @@ import model.Job;
 import model.Park;
 import model.ParkManager;
 import model.Volunteer;
+import model.WorkLoad;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import exception.JobIsFullException;
 
 /**
  * This JUnit class tests the Job class.
  * 
  * @author Bethany Eastman
- * @version 02/22/2016
+ * @version 02/26/2016
  */
 public class JobTest
 {   
@@ -51,29 +53,163 @@ public class JobTest
         oneJobVolunteer = new Volunteer("b@uw.edu", "Jane", "Does");
         tom = new ParkManager("tom@uw.edu", "Tom", "Hanks");
         newPark = new Park("Tom's Park", tom);
-        newJob = new Job(newPark, 1, fourDays, fiveDays, "Pick up trash",
+        newJob = new Job(newPark, 1, 1, 1, fourDays, fiveDays, "Pick up trash",
                 "Clean up trash from Park");
-        conflictingJob = new Job(newPark, 3, fourDays, fiveDays,
+        conflictingJob = new Job(newPark, 3, 3, 3, fourDays, fiveDays,
                 "Clean bathrroms", "Clean the bathrooms in the park");
-        pastJob = new Job(newPark, 3, sevenDays, sevenDays, "Clean bathrroms",
+        pastJob = new Job(newPark, 3, 3, 3, sevenDays, sevenDays, "Clean bathrroms",
                 "Clean the bathrooms in the park");
-        jobToday = new Job(newPark, 3, new Date(), new Date(),
+        jobToday = new Job(newPark, 3, 3, 3,  new Date(), new Date(),
                 "Clean bathrroms", "Clean the bathrooms in the park");
-        jobConflictsBeforeStart = new Job(newPark, 3, threeDays, fiveDays,
+        jobConflictsBeforeStart = new Job(newPark, 3, 3, 3, threeDays, fiveDays,
                 "Clean bathrroms", "Clean the bathrooms in the park");
-        jobConflictsAfterStart = new Job(newPark, 3, fourDays, sixDays,
+        jobConflictsAfterStart = new Job(newPark, 3, 3, 3, fourDays, sixDays,
                 "Clean bathrroms", "Clean the bathrooms in the park");
         
     }
     
+    /**
+     * Test a job can be edited with no volunteers.
+     */
     @Test
-    public void testEquals() {
-        
+    public void testCanEditNoVolunteers() {
+        assertTrue(newJob.canEdit());
     }
     
+    /**
+     * Test a job should not be edited with a volunteer.
+     */
     @Test
-    public void testCompareTo() {
-        
+    public void testCanEditWithVolunteerLight() {
+        newJob.addLightVolunteer(joblessVolunteer);
+        assertFalse(newJob.canEdit());
+    }
+    
+    /**
+     * Test a job should not be edited with a volunteer.
+     */
+    @Test
+    public void testCanEditWithVolunteerMedium() {
+        newJob.addMediumVolunteer(joblessVolunteer);
+        assertFalse(newJob.canEdit());
+    }
+    
+    /**
+     * Test a job should not be edited with a volunteer.
+     */
+    @Test
+    public void testCanEditWithVolunteerDifficult() {
+        newJob.addDifficultVolunteer(joblessVolunteer);
+        assertFalse(newJob.canEdit());
+    }
+    
+    /**
+     * Test a job returns appropriate value for max volunteers of a work category.
+     */
+    @Test
+    public void testHasMaxVolunteersNoVolunteers() {
+        assertFalse(newJob.hasMaxVolunteers(WorkLoad.LIGHT));
+        assertFalse(newJob.hasMaxVolunteers(WorkLoad.MEDIUM));
+        assertFalse(newJob.hasMaxVolunteers(WorkLoad.DIFFICULT));
+    }
+    
+    /**
+     * Test a job returns appropriate value for max volunteers of a work category,
+     * tests that hasMaxVolunteers will return full when a work category is full.
+     */
+    @Test
+    public void testHasMaxVolunteersFullVolunteers() {
+        try {
+            joblessVolunteer.volunteerForJob(newJob, WorkLoad.LIGHT);
+            sameVolunteer.volunteerForJob(newJob, WorkLoad.MEDIUM);
+            oneJobVolunteer.volunteerForJob(newJob, WorkLoad.DIFFICULT);
+        } catch (Exception e) {
+            fail();
+        }
+        assertTrue(newJob.hasMaxVolunteers(WorkLoad.LIGHT));
+        assertTrue(newJob.hasMaxVolunteers(WorkLoad.MEDIUM));
+        assertTrue(newJob.hasMaxVolunteers(WorkLoad.DIFFICULT));
+    }
+    
+    /**
+     * Test that nothing happens when trying to remove a volunteer that does not exist 
+     * in list of volunteers.
+     */
+    @Test
+    public void testRemoveVolunteerNoVolunteer() {
+        assertFalse(newJob.removeVolunteer(joblessVolunteer));
+    }
+    
+    /**
+     * Test that a volunteer is removed from light work.
+     */
+    @Test
+    public void testRemoveVolunteerLight() {
+        newJob.addLightVolunteer(joblessVolunteer);
+        assertTrue(newJob.removeVolunteer(joblessVolunteer));
+    }
+    
+    /**
+     * Test that a volunteer is removed from medium work.
+     */
+    @Test
+    public void testRemoveVolunteerMedium() {
+        newJob.addMediumVolunteer(joblessVolunteer);
+        assertTrue(newJob.removeVolunteer(joblessVolunteer));
+    }
+    
+    /**
+     * Test that a volunteer is removed from difficult work.
+     */
+    @Test
+    public void testRemoveVolunteerDifficult() {
+        newJob.addDifficultVolunteer(joblessVolunteer);
+        assertTrue(newJob.removeVolunteer(joblessVolunteer));
+    }
+    
+    /**
+     * Test the job is full exception is thrown when someone tries to 
+     * sign up for a full work category.
+     */
+    @Test
+    public void testVolunteerJobIsFullException() {
+        try {
+            joblessVolunteer.volunteerForJob(newJob, WorkLoad.LIGHT);
+            sameVolunteer.volunteerForJob(newJob, WorkLoad.LIGHT);
+            fail();
+        } catch (Exception e) {
+            assertEquals(JobIsFullException.class, e.getClass());
+        }
+    }
+    
+    /**
+     * Test that a volunteer is added into light work properly.
+     */
+    @Test
+    public void testAddVolunteerLightWork() {
+        assertTrue(newJob.getLightVolunteerCount() == 0);
+        assertTrue(newJob.addLightVolunteer(joblessVolunteer));
+        assertTrue(newJob.getLightVolunteerCount() == 1);
+    }
+    
+    /**
+     * Test that a volunteer is added into medium work properly.
+     */
+    @Test
+    public void testAddVolunteerMediumWork() {
+        assertTrue(newJob.getMediumVolunteerCount() == 0);
+        assertTrue(newJob.addMediumVolunteer(joblessVolunteer));
+        assertTrue(newJob.getMediumVolunteerCount() == 1);
+    }
+    
+    /**
+     * Test that a volunteer is added into difficult work properly.
+     */
+    @Test
+    public void testAddVolunteerDifficultWork() {
+        assertTrue(newJob.getDifficultVolunteerCount() == 0);
+        assertTrue(newJob.addDifficultVolunteer(joblessVolunteer));
+        assertTrue(newJob.getDifficultVolunteerCount() == 1);
     }
 
     /**

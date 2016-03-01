@@ -8,6 +8,7 @@ import model.Job;
 import model.Park;
 import model.ParkManager;
 import model.Volunteer;
+import model.WorkLoad;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -45,24 +46,79 @@ public class VolunteerTest
         Date threeDays = new Date(System.currentTimeMillis() + (3 * DAY_IN_MS));
         Date fiveDays = new Date(System.currentTimeMillis() + (5 * DAY_IN_MS));
         Date sixDays = new Date(System.currentTimeMillis() + (6 * DAY_IN_MS));
+        Date oneDay = new Date(System.currentTimeMillis() + (DAY_IN_MS));
 
         joblessVolunteer = new Volunteer("jobless@gmail.com", "John", "Smith");
         sameVolunteer = new Volunteer("jobless@gmail.com", "John", "Smith");
         oneJobVolunteer = new Volunteer("b@uw.edu", "Jane", "Does");
         tom = new ParkManager("tom@uw.edu", "Tom", "Hanks");
         newPark = new Park("Tom's Park", tom);
-        newJob = new Job(newPark, 1, fourDays, fiveDays, "Pick up trash",
+        newJob = new Job(newPark, 1, 1, 1, fourDays, fiveDays, "Pick up trash",
                 "Clean up trash from Park");
-        conflictingJob = new Job(newPark, 3, fourDays, fiveDays,
+        conflictingJob = new Job(newPark, 3 , 3, 3, fourDays, fiveDays,
                 "Clean bathrroms", "Clean the bathrooms in the park");
-        pastJob = new Job(newPark, 3, sevenDays, sevenDays, "Clean bathrroms",
+        pastJob = new Job(newPark, 3, 3, 3, sevenDays, sevenDays, "Clean bathrroms",
                 "Clean the bathrooms in the park");
-        jobToday = new Job(newPark, 3, new Date(), new Date(),
+        jobToday = new Job(newPark, 3, 3, 3, oneDay, oneDay,
                 "Clean bathrroms", "Clean the bathrooms in the park");
-        jobConflictsBeforeStart = new Job(newPark, 3, threeDays, fiveDays,
-                "Clean bathrroms", "Clean the bathrooms in the park");
-        jobConflictsAfterStart = new Job(newPark, 3, fourDays, sixDays,
-                "Clean bathrroms", "Clean the bathrooms in the park");
+        jobConflictsBeforeStart = new Job(newPark, 3, 3, 3, threeDays, fiveDays,
+                "Clean bathrooms", "Clean the bathrooms in the park");
+        jobConflictsAfterStart = new Job(newPark, 3, 3, 3, fourDays, sixDays,
+                "Clean bathrooms", "Clean the bathrooms in the park");
+    }
+    
+    /**
+     * Test that a volunteer is added to appropriate category when
+     * volunteering for a job, for light work.
+     */
+    @Test
+    public void testVolunteerLightWork() {
+        assertTrue(newJob.getLightVolunteerCount() == 0);
+        try
+        {
+            sameVolunteer.volunteerForJob(newJob, WorkLoad.LIGHT);
+        }
+        catch (Exception e)
+        {
+            fail();
+        }
+        assertTrue(newJob.getLightVolunteerCount() == 1);
+    }
+    
+    /**
+     * Test that a volunteer is added to appropriate category when
+     * volunteering for a job, for medium work.
+     */
+    @Test
+    public void testVolunteerMediumWork() {
+        assertTrue(newJob.getMediumVolunteerCount() == 0);
+        try
+        {
+            sameVolunteer.volunteerForJob(newJob, WorkLoad.MEDIUM);
+        }
+        catch (Exception e)
+        {
+            fail();
+        }
+        assertTrue(newJob.getMediumVolunteerCount() == 1);
+    }
+    
+    /**
+     * Test that a volunteer is added to appropriate category when
+     * volunteering for a job, for difficult work.
+     */
+    @Test
+    public void testVolunteerDifficultWork() {
+        assertTrue(newJob.getDifficultVolunteerCount() == 0);
+        try
+        {
+            sameVolunteer.volunteerForJob(newJob, WorkLoad.DIFFICULT);
+        }
+        catch (Exception e)
+        {
+            fail();
+        }
+        assertTrue(newJob.getDifficultVolunteerCount() == 1);
     }
 
     /**
@@ -73,11 +129,12 @@ public class VolunteerTest
     {
         try
         {
-            sameVolunteer.volunteerForJob(newJob);
-            sameVolunteer.volunteerForJob(jobToday); // job doesn't conflict
+            sameVolunteer.volunteerForJob(newJob, WorkLoad.LIGHT);
+            sameVolunteer.volunteerForJob(jobToday, WorkLoad.LIGHT); // job doesn't conflict
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             fail();
         }
     }
@@ -86,11 +143,11 @@ public class VolunteerTest
      * Tests volunteer can't sign up for past job.
      */
     @Test
-    public void testPastJobException()
+    public void testVolunteerPastJobException()
     {
         try
         {
-            sameVolunteer.volunteerForJob(pastJob);
+            sameVolunteer.volunteerForJob(pastJob, WorkLoad.LIGHT);
             fail();
         }
         catch (Exception e)
@@ -103,12 +160,12 @@ public class VolunteerTest
      * Tests exception is thrown when duplicate job is attempted to volunteer.
      */
     @Test
-    public void testDuplicateJobException()
+    public void testVolunteerDuplicateJobException()
     {
         try
         {
-            sameVolunteer.volunteerForJob(newJob);
-            sameVolunteer.volunteerForJob(newJob);
+            sameVolunteer.volunteerForJob(newJob, WorkLoad.LIGHT);
+            sameVolunteer.volunteerForJob(newJob, WorkLoad.LIGHT);
             fail();
         }
         catch (Exception e)
@@ -121,11 +178,11 @@ public class VolunteerTest
      * Test that a job is full.
      */
     @Test
-    public void testJobIsFullException() {
+    public void testVolunteerJobIsFullException() {
         try
         {
-            joblessVolunteer.volunteerForJob(newJob);
-            sameVolunteer.volunteerForJob(newJob);
+            joblessVolunteer.volunteerForJob(newJob, WorkLoad.LIGHT);
+            sameVolunteer.volunteerForJob(newJob, WorkLoad.LIGHT);
             fail();
         }
         catch (Exception e)
@@ -138,12 +195,12 @@ public class VolunteerTest
      * Tests exception thrown for jobs that interfere.
      */
     @Test
-    public void testInteferingJobException()
+    public void testVolunteerInteferingJobException()
     {
         try
         {
-            sameVolunteer.volunteerForJob(newJob);
-            sameVolunteer.volunteerForJob(conflictingJob);
+            sameVolunteer.volunteerForJob(newJob, WorkLoad.LIGHT);
+            sameVolunteer.volunteerForJob(conflictingJob, WorkLoad.LIGHT);
             fail();
         }
         catch (Exception e)
@@ -153,7 +210,7 @@ public class VolunteerTest
 
         try
         {
-            sameVolunteer.volunteerForJob(jobConflictsBeforeStart);
+            sameVolunteer.volunteerForJob(jobConflictsBeforeStart, WorkLoad.LIGHT);
             fail();
         }
         catch (Exception e)
@@ -163,7 +220,7 @@ public class VolunteerTest
 
         try
         {
-            sameVolunteer.volunteerForJob(jobConflictsAfterStart);
+            sameVolunteer.volunteerForJob(jobConflictsAfterStart, WorkLoad.LIGHT);
             fail();
         }
         catch (Exception e)
@@ -195,7 +252,7 @@ public class VolunteerTest
         assertTrue(!oneJobVolunteer.getVolunteeredForJobs().contains(newJob));
         try
         {
-            assertTrue(oneJobVolunteer.volunteerForJob(newJob));
+            assertTrue(oneJobVolunteer.volunteerForJob(newJob, WorkLoad.LIGHT));
             assertTrue(oneJobVolunteer.getVolunteeredForJobs().contains(newJob));
         }
         catch (Exception e)
@@ -212,7 +269,7 @@ public class VolunteerTest
     {
         try
         {
-            oneJobVolunteer.volunteerForJob(newJob);
+            oneJobVolunteer.volunteerForJob(newJob, WorkLoad.LIGHT);
         }
         catch (Exception e)
         {
@@ -220,7 +277,7 @@ public class VolunteerTest
         }
         assertTrue(oneJobVolunteer.getVolunteeredForJobs().contains(newJob));
         assertTrue(oneJobVolunteer.removeJob(newJob));
-        assertTrue(!oneJobVolunteer.getVolunteeredForJobs().contains(newJob));
+        assertFalse(oneJobVolunteer.getVolunteeredForJobs().contains(newJob));
     }
 
     /**
@@ -232,7 +289,7 @@ public class VolunteerTest
     {
         try
         {
-            oneJobVolunteer.volunteerForJob(newJob);
+            oneJobVolunteer.volunteerForJob(newJob, WorkLoad.LIGHT);
             assertFalse(oneJobVolunteer.volunteerIsFree(newJob));
             assertTrue(oneJobVolunteer.volunteerIsFree(pastJob));
         }

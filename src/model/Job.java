@@ -16,9 +16,7 @@ public class Job implements Serializable, Comparable<Job>
     public static final int MAX_VOLUNTEER_NUM = 30;
     public static final int MAX_JOB_LENGTH = 2; // 2 days
 
-    private Collection<Volunteer> volunteers;
     private String parkName;
-    private int maxVolunteers;
 
     private Date startDate;
     private Date endDate;
@@ -26,18 +24,14 @@ public class Job implements Serializable, Comparable<Job>
     private String jobTitle;
     private String jobDescription;
 
-    public Job(Park thePark, int theMaxVolunteers, Date theStartDate,
-            Date theEndDate, String theJobTitle, String theJobDescription)
-    {
-        // volunteer list starts empty
-        volunteers = new ArrayList<>();
-        parkName = thePark.getParkName();
-        maxVolunteers = theMaxVolunteers; // check if max volunteers is 30
-        startDate = theStartDate;
-        endDate = theEndDate;
-        jobTitle = theJobTitle;
-        jobDescription = theJobDescription;
-    }
+    // work categories
+    private Collection<Volunteer> lightVolunteers;
+    private Collection<Volunteer> mediumVolunteers;
+    private Collection<Volunteer> difficultVolunteers;
+
+    private int maxLightVolunteers;
+    private int maxDifficultVolunteers;
+    private int maxMediumVolunteers;
 
     /**
      * Copies a Job's information so that it can be edited safely. This
@@ -48,13 +42,137 @@ public class Job implements Serializable, Comparable<Job>
      */
     public Job(Job toCopy)
     {
-        volunteers = new ArrayList<>();
+        lightVolunteers = new ArrayList<Volunteer>();
+        mediumVolunteers = new ArrayList<Volunteer>();
+        difficultVolunteers = new ArrayList<Volunteer>();
+        maxLightVolunteers = toCopy.maxLightVolunteers;
+        maxMediumVolunteers = toCopy.maxMediumVolunteers;
+        maxDifficultVolunteers = toCopy.maxDifficultVolunteers;
+
         parkName = toCopy.parkName;
-        maxVolunteers = toCopy.maxVolunteers; // check if max volunteers is 30
         startDate = toCopy.startDate;
         endDate = toCopy.endDate;
         jobTitle = toCopy.jobTitle;
         jobDescription = toCopy.jobDescription;
+
+    }
+
+    public Job(Park thePark, int theMaxLight, int theMaxMed,
+            int theMaxDifficult, Date theStartDate, Date theEndDate,
+            String theJobTitle, String theJobDescription)
+    {
+        lightVolunteers = new ArrayList<Volunteer>();
+        mediumVolunteers = new ArrayList<Volunteer>();
+        difficultVolunteers = new ArrayList<Volunteer>();
+        maxLightVolunteers = theMaxLight;
+        maxMediumVolunteers = theMaxMed;
+        maxDifficultVolunteers = theMaxDifficult;
+
+        parkName = thePark.getParkName();
+        startDate = theStartDate;
+        endDate = theEndDate;
+        jobTitle = theJobTitle;
+        jobDescription = theJobDescription;
+    }
+
+    /**
+     * Returns a list of all volunteers from all work categories.
+     */
+    public Collection<Volunteer> getVolunteers()
+    {
+        Collection<Volunteer> allVolunteers = new ArrayList<Volunteer>(
+                lightVolunteers);
+        allVolunteers.addAll(mediumVolunteers);
+        allVolunteers.addAll(difficultVolunteers);
+        return Collections.unmodifiableCollection(allVolunteers);
+    }
+
+    public boolean addLightVolunteer(Volunteer theVolunteer)
+    {
+        return lightVolunteers.add(theVolunteer);
+    }
+
+    public boolean addMediumVolunteer(Volunteer theVolunteer)
+    {
+        return mediumVolunteers.add(theVolunteer);
+    }
+
+    public boolean addDifficultVolunteer(Volunteer theVolunteer)
+    {
+        return difficultVolunteers.add(theVolunteer);
+    }
+
+    /**
+     * @param theWorkLoad
+     *            - the work load type category of volunteers.
+     * @return if the workload category has the maximum amount of volunteers.
+     */
+    public boolean hasMaxVolunteers(WorkLoad theWorkLoad)
+    {
+        switch (theWorkLoad)
+        {
+            case LIGHT:
+                return maxLightVolunteers == lightVolunteers.size();
+            case MEDIUM:
+                return maxMediumVolunteers == mediumVolunteers.size();
+            case DIFFICULT:
+                return maxDifficultVolunteers == difficultVolunteers.size();
+            default:
+                return true;
+        }
+    }
+
+    /**
+     * Remove the volunteer from the appropriate category, if the volunteer
+     * exists in any lists of volunteers.
+     * 
+     * @return true if the volunteer was removed from a list of volunteers.
+     */
+    public boolean removeVolunteer(Volunteer theVolunteer)
+    {
+        if (lightVolunteers.contains(theVolunteer))
+        {
+            return lightVolunteers.remove(theVolunteer);
+        }
+        else if (mediumVolunteers.contains(theVolunteer))
+        {
+            return mediumVolunteers.remove(theVolunteer);
+        }
+        else if (difficultVolunteers.contains(theVolunteer))
+        {
+            return difficultVolunteers.remove(theVolunteer);
+        }
+        return false;
+    }
+
+    public int getLightVolunteerCount()
+    {
+        return lightVolunteers.size();
+    }
+
+    public int getMediumVolunteerCount()
+    {
+        return mediumVolunteers.size();
+    }
+
+    public int getDifficultVolunteerCount()
+    {
+        return difficultVolunteers.size();
+    }
+
+    public void setMaxLightVolunteers(int theMax)
+    {
+        maxLightVolunteers = theMax;
+    }
+
+    public void setMaxMediumVolunteers(int theMax)
+    {
+        maxMediumVolunteers = theMax;
+    }
+
+    public void setMaxDifficultVolunteers(int theMax)
+    {
+        maxDifficultVolunteers = theMax;
     }
 
     @Override
@@ -67,40 +185,28 @@ public class Job implements Serializable, Comparable<Job>
         jobDetails.append(jobDescription);
         jobDetails.append("\nLocation: ");
         jobDetails.append(parkName);
-        jobDetails.append("\nVolunteers: ");
-        jobDetails.append(volunteers.size());
+
+        jobDetails.append("\nLight Volunteers Needed: ");
+        jobDetails.append(lightVolunteers.size());
         jobDetails.append("/");
-        jobDetails.append(maxVolunteers);
+        jobDetails.append(maxLightVolunteers);
+
+        jobDetails.append("\nMedium Volunteers Needed: ");
+        jobDetails.append(mediumVolunteers.size());
+        jobDetails.append("/");
+        jobDetails.append(maxMediumVolunteers);
+
+        jobDetails.append("\nDifficult Volunteers Needed: ");
+        jobDetails.append(difficultVolunteers.size());
+        jobDetails.append("/");
+        jobDetails.append(maxDifficultVolunteers);
+
         jobDetails.append("\nStart Date: ");
         jobDetails.append(startDate);
         jobDetails.append(" End Date: ");
         jobDetails.append(endDate);
         jobDetails.append("\n");
         return jobDetails.toString();
-    }
-
-    public boolean addVolunteer(Volunteer theVolunteer)
-    {
-        if (volunteers.size() < maxVolunteers)
-        {
-            return volunteers.add(theVolunteer);
-        }
-        return false;
-    }
-
-    public boolean removeVolunteer(Volunteer theVolunteer)
-    {
-        return volunteers.remove(theVolunteer);
-    }
-
-    public int getMaxVolunteers()
-    {
-        return maxVolunteers;
-    }
-
-    public void setMaxVolunteers(int maxVolunteers)
-    {
-        this.maxVolunteers = maxVolunteers;
     }
 
     public Date getStartDate()
@@ -143,11 +249,6 @@ public class Job implements Serializable, Comparable<Job>
         this.jobDescription = jobDescription;
     }
 
-    public Collection<Volunteer> getVolunteers()
-    {
-        return Collections.unmodifiableCollection(volunteers);
-    }
-
     public String getParkName()
     {
         return parkName;
@@ -156,7 +257,8 @@ public class Job implements Serializable, Comparable<Job>
     // TODO Change this when WorkCategories are in
     public boolean canEdit()
     {
-        return true;
+        return lightVolunteers.isEmpty() && mediumVolunteers.isEmpty()
+                && difficultVolunteers.isEmpty();
     }
 
     @Override
