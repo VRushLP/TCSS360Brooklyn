@@ -7,6 +7,7 @@ import exception.AlreadyVolunteeredException;
 import exception.ConflictingJobCommitmentException;
 import exception.JobIsFullException;
 import exception.JobToThePastException;
+
 import model.Job;
 import model.UrbanParkCalendar;
 import model.Volunteer;
@@ -15,17 +16,18 @@ import model.WorkLoad;
 /**
  * Driver for Volunteer class
  * 
- * @author Lachezar, Bethany
+ * @author Lachezar, Bethany, Robert
  */
 public class VolunteerDriver extends SharedUserDriverFunctions
 {
-    private static int MAX_MENU_OPTION = 3;
+    private static final int MAIN_MENU_OPTIONS = 3;
 
-    static String input;
     static int choice;
-    static String[] parsedInput;
 
-    // Data Structure to store everything in
+    private static final int VOL_EASY = 1;
+    private static final int VOL_MEDIUM = 2;
+    private static final int VOL_DIFFICULT = 3;
+
     private static Volunteer myUser;
     private static UrbanParkCalendar myUPCalendar;
     private static Scanner myInput;
@@ -37,7 +39,7 @@ public class VolunteerDriver extends SharedUserDriverFunctions
         myUser = theCurrentUser;
         myInput = in;
 
-        while (choice != MAX_MENU_OPTION)
+        while (choice != MAIN_MENU_OPTIONS)
         {
             displayLogin();
 
@@ -46,7 +48,7 @@ public class VolunteerDriver extends SharedUserDriverFunctions
             System.out.println("2. View jobs I am signed up for");
             System.out.println("3. Exit");
 
-            choice = getIntegerInput(myInput, MAX_MENU_OPTION);
+            choice = getIntegerInput(myInput, MAIN_MENU_OPTIONS);
 
             switch (choice)
             {
@@ -59,32 +61,33 @@ public class VolunteerDriver extends SharedUserDriverFunctions
                 case 3:
                     System.out.println("Goodbye!");
                     break;
-                default:
-                    System.out
-                            .println("Please enter one of the number options");
             }
         }
     }
 
-    // TODO
-    /*
-     * Change this so it stops looping on 0 instead of B Change this so parks
-     * start listing at 1 instead of 0 This method eats an input.
-     */
     public static void viewUpcomingJobs()
     {
-        printAllUpcomingJobs(myUPCalendar);
+
         ArrayList<Job> upcomingJobs = new ArrayList<Job>(
                 myUPCalendar.getJobList());
-        System.out
-                .println("Enter a number of job to view more details, or enter "
-                        + "B to go back");
-        input = myInput.nextLine();
-        if (!input.equalsIgnoreCase("B"))
+
+        if (!upcomingJobs.isEmpty())
         {
-            viewJobDetails(upcomingJobs.get(getIntegerInput(myInput,
-                    upcomingJobs.size())));
+            do
+            {
+                printAllUpcomingJobs(myUPCalendar);
+                System.out.println(
+                        "Enter the number of a job to view more details, or enter "
+                                + "0 to go back to the main menu.");
+
+                choice = getIntegerInput(myInput, 0, upcomingJobs.size());
+                if (choice != 0)
+                {
+                    viewJobDetails(upcomingJobs.get(choice - 1));
+                }
+            } while (choice != 0);
         }
+
     }
 
     /**
@@ -94,13 +97,13 @@ public class VolunteerDriver extends SharedUserDriverFunctions
     {
         if (myUser.getVolunteeredForJobs().isEmpty())
         {
-            System.out.println("Sorry, you have not volunteered for a job!\n");
+            System.out.println("Sorry, you have not volunteered for a job!");
         }
         else
         {
             for (Job job : myUser.getVolunteeredForJobs())
             {
-                System.out.println(job.toString());
+                printJobSummary(job);
             }
         }
     }
@@ -112,24 +115,24 @@ public class VolunteerDriver extends SharedUserDriverFunctions
     {
         // allow user to see details of the job and ask to volunteer for a job
         System.out.println(theJob.toString());
-        System.out.println("Would you like to volunteer? \n"
-                + "Enter Y for yes, or any other key to go back to menu");
+        System.out.print("Would you like to volunteer for this job? \n"
+                + "Enter 1 for yes, or 0 for no and to go back to the main menu: ");
 
-        input = myInput.nextLine();
-        if (input.equalsIgnoreCase("Y"))
+        choice = getIntegerInput(myInput, 0, 1);
+        if (choice == 1)
         {
-            System.out.println("Enter 1 to volunteer for light work, 2 for medium, 3 for difficult work");
-            input = myInput.nextLine();
-            System.out.println("Checking if you can Volunteer.");
-            switch(input) {
-                case "1":
+            System.out.println(
+                    "Enter 1 to volunteer for light work, 2 for medium work, or 3 for difficult work");
+            int difficulty = getIntegerInput(myInput, 3);
+            System.out.println("Checking if you can volunteer for that job...");
+            switch (difficulty)
+            {
+                case VOL_EASY:
                     volunteer(theJob, WorkLoad.LIGHT);
-                case "2":
+                case VOL_MEDIUM:
                     volunteer(theJob, WorkLoad.MEDIUM);
-                case "3":
+                case VOL_DIFFICULT:
                     volunteer(theJob, WorkLoad.DIFFICULT);
-                default:
-                    System.out.println("Sorry, this is not a valid input");
             }
         }
     }
@@ -143,7 +146,9 @@ public class VolunteerDriver extends SharedUserDriverFunctions
         try
         {
             myUser.volunteerForJob(theJob, theWorkLoad);
-            System.out.println("Congratulations! You have volunteered");
+            System.out.println("Congratulations! You have volunteered for "
+                    + theJob.getJobTitle() + "!");
+            System.out.println("You may try to volunteer for another job:");
         }
         catch (AlreadyVolunteeredException e)
         {
@@ -151,8 +156,8 @@ public class VolunteerDriver extends SharedUserDriverFunctions
         }
         catch (ConflictingJobCommitmentException e)
         {
-            System.out
-                    .println("Sorry, you already have another Job scheduled for the same date.");
+            System.out.println(
+                    "Sorry, you already have another Job scheduled for the same date.");
         }
         catch (JobIsFullException e)
         {
@@ -162,15 +167,15 @@ public class VolunteerDriver extends SharedUserDriverFunctions
         {
             System.out.println("Sorry, that Job has already occured.");
         }
-
-        System.out.println("Enter b go back to main menu");
-        input = myInput.nextLine();
     }
 
+    /**
+     * @author Robert
+     */
     public static void displayLogin()
     {
-        System.out.println("Welcome " + myUser.getFirstName() + " "
+        System.out.println("\nWelcome " + myUser.getFirstName() + " "
                 + myUser.getLastName() + "!\n" + "Logged in as: "
-                + myUser.getEmail() + " (Volunteer)\n");
+                + myUser.getEmail() + " (Park Manager)\n");
     }
 }

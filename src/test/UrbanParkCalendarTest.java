@@ -15,7 +15,7 @@ import exception.JobTimeTravelException;
 import exception.JobToTheFutureException;
 import exception.JobToThePastException;
 import exception.JobTooLongException;
-
+import exception.JobWorksTooHardException;
 import model.Job;
 import model.Park;
 import model.ParkManager;
@@ -72,7 +72,8 @@ public class UrbanParkCalendarTest
     public void testUpcomingValidation() throws CalendarWeekFullException,
             CalendarFullException, JobTooLongException, JobTimeTravelException,
             JobToThePastException, JobToTheFutureException,
-            DuplicateJobExistsException, InterruptedException
+            DuplicateJobExistsException, InterruptedException,
+            JobWorksTooHardException
     {
         calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM, 0, 0,
                 new Date(System.currentTimeMillis() + 1), new Date(System
@@ -98,7 +99,7 @@ public class UrbanParkCalendarTest
         catch (CalendarWeekFullException | CalendarFullException
                 | JobTooLongException | JobTimeTravelException
                 | JobToThePastException | JobToTheFutureException
-                | DuplicateJobExistsException e)
+                | DuplicateJobExistsException | JobWorksTooHardException e)
         {
             e.printStackTrace(); // There is no reason this should trigger from
                                  // the above add
@@ -110,7 +111,7 @@ public class UrbanParkCalendarTest
     public void testOverfullWeek() throws CalendarWeekFullException,
             CalendarFullException, JobTooLongException, JobTimeTravelException,
             JobToThePastException, JobToTheFutureException,
-            DuplicateJobExistsException
+            DuplicateJobExistsException, JobWorksTooHardException
     {
         for (int i = 0; i < 4; i++)
         {
@@ -132,7 +133,8 @@ public class UrbanParkCalendarTest
         }
         catch (CalendarFullException | JobTooLongException
                 | JobTimeTravelException | JobToThePastException
-                | JobToTheFutureException | DuplicateJobExistsException e)
+                | JobToTheFutureException | DuplicateJobExistsException
+                | JobWorksTooHardException e)
         {
             fail(e.getClass().getName());
         }
@@ -143,7 +145,7 @@ public class UrbanParkCalendarTest
     public void testCalendarFullException() throws CalendarWeekFullException,
             CalendarFullException, JobTooLongException, JobTimeTravelException,
             JobToThePastException, JobToTheFutureException,
-            DuplicateJobExistsException
+            DuplicateJobExistsException, JobWorksTooHardException
     {
         for (int i = 0; i < 30; i++)
         {
@@ -168,11 +170,11 @@ public class UrbanParkCalendarTest
         }
         catch (CalendarWeekFullException | JobTooLongException
                 | JobTimeTravelException | JobToThePastException
-                | JobToTheFutureException | DuplicateJobExistsException e)
+                | JobToTheFutureException | DuplicateJobExistsException
+                | JobWorksTooHardException e)
         {
             fail(e.getClass().getName());
         }
-
     }
 
     @Test
@@ -192,7 +194,8 @@ public class UrbanParkCalendarTest
         }
         catch (CalendarWeekFullException | JobTooLongException
                 | CalendarFullException | JobToThePastException
-                | JobToTheFutureException | DuplicateJobExistsException e)
+                | JobToTheFutureException | DuplicateJobExistsException
+                | JobWorksTooHardException e)
         {
             fail(e.getClass().getName());
         }
@@ -213,7 +216,8 @@ public class UrbanParkCalendarTest
         }
         catch (CalendarWeekFullException | JobTooLongException
                 | JobTimeTravelException | CalendarFullException
-                | JobToTheFutureException | DuplicateJobExistsException e)
+                | JobToTheFutureException | DuplicateJobExistsException
+                | JobWorksTooHardException e)
         {
             fail(e.getClass().getName());
         }
@@ -246,7 +250,8 @@ public class UrbanParkCalendarTest
         }
         catch (CalendarWeekFullException | JobTooLongException
                 | JobTimeTravelException | CalendarFullException
-                | JobToThePastException | DuplicateJobExistsException e)
+                | JobToThePastException | DuplicateJobExistsException
+                | JobWorksTooHardException e)
         {
             fail(e.getClass().getName());
         }
@@ -268,14 +273,16 @@ public class UrbanParkCalendarTest
         }
         catch (CalendarWeekFullException | JobToTheFutureException
                 | JobTimeTravelException | CalendarFullException
-                | JobToThePastException | DuplicateJobExistsException e)
+                | JobToThePastException | DuplicateJobExistsException
+                | JobWorksTooHardException e)
         {
             fail(e.getClass().getName());
         }
     }
 
-    @Test
+    @Test(expected = DuplicateJobExistsException.class)
     public void testDuplicateJobExistsException()
+            throws DuplicateJobExistsException
     {
         try
         {
@@ -286,14 +293,10 @@ public class UrbanParkCalendarTest
                     today, tomorrow, "Uh oh",
                     "This job should trigger an exception"));
         }
-        catch (DuplicateJobExistsException e)
-        {
-            assertTrue(e.getClass().getSimpleName(),
-                    e instanceof DuplicateJobExistsException);
-        }
         catch (CalendarWeekFullException | JobToTheFutureException
                 | JobTimeTravelException | CalendarFullException
-                | JobToThePastException | JobTooLongException e)
+                | JobToThePastException | JobTooLongException
+                | JobWorksTooHardException e)
         {
             fail(e.getClass().getName());
         }

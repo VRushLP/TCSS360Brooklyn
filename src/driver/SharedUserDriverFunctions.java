@@ -13,7 +13,6 @@ import model.Volunteer;
 
 public abstract class SharedUserDriverFunctions
 {
-
     /**
      * Prints a summary of a Job. A summary consists of the following: <br>
      * The Job's title <br>
@@ -130,7 +129,7 @@ public abstract class SharedUserDriverFunctions
         {
             for (int i = 0; i < allJobs.size(); i++)
             {
-                printJobSummary(i, allJobs.get(i));
+                printJobSummary(i + 1, allJobs.get(i));
             }
         }
     }
@@ -147,7 +146,13 @@ public abstract class SharedUserDriverFunctions
      */
     public static int getIntegerInput(Scanner in, int max)
     {
-        String parseErrorMsg = "Please enter an integer between 1 and " + max;
+        return getIntegerInput(in, 1, max);
+    }
+
+    public static int getIntegerInput(Scanner in, int min, int max)
+    {
+        String parseErrorMsg = "Please enter an integer between " + min
+                + " and " + max;
         int toReturn = 0;
         boolean ableToReturn = false;
 
@@ -158,7 +163,7 @@ public abstract class SharedUserDriverFunctions
             {
                 toReturn = Integer.parseInt(temp.trim());
 
-                if (toReturn > 0 && toReturn <= max)
+                if (toReturn >= min && toReturn <= max)
                 {
                     ableToReturn = true;
                 }
@@ -239,7 +244,6 @@ public abstract class SharedUserDriverFunctions
         {
             printVolunteerSummary(i + 1, volunteers.get(i));
         }
-        System.out.println();
     }
 
     /**
@@ -252,7 +256,7 @@ public abstract class SharedUserDriverFunctions
         System.out.println();
         if (jobs.isEmpty())
         {
-            System.out.println("There are no jobs to view.\n");
+            System.out.println("There are no jobs to view.");
         }
         else
         {
@@ -260,7 +264,6 @@ public abstract class SharedUserDriverFunctions
             {
                 printJobSummary(i + 1, jobs.get(i));
             }
-            System.out.println();
         }
     }
 }

@@ -20,7 +20,7 @@ public class ParkTest
     Park parkDuplicate;
     Park parkWithNoJobs;
     Park parkWithOneJob;
-    Park parkWithNJobs;
+    Park parkWithSomeJobs;
     ParkManager pm1, pm2, pm3, pm4, pm5;
     Date today;
     Date tomorrow;
@@ -42,7 +42,7 @@ public class ParkTest
         park2 = new Park("Ravenna Park", pm3);
         parkWithNoJobs = new Park("Ravenna Park2", pm5);
         parkWithOneJob = new Park("Fremont Park", pm2);
-        parkWithNJobs = new Park("North Passage Point Park", pm4);
+        parkWithSomeJobs = new Park("North Passage Point Park", pm4);
 
         today = new Date(System.currentTimeMillis()
                 + TimeUnit.HOURS.toMillis(1));
@@ -67,10 +67,10 @@ public class ParkTest
         j5 = new Job(park2, 8, 0, 0, fiveDays, sixDays, "Test Job 5 Title",
                 "Test Job 5 Description");
         parkWithOneJob.addJob(j1);
-        parkWithNJobs.addJob(j1);
-        parkWithNJobs.addJob(j2);
-        parkWithNJobs.addJob(j3);
-        parkWithNJobs.addJob(j4);
+        parkWithSomeJobs.addJob(j1);
+        parkWithSomeJobs.addJob(j2);
+        parkWithSomeJobs.addJob(j3);
+        parkWithSomeJobs.addJob(j4);
     }
 
     @Test
@@ -112,8 +112,8 @@ public class ParkTest
     @Test
     public void testAddJobOnJobListWithNJobs()
     {
-        parkWithNJobs.addJob(j5);
-        jobs = new ArrayList<Job>(parkWithNJobs.getJobList());
+        parkWithSomeJobs.addJob(j5);
+        jobs = new ArrayList<Job>(parkWithSomeJobs.getJobList());
         assertFalse(jobs.get(0).equals(j2));
         assertFalse(jobs.get(jobs.size() - 2).equals(j2));
         assertTrue(jobs.get(jobs.size() - 1).equals(j5));
@@ -158,9 +158,9 @@ public class ParkTest
     @Test
     public void testCheckForJobOnParkWithNJobs()
     {
-        assertTrue(parkWithNJobs.hasJob(j1));
-        assertTrue(parkWithNJobs.hasJob(j3));
-        assertTrue(parkWithNJobs.hasJob(j4));
+        assertTrue(parkWithSomeJobs.hasJob(j1));
+        assertTrue(parkWithSomeJobs.hasJob(j3));
+        assertTrue(parkWithSomeJobs.hasJob(j4));
     }
 
     @Test
@@ -178,6 +178,6 @@ public class ParkTest
     @Test
     public void testRemoveJobOnParkWithNJobs()
     {
-        assertTrue(parkWithNJobs.removeJob(j4));
+        assertTrue(parkWithSomeJobs.removeJob(j4));
     }
 }

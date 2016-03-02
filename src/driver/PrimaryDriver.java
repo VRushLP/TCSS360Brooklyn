@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -25,7 +24,7 @@ import exception.JobTimeTravelException;
 import exception.JobToTheFutureException;
 import exception.JobToThePastException;
 import exception.JobTooLongException;
-
+import exception.JobWorksTooHardException;
 import model.AbstractUser;
 import model.Job;
 import model.Park;
@@ -37,12 +36,13 @@ import model.Volunteer;
 
 public class PrimaryDriver
 {
-    private static final String EXIT_STRING = "quit";
-    private static final String RESET_FILES = "reset";
+    private static final String EXIT_COMMAND = "quit";
+    private static final String RESET_COMMAND = "reset";
+    private static final String DEBUG_COMMAND = "debug";
 
     // Input file name.
-    private static final String[] filePaths = { "calendar.ser",
-            "loginList.ser", "jobList.ser" };
+    private static final String[] filePaths = { "calendar.ser", "loginList.ser",
+            "jobList.ser" };
 
     // Data Structure to store everything in
     private static Map<String, AbstractUser> loginList;
@@ -69,27 +69,18 @@ public class PrimaryDriver
         Scanner in = new Scanner(System.in);
 
         // Prompt user to log in
-        System.out.println(UPCalendar.getJobList().size());
-        System.out.println(UPCalendar.getAllVolunteers().size());
         System.out.println("Please enter your email to log in: ");
         String userInput;
-
-        System.out.println(loginList.keySet());
 
         do
         {
             userInput = in.nextLine();
-            // Hardcoded versions for easier testing.
-            // userName = "presidenttheo@whitehouse.gov"; //Park Manager
-            // userName = "rmfarc@email.net"; //Volunteer
-            // userName = "thedude@aol.com"; //Urban Park Staff Member
-
             User currentUser = login(userInput);
 
             if (currentUser instanceof ParkManager)
             {
-                ParkManagerDriver
-                        .run((ParkManager) currentUser, in, UPCalendar);
+                ParkManagerDriver.run((ParkManager) currentUser, in,
+                        UPCalendar);
                 break;
             }
             else if (currentUser instanceof UrbanParkStaffMember)
@@ -103,22 +94,29 @@ public class PrimaryDriver
                 VolunteerDriver.run((Volunteer) currentUser, in, UPCalendar);
                 break;
             }
-            else if (userInput.equalsIgnoreCase(RESET_FILES))
+            else if (userInput.equalsIgnoreCase(RESET_COMMAND))
             {
-                fabricateInformation();
+                resetInformation();
+                System.out.println("All information reset.");
             }
-            else if (!userInput.equalsIgnoreCase(EXIT_STRING))
+            else if (userInput.equalsIgnoreCase(DEBUG_COMMAND))
             {
-                System.out
-                        .println("Login failed. Please try again or type 'Quit' to terminate the program.");
+                System.out.println(UPCalendar.getJobList().size());
+                System.out.println(UPCalendar.getAllVolunteers().size());
+                System.out.println(loginList.keySet());
+            }
+            else if (!userInput.equalsIgnoreCase(EXIT_COMMAND))
+            {
+                System.out.println(
+                        "Login failed. Please try again or type 'Quit' to terminate the program.");
             }
             else
             {
                 System.out.println("Thank you for using Urban Parks.");
             }
-        } while (!userInput.equalsIgnoreCase(EXIT_STRING));
+        } while (!userInput.equalsIgnoreCase(EXIT_COMMAND));
         in.close();
-
+        // Save data before quitting.
         serializeData();
     }
 
@@ -127,10 +125,11 @@ public class PrimaryDriver
         return loginList.get(theUserName);
     }
 
-    private static void fabricateInformation()
+    private static void resetInformation()
     {
+        System.out.println("Resetting data");
         UPCalendar = new UrbanParkCalendar();
-        
+
         // Users
         ParkManager theDude = new ParkManager("thedude@aol.com", "Jeff",
                 "Bridges");
@@ -146,16 +145,18 @@ public class PrimaryDriver
 
         Volunteer robert = new Volunteer("rmfarc@uw.edu", "Robert", "Ferguson");
         addUserInformation(robert);
+        Volunteer ashley = new Volunteer("arc@gmail.com", "Ashley", "Ferguson");
+        addUserInformation(ashley);
 
         // Dates so jobs are always in the future.
-        Date tomorrow = new Date(System.currentTimeMillis()
-                + TimeUnit.DAYS.toMillis(1));
-        Date dayAfterTomorrow = new Date(System.currentTimeMillis()
-                + TimeUnit.DAYS.toMillis(2));
-        Date twoDaysAfterTomorrow = new Date(System.currentTimeMillis()
-                + TimeUnit.DAYS.toMillis(3));
-        Date threeDaysAfterTomorrow = new Date(System.currentTimeMillis()
-                + TimeUnit.DAYS.toMillis(4));
+        Date tomorrow = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1));
+        Date dayAfterTomorrow = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(2));
+        Date twoDaysAfterTomorrow = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(3));
+        Date threeDaysAfterTomorrow = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(4));
 
         // Actual jobs
         Job bigfoot = new Job(dashPoint, 10, 10, 10, tomorrow, tomorrow,
@@ -166,7 +167,7 @@ public class PrimaryDriver
                 twoDaysAfterTomorrow, "Garbage Collection",
                 "Not as exciting, I know");
         Job sweep = new Job(wildWaves, 10, 10, 10, twoDaysAfterTomorrow,
-                threeDaysAfterTomorrow, "Sweeping up the beach.",
+                threeDaysAfterTomorrow, "Sweeping up the beach",
                 "Getting rid of the sand. It gets /everywhere/");
 
         try
@@ -179,14 +180,16 @@ public class PrimaryDriver
         catch (CalendarWeekFullException | CalendarFullException
                 | JobTooLongException | JobTimeTravelException
                 | JobToThePastException | JobToTheFutureException
-                | DuplicateJobExistsException e)
+                | DuplicateJobExistsException | JobWorksTooHardException e)
         {
             System.err.println("Error in Fabricating Jobs.");
             System.err.println(e.getClass().getSimpleName());
             System.err.println(e.getCause());
             e.printStackTrace();
         }
+        System.out.println("Writing data out to files.");
         serializeData();
+        deserializeData();
     }
 
     private static void addUserInformation(AbstractUser theUser)
@@ -258,8 +261,7 @@ public class PrimaryDriver
                         for (Job j : UPCalendar.getJobList())
                         {
                             if (p.getParkName().equalsIgnoreCase(
-                                    j.getParkName())
-                                    && !p.hasJob(j))
+                                    j.getParkName()) && !p.hasJob(j))
                             {
                                 p.addJob(j);
                             }
@@ -268,7 +270,7 @@ public class PrimaryDriver
                 }
             }
 
-            System.out.println("Objects read successfully.");
+            System.out.println("Files read successfully.");
         }
         catch (ClassNotFoundException e)
         {
@@ -282,7 +284,6 @@ public class PrimaryDriver
         {
             e.printStackTrace();
         }
-
     }
 
     private static void serializeData()
