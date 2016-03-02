@@ -129,10 +129,13 @@ public class VolunteerDriver extends SharedUserDriverFunctions
             {
                 case VOL_EASY:
                     volunteer(theJob, WorkLoad.LIGHT);
+                    break;
                 case VOL_MEDIUM:
                     volunteer(theJob, WorkLoad.MEDIUM);
+                    break;
                 case VOL_DIFFICULT:
                     volunteer(theJob, WorkLoad.DIFFICULT);
+                    break;
             }
         }
     }
