@@ -67,18 +67,27 @@ public class VolunteerDriver extends SharedUserDriverFunctions
 
     public static void viewUpcomingJobs()
     {
-        printAllUpcomingJobs(myUPCalendar);
+
         ArrayList<Job> upcomingJobs = new ArrayList<Job>(
                 myUPCalendar.getJobList());
-        System.out
-                .println("Enter a number of job to view more details, or enter "
-                        + "0 to go back to the main menu.");
 
-        choice = getIntegerInput(myInput, upcomingJobs.size());
-        if (choice != 0)
+        if (!upcomingJobs.isEmpty())
         {
-            viewJobDetails(upcomingJobs.get(choice - 1));
+            do
+            {
+                printAllUpcomingJobs(myUPCalendar);
+                System.out.println(
+                        "Enter the number of a job to view more details, or enter "
+                                + "0 to go back to the main menu.");
+
+                choice = getIntegerInput(myInput, 0, upcomingJobs.size());
+                if (choice != 0)
+                {
+                    viewJobDetails(upcomingJobs.get(choice - 1));
+                }
+            } while (choice != 0);
         }
+
     }
 
     /**
@@ -88,7 +97,7 @@ public class VolunteerDriver extends SharedUserDriverFunctions
     {
         if (myUser.getVolunteeredForJobs().isEmpty())
         {
-            System.out.println("Sorry, you have not volunteered for a job!\n");
+            System.out.println("Sorry, you have not volunteered for a job!");
         }
         else
         {
@@ -139,6 +148,7 @@ public class VolunteerDriver extends SharedUserDriverFunctions
             myUser.volunteerForJob(theJob, theWorkLoad);
             System.out.println("Congratulations! You have volunteered for "
                     + theJob.getJobTitle() + "!");
+            System.out.println("You may try to volunteer for another job:");
         }
         catch (AlreadyVolunteeredException e)
         {
