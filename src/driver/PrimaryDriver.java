@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -25,7 +24,7 @@ import exception.JobTimeTravelException;
 import exception.JobToTheFutureException;
 import exception.JobToThePastException;
 import exception.JobTooLongException;
-
+import exception.JobWorksTooHardException;
 import model.AbstractUser;
 import model.Job;
 import model.Park;
@@ -37,8 +36,8 @@ import model.Volunteer;
 
 public class PrimaryDriver
 {
-    private static final String EXIT_STRING = "quit";
-    private static final String RESET_FILES = "reset";
+    private static final String EXIT_COMMAND = "quit";
+    private static final String RESET_COMMAND = "reset";
 
     // Input file name.
     private static final String[] filePaths = { "calendar.ser",
@@ -79,11 +78,6 @@ public class PrimaryDriver
         do
         {
             userInput = in.nextLine();
-            // Hardcoded versions for easier testing.
-            // userName = "presidenttheo@whitehouse.gov"; //Park Manager
-            // userName = "rmfarc@email.net"; //Volunteer
-            // userName = "thedude@aol.com"; //Urban Park Staff Member
-
             User currentUser = login(userInput);
 
             if (currentUser instanceof ParkManager)
@@ -103,11 +97,12 @@ public class PrimaryDriver
                 VolunteerDriver.run((Volunteer) currentUser, in, UPCalendar);
                 break;
             }
-            else if (userInput.equalsIgnoreCase(RESET_FILES))
+            else if (userInput.equalsIgnoreCase(RESET_COMMAND))
             {
                 fabricateInformation();
+                System.out.println("Information reset");
             }
-            else if (!userInput.equalsIgnoreCase(EXIT_STRING))
+            else if (!userInput.equalsIgnoreCase(EXIT_COMMAND))
             {
                 System.out
                         .println("Login failed. Please try again or type 'Quit' to terminate the program.");
@@ -116,9 +111,9 @@ public class PrimaryDriver
             {
                 System.out.println("Thank you for using Urban Parks.");
             }
-        } while (!userInput.equalsIgnoreCase(EXIT_STRING));
+        } while (!userInput.equalsIgnoreCase(EXIT_COMMAND));
         in.close();
-
+        // Save data before quitting.
         serializeData();
     }
 
@@ -129,8 +124,9 @@ public class PrimaryDriver
 
     private static void fabricateInformation()
     {
+        System.out.println("Resetting data");
         UPCalendar = new UrbanParkCalendar();
-        
+
         // Users
         ParkManager theDude = new ParkManager("thedude@aol.com", "Jeff",
                 "Bridges");
@@ -146,6 +142,8 @@ public class PrimaryDriver
 
         Volunteer robert = new Volunteer("rmfarc@uw.edu", "Robert", "Ferguson");
         addUserInformation(robert);
+        Volunteer ashley = new Volunteer("arc@gmail.com", "Ashley", "Ferguson");
+        addUserInformation(ashley);
 
         // Dates so jobs are always in the future.
         Date tomorrow = new Date(System.currentTimeMillis()
@@ -179,7 +177,7 @@ public class PrimaryDriver
         catch (CalendarWeekFullException | CalendarFullException
                 | JobTooLongException | JobTimeTravelException
                 | JobToThePastException | JobToTheFutureException
-                | DuplicateJobExistsException e)
+                | DuplicateJobExistsException | JobWorksTooHardException e)
         {
             System.err.println("Error in Fabricating Jobs.");
             System.err.println(e.getClass().getSimpleName());
@@ -187,6 +185,7 @@ public class PrimaryDriver
             e.printStackTrace();
         }
         serializeData();
+        deserializeData();
     }
 
     private static void addUserInformation(AbstractUser theUser)
@@ -268,7 +267,7 @@ public class PrimaryDriver
                 }
             }
 
-            System.out.println("Objects read successfully.");
+            System.out.println("Files read successfully.");
         }
         catch (ClassNotFoundException e)
         {
@@ -282,7 +281,6 @@ public class PrimaryDriver
         {
             e.printStackTrace();
         }
-
     }
 
     private static void serializeData()

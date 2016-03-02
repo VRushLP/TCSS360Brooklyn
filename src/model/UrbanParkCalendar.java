@@ -79,8 +79,12 @@ public class UrbanParkCalendar implements Serializable
     public boolean addJob(Job theJob) throws CalendarWeekFullException,
             CalendarFullException, JobTooLongException, JobTimeTravelException,
             JobToThePastException, JobToTheFutureException,
-            DuplicateJobExistsException
+            DuplicateJobExistsException, JobWorksTooHardException
     {
+        if (theJob.getMaxLightVolunteers() + theJob.getMaxMediumVolunteers()
+                + theJob.getMaxDifficultVolunteers() > Job.MAX_VOLUNTEER_NUM)
+            throw new JobWorksTooHardException();
+
         checkForDuplicates(theJob);
         checkJobDate(theJob);
         checkForRoomThatWeek(theJob);

@@ -319,4 +319,19 @@ public class Job implements Serializable, Comparable<Job>
                 || endDate.equals(theOtherJob.getStartDate())
                 || endDate.equals(theOtherJob.getEndDate());
     }
+
+    public int getMaxLightVolunteers()
+    {
+        return maxLightVolunteers;
+    }
+
+    public int getMaxDifficultVolunteers()
+    {
+        return maxDifficultVolunteers;
+    }
+
+    public int getMaxMediumVolunteers()
+    {
+        return maxMediumVolunteers;
+    }
 }
