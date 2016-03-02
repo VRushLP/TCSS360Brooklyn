@@ -20,7 +20,7 @@ import model.WorkLoad;
  */
 public class VolunteerDriver extends SharedUserDriverFunctions
 {
-    private static final int MAX_MENU_OPTION = 3;
+    private static final int MAIN_MENU_OPTIONS = 3;
 
     static int choice;
 
@@ -39,7 +39,7 @@ public class VolunteerDriver extends SharedUserDriverFunctions
         myUser = theCurrentUser;
         myInput = in;
 
-        while (choice != MAX_MENU_OPTION)
+        while (choice != MAIN_MENU_OPTIONS)
         {
             displayLogin();
 
@@ -48,7 +48,7 @@ public class VolunteerDriver extends SharedUserDriverFunctions
             System.out.println("2. View jobs I am signed up for");
             System.out.println("3. Exit");
 
-            choice = getIntegerInput(myInput, MAX_MENU_OPTION);
+            choice = getIntegerInput(myInput, MAIN_MENU_OPTIONS);
 
             switch (choice)
             {
