@@ -53,8 +53,8 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
             System.out.println("2. Delete a job");
             System.out.println("3. Edit the details of a job.");
             System.out.println("4. View summary of upcoming jobs in my parks.");
-            System.out
-                    .println("5. View the volunteers for a job in a parks I manage");
+            System.out.println(
+                    "5. View the volunteers for a job in a parks I manage");
             System.out.println("6. Exit.");
 
             choice = getIntegerInput(myInput, MAIN_MENU_CHOICES);
@@ -96,8 +96,8 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         }
         else
         {
-            System.out
-                    .println("Please select one of the parks you manage to add a job for that park");
+            System.out.println(
+                    "Please select one of the parks you manage to add a job for that park");
 
             ArrayList<Park> parks = new ArrayList<Park>(myUser.getParks());
             printParks(parks);
@@ -117,16 +117,16 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
             System.out.print("End Date (MM/DD/YYYY): ");
             Date endDate = getDateInput(myInput);
 
-            System.out
-                    .println("Please note a job can have a max of 30 Volunteers across all work categories.");
-            System.out
-                    .print("Enter the maximum number of volunteers for light work: ");
+            System.out.println(
+                    "Please note a job can have a max of 30 Volunteers across all work categories.");
+            System.out.print(
+                    "Enter the maximum number of volunteers for light work: ");
             int maxLightVolunteers = getIntegerInput(myInput, 30);
-            System.out
-                    .print("Enter the maximum number of volunteers for medium work: ");
+            System.out.print(
+                    "Enter the maximum number of volunteers for medium work: ");
             int maxMedVolunteers = getIntegerInput(myInput, 30);
-            System.out
-                    .print("Enter the maximum number of volunteers for difficult work: ");
+            System.out.print(
+                    "Enter the maximum number of volunteers for difficult work: ");
             int maxDifficultVolunteers = getIntegerInput(myInput, 30);
 
             Job jobToAdd = new Job(park, maxLightVolunteers, maxMedVolunteers,
@@ -142,8 +142,8 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
      */
     public static void deleteJob()
     {
-        System.out
-                .println("Please select one of the parks you manage to delete a job from that park");
+        System.out.println(
+                "Please select one of the parks you manage to delete a job from that park");
         ArrayList<Park> parks = new ArrayList<Park>(myUser.getParks());
 
         printParks(parks);
@@ -159,8 +159,8 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         }
         else
         {
-            System.out
-                    .print("Please enter the number of the job you would like to delete: ");
+            System.out.print(
+                    "Please enter the number of the job you would like to delete: ");
             printJobs(jobs);
             System.out.println("Enter job number:");
 
@@ -198,8 +198,8 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         }
         else
         {
-            System.out
-                    .println("Please enter the number of the job you would like to edit");
+            System.out.println(
+                    "Please enter the number of the job you would like to edit");
             System.out.println();
             printJobs(jobs);
 
@@ -214,8 +214,8 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
             }
             else
             {
-                System.out
-                        .println("You cannot edit a Job that already has Volunteers");
+                System.out.println(
+                        "You cannot edit a Job that already has Volunteers");
             }
         }
     }
@@ -240,8 +240,8 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         {
             System.out.println("Jobs in " + park.getParkName());
             printJobs(jobs);
-            System.out
-                    .println("\nSelect a job to view in greater detail, or enter 0 to go back.");
+            System.out.println(
+                    "\nSelect a job to view in greater detail, or enter 0 to go back.");
             choice = getIntegerInput(myInput, 0, jobs.size());
 
             if (choice != 0)
@@ -256,8 +256,8 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
      */
     private static void viewVolunteers()
     {
-        System.out
-                .println("Please select one of the parks you manage to view the jobs");
+        System.out.println(
+                "Please select one of the parks you manage to view the jobs");
 
         ArrayList<Park> parks = new ArrayList<Park>(myUser.getParks());
         printParks(parks);
@@ -309,13 +309,13 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                                 newJobTitle);
                         // Display message to user to indicate that the edit
                         // was successful
-                        System.out
-                                .println("Job title was modified successfully.");
+                        System.out.println(
+                                "Job title was modified successfully.");
                     }
                     catch (DuplicateJobExistsException e)
                     {
-                        System.out
-                                .println("Your edit would cause a duplicate job to exist!");
+                        System.out.println(
+                                "Your edit would cause a duplicate job to exist!");
                     }
 
                     break;
@@ -326,13 +326,13 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                     {
                         jobToEdit = myUPCalendar.editJobDesc(park, jobToEdit,
                                 newJobDescription);
-                        System.out
-                                .println("Job description was modified successfully.");
+                        System.out.println(
+                                "Job description was modified successfully.");
                     }
                     catch (DuplicateJobExistsException e)
                     {
-                        System.out
-                                .println("Your edit would cause a duplicate job to exist!");
+                        System.out.println(
+                                "Your edit would cause a duplicate job to exist!");
                     }
 
                     break;
@@ -345,44 +345,45 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                     {
                         jobToEdit = myUPCalendar.editJobDates(park, jobToEdit,
                                 startDate, endDate);
-                        System.out
-                                .println("Job start date was modified successfully.");
+                        System.out.println(
+                                "Job start date was modified successfully.");
                     }
                     catch (JobToThePastException e)
                     {
-                        System.out
-                                .println("Your edit would cause the job to have already occured!");
+                        System.out.println(
+                                "Your edit would cause the job to have already occured!");
                     }
                     catch (JobToTheFutureException e)
                     {
-                        System.out
-                                .println("Your edit puts the job too far out in the future.");
+                        System.out.println(
+                                "Your edit puts the job too far out in the future.");
                     }
                     catch (JobTooLongException e)
                     {
-                        System.out
-                                .println("Your edit causes the job to last too long.");
+                        System.out.println(
+                                "Your edit causes the job to last too long.");
                     }
                     catch (CalendarWeekFullException e)
                     {
-                        System.out
-                                .println("Your edit causes an overflow in that calendar week.");
+                        System.out.println(
+                                "Your edit causes an overflow in that calendar week.");
                     }
                     catch (JobTimeTravelException e)
                     {
-                        System.out
-                                .println("Your edit would cause your job to end before it began!");
+                        System.out.println(
+                                "Your edit would cause your job to end before it began!");
                     }
 
                     break;
                 case 4:
-                    System.out
-                            .println("Please enter the a new maximum number of volunteers (Up to 30):");
+                    System.out.println(
+                            "Please enter the a new maximum number of volunteers (Up to 30):");
                     System.out.println("Light work:");
                     int newLight = getIntegerInput(myInput,
                             Job.MAX_VOLUNTEER_NUM);
                     System.out.println("Medium work:");
-                    int newMed = getIntegerInput(myInput, Job.MAX_VOLUNTEER_NUM);
+                    int newMed = getIntegerInput(myInput,
+                            Job.MAX_VOLUNTEER_NUM);
                     System.out.println("Hard work:");
                     int newHard = getIntegerInput(myInput,
                             Job.MAX_VOLUNTEER_NUM);
@@ -391,18 +392,15 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                     {
                         jobToEdit = myUPCalendar.editMaxVol(park, jobToEdit,
                                 newLight, newMed, newHard);
-                        System.out
-                                .println("Maximum number of volunteers for selected job was changed to: "
-                                        + newLight
-                                        + ", "
-                                        + newMed
-                                        + ", "
+                        System.out.println(
+                                "Maximum number of volunteers for selected job was changed to: "
+                                        + newLight + ", " + newMed + ", "
                                         + newHard + ".");
                     }
                     catch (JobWorksTooHardException e)
                     {
-                        System.out
-                                .println("Your input would cause too many volunteer slots to be available.");
+                        System.out.println(
+                                "Your input would cause too many volunteer slots to be available.");
                     }
 
                     break;
@@ -410,8 +408,8 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                     System.out.println("Finished editing job");
                     break;
                 default:
-                    System.out
-                            .println("Please enter one of the numbered options");
+                    System.out.println(
+                            "Please enter one of the numbered options");
                     break;
             }
         } while (choice != EDIT_JOB_MENU_CHOICES);
@@ -432,8 +430,8 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         }
         catch (CalendarWeekFullException e)
         {
-            System.out
-                    .println("The week you're trying to add a job to is too full.");
+            System.out.println(
+                    "The week you're trying to add a job to is too full.");
         }
         catch (CalendarFullException e)
         {
@@ -445,8 +443,8 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         }
         catch (JobTimeTravelException e)
         {
-            System.out
-                    .println("A job's end date must occur after it's start date.");
+            System.out.println(
+                    "A job's end date must occur after it's start date.");
         }
         catch (JobToThePastException e)
         {
@@ -458,8 +456,8 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         }
         catch (DuplicateJobExistsException e)
         {
-            System.out
-                    .println("Your job appears to be a duplicate of a job that already exists.");
+            System.out.println(
+                    "Your job appears to be a duplicate of a job that already exists.");
         }
         catch (JobWorksTooHardException e)
         {

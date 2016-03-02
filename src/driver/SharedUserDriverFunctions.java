@@ -129,7 +129,7 @@ public abstract class SharedUserDriverFunctions
         {
             for (int i = 0; i < allJobs.size(); i++)
             {
-                printJobSummary(i, allJobs.get(i));
+                printJobSummary(i + 1, allJobs.get(i));
             }
         }
     }

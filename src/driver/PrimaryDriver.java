@@ -38,10 +38,11 @@ public class PrimaryDriver
 {
     private static final String EXIT_COMMAND = "quit";
     private static final String RESET_COMMAND = "reset";
+    private static final String DEBUG_COMMAND = "debug";
 
     // Input file name.
-    private static final String[] filePaths = { "calendar.ser",
-            "loginList.ser", "jobList.ser" };
+    private static final String[] filePaths = { "calendar.ser", "loginList.ser",
+            "jobList.ser" };
 
     // Data Structure to store everything in
     private static Map<String, AbstractUser> loginList;
@@ -68,12 +69,8 @@ public class PrimaryDriver
         Scanner in = new Scanner(System.in);
 
         // Prompt user to log in
-        System.out.println(UPCalendar.getJobList().size());
-        System.out.println(UPCalendar.getAllVolunteers().size());
         System.out.println("Please enter your email to log in: ");
         String userInput;
-
-        System.out.println(loginList.keySet());
 
         do
         {
@@ -82,8 +79,8 @@ public class PrimaryDriver
 
             if (currentUser instanceof ParkManager)
             {
-                ParkManagerDriver
-                        .run((ParkManager) currentUser, in, UPCalendar);
+                ParkManagerDriver.run((ParkManager) currentUser, in,
+                        UPCalendar);
                 break;
             }
             else if (currentUser instanceof UrbanParkStaffMember)
@@ -99,13 +96,19 @@ public class PrimaryDriver
             }
             else if (userInput.equalsIgnoreCase(RESET_COMMAND))
             {
-                fabricateInformation();
-                System.out.println("Information reset");
+                resetInformation();
+                System.out.println("All information reset.");
+            }
+            else if (userInput.equalsIgnoreCase(DEBUG_COMMAND))
+            {
+                System.out.println(UPCalendar.getJobList().size());
+                System.out.println(UPCalendar.getAllVolunteers().size());
+                System.out.println(loginList.keySet());
             }
             else if (!userInput.equalsIgnoreCase(EXIT_COMMAND))
             {
-                System.out
-                        .println("Login failed. Please try again or type 'Quit' to terminate the program.");
+                System.out.println(
+                        "Login failed. Please try again or type 'Quit' to terminate the program.");
             }
             else
             {
@@ -122,7 +125,7 @@ public class PrimaryDriver
         return loginList.get(theUserName);
     }
 
-    private static void fabricateInformation()
+    private static void resetInformation()
     {
         System.out.println("Resetting data");
         UPCalendar = new UrbanParkCalendar();
@@ -146,14 +149,14 @@ public class PrimaryDriver
         addUserInformation(ashley);
 
         // Dates so jobs are always in the future.
-        Date tomorrow = new Date(System.currentTimeMillis()
-                + TimeUnit.DAYS.toMillis(1));
-        Date dayAfterTomorrow = new Date(System.currentTimeMillis()
-                + TimeUnit.DAYS.toMillis(2));
-        Date twoDaysAfterTomorrow = new Date(System.currentTimeMillis()
-                + TimeUnit.DAYS.toMillis(3));
-        Date threeDaysAfterTomorrow = new Date(System.currentTimeMillis()
-                + TimeUnit.DAYS.toMillis(4));
+        Date tomorrow = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1));
+        Date dayAfterTomorrow = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(2));
+        Date twoDaysAfterTomorrow = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(3));
+        Date threeDaysAfterTomorrow = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(4));
 
         // Actual jobs
         Job bigfoot = new Job(dashPoint, 10, 10, 10, tomorrow, tomorrow,
@@ -164,7 +167,7 @@ public class PrimaryDriver
                 twoDaysAfterTomorrow, "Garbage Collection",
                 "Not as exciting, I know");
         Job sweep = new Job(wildWaves, 10, 10, 10, twoDaysAfterTomorrow,
-                threeDaysAfterTomorrow, "Sweeping up the beach.",
+                threeDaysAfterTomorrow, "Sweeping up the beach",
                 "Getting rid of the sand. It gets /everywhere/");
 
         try
@@ -184,6 +187,7 @@ public class PrimaryDriver
             System.err.println(e.getCause());
             e.printStackTrace();
         }
+        System.out.println("Writing data out to files.");
         serializeData();
         deserializeData();
     }
@@ -257,8 +261,7 @@ public class PrimaryDriver
                         for (Job j : UPCalendar.getJobList())
                         {
                             if (p.getParkName().equalsIgnoreCase(
-                                    j.getParkName())
-                                    && !p.hasJob(j))
+                                    j.getParkName()) && !p.hasJob(j))
                             {
                                 p.addJob(j);
                             }

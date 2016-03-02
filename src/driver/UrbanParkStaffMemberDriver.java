@@ -38,7 +38,7 @@ public class UrbanParkStaffMemberDriver extends SharedUserDriverFunctions
         while (choice != 3)
         {
             displayLogin();
-            
+
             System.out.println("Enter one of the options below:");
             System.out.println("1. Search volunteers by last name");
             System.out.println("2. View Jobs");
@@ -49,8 +49,8 @@ public class UrbanParkStaffMemberDriver extends SharedUserDriverFunctions
 
             try
             {
-                choice = Integer.parseInt(parsedInput[0].substring(0,
-                        parsedInput[0].length()));
+                choice = Integer.parseInt(
+                        parsedInput[0].substring(0, parsedInput[0].length()));
             }
             catch (NumberFormatException e)
             {
@@ -96,8 +96,8 @@ public class UrbanParkStaffMemberDriver extends SharedUserDriverFunctions
 
         do
         {
-            System.out
-                    .println("Enter b to go back, or enter a job number to view in greater detail.");
+            System.out.println(
+                    "Enter b to go back, or enter a job number to view in greater detail.");
             input = myInput.nextLine();
             if (!input.equalsIgnoreCase("b"))
             { // user wants to view a jobs details
@@ -110,17 +110,18 @@ public class UrbanParkStaffMemberDriver extends SharedUserDriverFunctions
     {
         System.out.println("What name would you like to search for?");
         String toSearch = myInput.nextLine();
-        ArrayList<Volunteer> toPrint = new ArrayList<>(scanVolunteers(toSearch));
+        ArrayList<Volunteer> toPrint = new ArrayList<>(
+                scanVolunteers(toSearch));
 
         if (toPrint.isEmpty())
         {
-            System.out.println("There are no volunteers with the last name "
-                    + toSearch);
+            System.out.println(
+                    "There are no volunteers with the last name " + toSearch);
         }
         else
         {
-            System.out.println(toPrint.size() + " result(s) for last name "
-                    + toSearch);
+            System.out.println(
+                    toPrint.size() + " result(s) for last name " + toSearch);
             printVolunteers(toPrint);
         }
     }
@@ -133,9 +134,8 @@ public class UrbanParkStaffMemberDriver extends SharedUserDriverFunctions
 
         for (User currentUser : toScan)
         {
-            if (currentUser instanceof Volunteer
-                    && ((Volunteer) currentUser).getLastName()
-                            .equalsIgnoreCase(lastName))
+            if (currentUser instanceof Volunteer && ((Volunteer) currentUser)
+                    .getLastName().equalsIgnoreCase(lastName))
             {
                 toPrint.add((Volunteer) currentUser);
             }
@@ -143,10 +143,13 @@ public class UrbanParkStaffMemberDriver extends SharedUserDriverFunctions
         return toPrint;
     }
 
+    /**
+     * @author Robert
+     */
     public static void displayLogin()
     {
-        System.out.println("Welcome " + myUser.getFirstName() + " "
+        System.out.println("\nWelcome " + myUser.getFirstName() + " "
                 + myUser.getLastName() + "!\n" + "Logged in as: "
-                + myUser.getEmail() + " (Staff Member)\n");
+                + myUser.getEmail() + " (Park Manager)\n");
     }
 }
