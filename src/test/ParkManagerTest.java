@@ -100,7 +100,6 @@ public class ParkManagerTest
         assertTrue(p3.getEmail().equals("Email"));
         assertTrue(p3.getLastName().equals("LastName"));
         assertTrue(p3.getFirstName().equals("FirstName"));
-        assertTrue(p3.getParks().size() == 1);
     }
 
     @Test
@@ -136,8 +135,87 @@ public class ParkManagerTest
         p1.getParks().iterator().next().removeJob(job);
         assertTrue(!p1.getParks().iterator().next().getJobList().contains(job));
     }
+
+    @Test
+    public void testEditJob()
+    {
+        job = new Job(park, 3, new Date(), new Date(), "Pick up trash",
+                "Clean up trash from Park");
+        park.addJob(job);
+        p1.addParkToManager(park);
+        p1.getParks().iterator().next().getJobList().iterator().next()
+                .setJobTitle("Clean bathrroms");
+        ;
+        assertTrue(p1.getParks().iterator().next().getJobList().iterator()
+                .next().getJobTitle().equals("Clean bathrroms"));
+    }
+
+    @Test
+    public void testViewUpcomingJob()
+    {
+        park.addJob(pastJob);
+        park.addJob(newJob);
+        park.addJob(jobToday);
+        park.addJob(conflictingJob);
+        park.addJob(jobConflictsAfterStart);
+        park.addJob(jobConflictsBeforeStart);
+        p1.addParkToManager(park);
+        Park tmp = p1.getParks().iterator().next();
+        String result = "";
+        Iterator<Job> jobs = tmp.getJobList().iterator();
+        while (jobs.hasNext())
+        {
+            Job jobTmp = jobs.next();
+            if (jobTmp.getStartDate().getTime() > System.currentTimeMillis())
+                result += jobTmp.toString();
+        }
+        String resultTrue = newJob.toString() + conflictingJob.toString()
+                + jobConflictsAfterStart.toString()
+                + jobConflictsBeforeStart.toString();
+        assertTrue(resultTrue.equals(result));
+    }
+
+    @Test
+    public void testVolunteerJob() throws AlreadyVolunteeredException,
+            ConflictingJobCommitmentException, JobIsFullException,
+            JobToThePastException
+    {
+        // sameVolunteer.volunteerForJob(pastJob);
+        sameVolunteer.volunteerForJob(newJob);
+        oneJobVolunteer.volunteerForJob(conflictingJob);
+        park.addJob(pastJob);
+        park.addJob(newJob);
+        park.addJob(jobToday);
+        park.addJob(conflictingJob);
+        park.addJob(jobConflictsAfterStart);
+        park.addJob(jobConflictsBeforeStart);
+        p1.addParkToManager(park);
+        Park tmp = p1.getParks().iterator().next();
+        String result = "";
+        Iterator<Job> jobs = tmp.getJobList().iterator();
+        Collection<Volunteer> lstVolunteers = new ArrayList<Volunteer>();
+        while (jobs.hasNext())
+        {
+            Job jobTmp = jobs.next();
+            Iterator<Volunteer> volunteers = jobTmp.getVolunteers().iterator();
+            int count = 0;
+            while (volunteers.hasNext())
+            {
+                Volunteer volunteer = volunteers.next();
+                lstVolunteers.add(volunteer);
+            }
+        }
+        
+        Volunteer volunteer = lstVolunteers.iterator().next();
+        assertTrue(volunteer.getEmail().equals(sameVolunteer.getEmail()));
+        assertTrue(volunteer.getFirstName().equals(sameVolunteer.getFirstName()));
+        assertTrue(volunteer.getLastName().equals(sameVolunteer.getLastName()));
+        lstVolunteers.remove(volunteer);
+        
+        volunteer = lstVolunteers.iterator().next();
+        assertTrue(volunteer.getEmail().equals(oneJobVolunteer.getEmail()));
+        assertTrue(volunteer.getFirstName().equals(oneJobVolunteer.getFirstName()));
+        assertTrue(volunteer.getLastName().equals(oneJobVolunteer.getLastName()));
+        
+    }
 }
-    
-    //testEditJob()
-    //testViewUpcomingJob()
-    //testVolunteerJob()
