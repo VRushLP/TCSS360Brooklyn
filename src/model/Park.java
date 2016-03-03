@@ -14,12 +14,6 @@ public class Park implements Serializable
     private String parkManagerEmail;
     private Collection<Job> parksJobList;
 
-    public Park(String theParkName)
-    {
-        parkName = theParkName;
-        parksJobList = new ArrayList<Job>();
-    }
-
     public Park(String theParkName, ParkManager theParkManager)
     {
         parkName = theParkName;

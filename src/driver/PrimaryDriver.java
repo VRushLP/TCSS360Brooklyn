@@ -134,10 +134,8 @@ public class PrimaryDriver
         ParkManager theDude = new ParkManager("thedude@aol.com", "Jeff",
                 "Bridges");
         addUserInformation(theDude);
-        Park wildWaves = new Park("Wild Waves Theme Park");
-        Park dashPoint = new Park("Dash Point State Park");
-        theDude.addParkToManager(wildWaves);
-        theDude.addParkToManager(dashPoint);
+        Park wildWaves = new Park("Wild Waves Theme Park", theDude);
+        Park dashPoint = new Park("Dash Point State Park", theDude);
 
         UrbanParkStaffMember obama = new UrbanParkStaffMember(
                 "potus@whitehouse.gov", "Barack", "Obama");
