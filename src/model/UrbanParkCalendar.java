@@ -241,7 +241,7 @@ public class UrbanParkCalendar implements Serializable
      * Checks if a CalendarFullException should thrown. See the documentation of
      * {@link#addJob} for further details.
      */
-    private void checkJobCapacity() throws CalendarFullException
+    public void checkJobCapacity() throws CalendarFullException
     {
         if (upcomingJobCollection.size() >= MAX_JOBS)
             throw new CalendarFullException();
@@ -251,7 +251,7 @@ public class UrbanParkCalendar implements Serializable
      * Checks if a CalendarWeekFullException should be thrown. See the
      * documentation of {@link#addJob} for further details.
      */
-    private void checkForRoomThatWeek(Job theJob)
+    public void checkForRoomThatWeek(Job theJob)
             throws CalendarWeekFullException
     {
         ArrayList<Job> check = new ArrayList<>(upcomingJobCollection);
