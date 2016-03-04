@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
 
 import model.Job;
 import model.Park;
 import model.ParkManager;
 import model.Volunteer;
+import model.WorkLoad;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +46,8 @@ public class ParkManagerTest
     @Before
     public void setUp() throws Exception
     {
-        long DAY_IN_MS = 1000 * 60 * 60 * 24;
+        long DAY_IN_MS = TimeUnit.DAYS.toMillis(1);
+
         Date sevenDays = new Date(System.currentTimeMillis() - (7 * DAY_IN_MS));
         Date fourDays = new Date(System.currentTimeMillis() + (4 * DAY_IN_MS));
         Date threeDays = new Date(System.currentTimeMillis() + (3 * DAY_IN_MS));
@@ -52,17 +55,19 @@ public class ParkManagerTest
         Date sixDays = new Date(System.currentTimeMillis() + (6 * DAY_IN_MS));
 
         park = new Park("testPark");
-        newJob = new Job(park, 1, fourDays, fiveDays, "Pick up trash",
+        job = new Job(park, 3, 0, 0, new Date(), new Date(), "Pick up trash",
                 "Clean up trash from Park");
-        conflictingJob = new Job(park, 3, fourDays, fiveDays,
+        newJob = new Job(park, 1, 0, 0, fourDays, fiveDays, "Pick up trash",
+                "Clean up trash from Park");
+        conflictingJob = new Job(park, 3, 0, 0, fourDays, fiveDays,
                 "Clean bathrroms", "Clean the bathrooms in the park");
-        pastJob = new Job(park, 3, sevenDays, sevenDays, "Clean bathrroms",
-                "Clean the bathrooms in the park");
-        jobToday = new Job(park, 3, new Date(), new Date(), "Clean bathrroms",
-                "Clean the bathrooms in the park");
-        jobConflictsBeforeStart = new Job(park, 3, threeDays, fiveDays,
+        pastJob = new Job(park, 3, 0, 0, sevenDays, sevenDays,
                 "Clean bathrroms", "Clean the bathrooms in the park");
-        jobConflictsAfterStart = new Job(park, 3, fourDays, sixDays,
+        jobToday = new Job(park, 3, 0, 0, new Date(), new Date(),
+                "Clean bathrroms", "Clean the bathrooms in the park");
+        jobConflictsBeforeStart = new Job(park, 3, 0, 0, threeDays, fiveDays,
+                "Clean bathrroms", "Clean the bathrooms in the park");
+        jobConflictsAfterStart = new Job(park, 3, 0, 0, fourDays, sixDays,
                 "Clean bathrroms", "Clean the bathrooms in the park");
 
         joblessVolunteer = new Volunteer("jobless@gmail.com", "John", "Smith");
@@ -118,8 +123,6 @@ public class ParkManagerTest
     @Test
     public void testSubmitNewJob()
     {
-        job = new Job(park, 3, new Date(), new Date(), "Pick up trash",
-                "Clean up trash from Park");
         park.addJob(job);
         p1.addParkToManager(park);
         assertTrue(p1.getParks().iterator().next().getJobList().contains(job));
@@ -128,8 +131,6 @@ public class ParkManagerTest
     @Test
     public void testDeleteJob()
     {
-        job = new Job(park, 3, new Date(), new Date(), "Pick up trash",
-                "Clean up trash from Park");
         park.addJob(job);
         p1.addParkToManager(park);
         p1.getParks().iterator().next().removeJob(job);
@@ -139,8 +140,6 @@ public class ParkManagerTest
     @Test
     public void testEditJob()
     {
-        job = new Job(park, 3, new Date(), new Date(), "Pick up trash",
-                "Clean up trash from Park");
         park.addJob(job);
         p1.addParkToManager(park);
         p1.getParks().iterator().next().getJobList().iterator().next()
@@ -181,8 +180,8 @@ public class ParkManagerTest
             JobToThePastException
     {
         // sameVolunteer.volunteerForJob(pastJob);
-        sameVolunteer.volunteerForJob(newJob);
-        oneJobVolunteer.volunteerForJob(conflictingJob);
+        sameVolunteer.volunteerForJob(newJob, WorkLoad.LIGHT);
+        oneJobVolunteer.volunteerForJob(conflictingJob, WorkLoad.LIGHT);
         park.addJob(pastJob);
         park.addJob(newJob);
         park.addJob(jobToday);
@@ -205,17 +204,20 @@ public class ParkManagerTest
                 lstVolunteers.add(volunteer);
             }
         }
-        
+
         Volunteer volunteer = lstVolunteers.iterator().next();
         assertTrue(volunteer.getEmail().equals(sameVolunteer.getEmail()));
-        assertTrue(volunteer.getFirstName().equals(sameVolunteer.getFirstName()));
+        assertTrue(volunteer.getFirstName()
+                .equals(sameVolunteer.getFirstName()));
         assertTrue(volunteer.getLastName().equals(sameVolunteer.getLastName()));
         lstVolunteers.remove(volunteer);
-        
+
         volunteer = lstVolunteers.iterator().next();
         assertTrue(volunteer.getEmail().equals(oneJobVolunteer.getEmail()));
-        assertTrue(volunteer.getFirstName().equals(oneJobVolunteer.getFirstName()));
-        assertTrue(volunteer.getLastName().equals(oneJobVolunteer.getLastName()));
-        
+        assertTrue(volunteer.getFirstName().equals(
+                oneJobVolunteer.getFirstName()));
+        assertTrue(volunteer.getLastName()
+                .equals(oneJobVolunteer.getLastName()));
+
     }
 }
