@@ -88,6 +88,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
     }
 
     /**
+     * Adds a new job.
      * @author Lachezar, Robert
      */
     public static void submitNewJob()
@@ -182,6 +183,9 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
     }
 
     /**
+     * Edits job information. The user can
+     * choose which attribute he/she would like to modify.
+     *  
      * @author Lachezar, Robert
      */
     public static void editJob()
@@ -226,6 +230,8 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
     }
 
     /**
+     * Prints upcoming jobs in a park selected by the park manager
+     * who is currently logged in.
      * @author Lachezar, Robert
      */
     public static void viewJobsInParks()
@@ -257,6 +263,8 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
     }
 
     /**
+     * Prints all volunteers for upcoming jobs that
+     * are in the current park manager's parks
      * @author Lachezar, Robert
      */
     private static void viewVolunteers()
@@ -290,6 +298,12 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
 
     /**
      * Prompts the user for job edits until they are done.
+     * @throws DuplicateJobExistsException
+     * @throws JobToThePastException
+     * @throws JobToTheFutureException
+     * @throws JobTooLongException
+     * @throws CalendarWeekFullException
+     * @throws JobTimeTravelException
      */
     private static void attemptToEditJob(Park park, Job jobToEdit)
     {
@@ -425,6 +439,14 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
 
     /**
      * @author Robert
+     * @throws CalendarWeekFullException
+     * @throws CalendarFullException
+     * @throws JobTooLongException
+     * @throws JobTimeTravelException
+     * @throws JobToThePastException
+     * @throws JobToTheFutureException
+     * @throws DuplicateJobExistsException
+     * @throws JobWorksTooHardException
      */
     private static void attemptToAddJob(Park park, Job jobToAdd)
     {

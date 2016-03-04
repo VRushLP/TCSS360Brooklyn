@@ -125,11 +125,19 @@ public class PrimaryDriver
         serializeData();
     }
 
+    /**
+     * Retrieves given username from the login list
+     * @return the abstract user
+     */
     private static AbstractUser login(String theUserName)
     {
         return loginList.get(theUserName);
     }
-
+    
+    
+    /**
+     * Resets serialized data to default state.
+     */
     private static void resetInformation()
     {
         System.out.println("Resetting data");
