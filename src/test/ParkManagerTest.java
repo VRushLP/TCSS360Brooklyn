@@ -54,7 +54,7 @@ public class ParkManagerTest
         Date fiveDays = new Date(System.currentTimeMillis() + (5 * DAY_IN_MS));
         Date sixDays = new Date(System.currentTimeMillis() + (6 * DAY_IN_MS));
 
-        park = new Park("testPark");
+        park = new Park("testPark", p2);
         job = new Job(park, 3, 0, 0, new Date(), new Date(), "Pick up trash",
                 "Clean up trash from Park");
         newJob = new Job(park, 1, 0, 0, fourDays, fiveDays, "Pick up trash",
