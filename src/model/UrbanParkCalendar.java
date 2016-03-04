@@ -1,7 +1,6 @@
 package model;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -17,6 +16,7 @@ import exception.JobToThePastException;
 import exception.JobTimeTravelException;
 import exception.JobToTheFutureException;
 import exception.JobTooLongException;
+import exception.JobWorksTooHardException;
 
 public class UrbanParkCalendar implements Serializable
 {
@@ -79,8 +79,12 @@ public class UrbanParkCalendar implements Serializable
     public boolean addJob(Job theJob) throws CalendarWeekFullException,
             CalendarFullException, JobTooLongException, JobTimeTravelException,
             JobToThePastException, JobToTheFutureException,
-            DuplicateJobExistsException
+            DuplicateJobExistsException, JobWorksTooHardException
     {
+        if (theJob.getMaxLightVolunteers() + theJob.getMaxMediumVolunteers()
+                + theJob.getMaxDifficultVolunteers() > Job.MAX_VOLUNTEER_NUM)
+            throw new JobWorksTooHardException();
+
         checkForDuplicates(theJob);
         checkJobDate(theJob);
         checkForRoomThatWeek(theJob);
@@ -218,13 +222,17 @@ public class UrbanParkCalendar implements Serializable
         return tempJob;
     }
 
-    public Job editMaxVol(Park park, Job jobToEdit, int maxVolunteers)
+    public Job editMaxVol(Park park, Job jobToEdit, int newLightWork,
+            int newMedWork, int newHardWork) throws JobWorksTooHardException
     {
-        if (maxVolunteers > Job.MAX_VOLUNTEER_NUM)
-            maxVolunteers = Job.MAX_VOLUNTEER_NUM;
+        if (newLightWork + newMedWork + newHardWork > Job.MAX_VOLUNTEER_NUM)
+            throw new JobWorksTooHardException();
 
         Job tempJob = new Job(jobToEdit);
-        tempJob.setMaxVolunteers(maxVolunteers);
+        // set max volunteers needs to be changed for work categories
+        tempJob.setMaxLightVolunteers(newLightWork);
+        tempJob.setMaxMediumVolunteers(newMedWork);
+        tempJob.setMaxDifficultVolunteers(newHardWork);
 
         upcomingJobCollection.remove(jobToEdit);
         upcomingJobCollection.add(tempJob);

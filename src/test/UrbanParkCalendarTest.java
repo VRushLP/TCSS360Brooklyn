@@ -15,7 +15,7 @@ import exception.JobTimeTravelException;
 import exception.JobToTheFutureException;
 import exception.JobToThePastException;
 import exception.JobTooLongException;
-
+import exception.JobWorksTooHardException;
 import model.Job;
 import model.Park;
 import model.ParkManager;
@@ -38,14 +38,14 @@ public class UrbanParkCalendarTest
         calendar = new UrbanParkCalendar();
         testManager = new ParkManager(null, null, null);
         testPark = new Park("Test park", testManager);
-        today = new Date(
-                System.currentTimeMillis() + TimeUnit.HOURS.toMillis(1));
-        tomorrow = new Date(
-                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1));
-        twoDays = new Date(
-                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(2));
-        tooLong = new Date(
-                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(3));
+        today = new Date(System.currentTimeMillis()
+                + TimeUnit.HOURS.toMillis(1));
+        tomorrow = new Date(System.currentTimeMillis()
+                + TimeUnit.DAYS.toMillis(1));
+        twoDays = new Date(System.currentTimeMillis()
+                + TimeUnit.DAYS.toMillis(2));
+        tooLong = new Date(System.currentTimeMillis()
+                + TimeUnit.DAYS.toMillis(3));
     }
 
     @Test
@@ -72,12 +72,13 @@ public class UrbanParkCalendarTest
     public void testUpcomingValidation() throws CalendarWeekFullException,
             CalendarFullException, JobTooLongException, JobTimeTravelException,
             JobToThePastException, JobToTheFutureException,
-            DuplicateJobExistsException, InterruptedException
+            DuplicateJobExistsException, InterruptedException,
+            JobWorksTooHardException
     {
-        calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM,
-                new Date(System.currentTimeMillis() + 1),
-                new Date(System.currentTimeMillis() + 1),
-                "Just subtlely in the past", "Really does not matter"));
+        calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM, 0, 0,
+                new Date(System.currentTimeMillis() + 1), new Date(System
+                        .currentTimeMillis() + 1), "Just subtlely in the past",
+                "Really does not matter"));
 
         TimeUnit.MILLISECONDS.sleep(2);
 
@@ -91,14 +92,14 @@ public class UrbanParkCalendarTest
         assertNotNull(calendar.getJobList());
         try
         {
-            calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM, today,
-                    tomorrow, "Test Calendar methods",
+            calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM, 0, 0,
+                    today, tomorrow, "Test Calendar methods",
                     "This Job for testing purposes only"));
         }
         catch (CalendarWeekFullException | CalendarFullException
                 | JobTooLongException | JobTimeTravelException
                 | JobToThePastException | JobToTheFutureException
-                | DuplicateJobExistsException e)
+                | DuplicateJobExistsException | JobWorksTooHardException e)
         {
             e.printStackTrace(); // There is no reason this should trigger from
                                  // the above add
@@ -107,21 +108,23 @@ public class UrbanParkCalendarTest
     }
 
     @Test
-    public void testOverfullWeek()
-            throws CalendarWeekFullException, CalendarFullException,
-            JobTooLongException, JobTimeTravelException, JobToThePastException,
-            JobToTheFutureException, DuplicateJobExistsException
+    public void testOverfullWeek() throws CalendarWeekFullException,
+            CalendarFullException, JobTooLongException, JobTimeTravelException,
+            JobToThePastException, JobToTheFutureException,
+            DuplicateJobExistsException, JobWorksTooHardException
     {
         for (int i = 0; i < 4; i++)
         {
-            calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM, today,
-                    tomorrow, "" + i, "This Job for testing purposes only"));
+            calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM, 0, 0,
+                    today, tomorrow, "" + i,
+                    "This Job for testing purposes only"));
         }
 
         try
         {
-            calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM, today,
-                    tomorrow, "Uh oh", "This Job should trigger an exception"));
+            calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM, 0, 0,
+                    today, tomorrow, "Uh oh",
+                    "This Job should trigger an exception"));
         }
         catch (CalendarWeekFullException e)
         {
@@ -130,7 +133,8 @@ public class UrbanParkCalendarTest
         }
         catch (CalendarFullException | JobTooLongException
                 | JobTimeTravelException | JobToThePastException
-                | JobToTheFutureException | DuplicateJobExistsException e)
+                | JobToTheFutureException | DuplicateJobExistsException
+                | JobWorksTooHardException e)
         {
             fail(e.getClass().getName());
         }
@@ -138,25 +142,26 @@ public class UrbanParkCalendarTest
     }
 
     @Test
-    public void testCalendarFullException()
-            throws CalendarWeekFullException, CalendarFullException,
-            JobTooLongException, JobTimeTravelException, JobToThePastException,
-            JobToTheFutureException, DuplicateJobExistsException
+    public void testCalendarFullException() throws CalendarWeekFullException,
+            CalendarFullException, JobTooLongException, JobTimeTravelException,
+            JobToThePastException, JobToTheFutureException,
+            DuplicateJobExistsException, JobWorksTooHardException
     {
         for (int i = 0; i < 30; i++)
         {
-            calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM,
+            calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM, 0, 0,
                     new Date(System.currentTimeMillis()
-                            + TimeUnit.DAYS.toMillis(i)),
-                    new Date(System.currentTimeMillis()
-                            + TimeUnit.DAYS.toMillis(i + 1)),
-                    "" + i * i, "This Job for testing purposes only"));
+                            + TimeUnit.DAYS.toMillis(i)), new Date(System
+                            .currentTimeMillis()
+                            + TimeUnit.DAYS.toMillis(i + 1)), "" + i * i,
+                    "This Job for testing purposes only"));
         }
 
         try
         {
-            calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM, today,
-                    tomorrow, "Uh oh", "This Job should trigger an exception"));
+            calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM, 0, 0,
+                    today, tomorrow, "Uh oh",
+                    "This Job should trigger an exception"));
         }
         catch (CalendarFullException e)
         {
@@ -165,11 +170,11 @@ public class UrbanParkCalendarTest
         }
         catch (CalendarWeekFullException | JobTooLongException
                 | JobTimeTravelException | JobToThePastException
-                | JobToTheFutureException | DuplicateJobExistsException e)
+                | JobToTheFutureException | DuplicateJobExistsException
+                | JobWorksTooHardException e)
         {
             fail(e.getClass().getName());
         }
-
     }
 
     @Test
@@ -178,17 +183,19 @@ public class UrbanParkCalendarTest
         try
         {
 
-            calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM, tomorrow,
-                    today, "Uh oh", "This job should trigger an exception"));
+            calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM, 0, 0,
+                    tomorrow, today, "Uh oh",
+                    "This job should trigger an exception"));
         }
-        catch (CalendarFullException e)
+        catch (JobTimeTravelException e)
         {
             assertTrue(e.getClass().getSimpleName(),
-                    e instanceof CalendarFullException);
+                    e instanceof JobTimeTravelException);
         }
         catch (CalendarWeekFullException | JobTooLongException
-                | JobTimeTravelException | JobToThePastException
-                | JobToTheFutureException | DuplicateJobExistsException e)
+                | CalendarFullException | JobToThePastException
+                | JobToTheFutureException | DuplicateJobExistsException
+                | JobWorksTooHardException e)
         {
             fail(e.getClass().getName());
         }
@@ -198,8 +205,9 @@ public class UrbanParkCalendarTest
     {
         try
         {
-            calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM, new Date(),
-                    today, "Uh oh", "This job should trigger an exception"));
+            calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM, 0, 0,
+                    new Date(), today, "Uh oh",
+                    "This job should trigger an exception"));
         }
         catch (JobToThePastException e)
         {
@@ -208,7 +216,8 @@ public class UrbanParkCalendarTest
         }
         catch (CalendarWeekFullException | JobTooLongException
                 | JobTimeTravelException | CalendarFullException
-                | JobToTheFutureException | DuplicateJobExistsException e)
+                | JobToTheFutureException | DuplicateJobExistsException
+                | JobWorksTooHardException e)
         {
             fail(e.getClass().getName());
         }
@@ -219,13 +228,19 @@ public class UrbanParkCalendarTest
     {
         try
         {
-            calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM,
+            calendar.addJob(new Job(
+                    testPark,
+                    Job.MAX_VOLUNTEER_NUM,
+                    0,
+                    0,
                     new Date(
-                            System.currentTimeMillis() + TimeUnit.DAYS.toMillis(
-                                    UrbanParkCalendar.MAX_DATE_FROM_TODAY + 1)),
+                            System.currentTimeMillis()
+                                    + TimeUnit.DAYS
+                                            .toMillis(UrbanParkCalendar.MAX_DATE_FROM_TODAY + 1)),
                     new Date(
-                            System.currentTimeMillis() + TimeUnit.DAYS.toMillis(
-                                    UrbanParkCalendar.MAX_DATE_FROM_TODAY + 2)),
+                            System.currentTimeMillis()
+                                    + TimeUnit.DAYS
+                                            .toMillis(UrbanParkCalendar.MAX_DATE_FROM_TODAY + 2)),
                     "Uh oh", "This job should trigger an exception"));
         }
         catch (JobToTheFutureException e)
@@ -235,7 +250,8 @@ public class UrbanParkCalendarTest
         }
         catch (CalendarWeekFullException | JobTooLongException
                 | JobTimeTravelException | CalendarFullException
-                | JobToThePastException | DuplicateJobExistsException e)
+                | JobToThePastException | DuplicateJobExistsException
+                | JobWorksTooHardException e)
         {
             fail(e.getClass().getName());
         }
@@ -246,8 +262,9 @@ public class UrbanParkCalendarTest
     {
         try
         {
-            calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM, today,
-                    tooLong, "Uh oh", "This job should trigger an exception"));
+            calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM, 0, 0,
+                    today, tooLong, "Uh oh",
+                    "This job should trigger an exception"));
         }
         catch (JobTooLongException e)
         {
@@ -256,33 +273,32 @@ public class UrbanParkCalendarTest
         }
         catch (CalendarWeekFullException | JobToTheFutureException
                 | JobTimeTravelException | CalendarFullException
-                | JobToThePastException | DuplicateJobExistsException e)
+                | JobToThePastException | DuplicateJobExistsException
+                | JobWorksTooHardException e)
         {
             fail(e.getClass().getName());
         }
     }
 
-    @Test
+    @Test(expected = DuplicateJobExistsException.class)
     public void testDuplicateJobExistsException()
+            throws DuplicateJobExistsException
     {
         try
         {
-            calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM, today,
-                    tomorrow, "Uh oh", "This job should trigger an exception"));
-            calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM, today,
-                    tomorrow, "Uh oh", "This job should trigger an exception"));
-        }
-        catch (DuplicateJobExistsException e)
-        {
-            assertTrue(e.getClass().getSimpleName(),
-                    e instanceof DuplicateJobExistsException);
+            calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM, 0, 0,
+                    today, tomorrow, "Uh oh",
+                    "This job should trigger an exception"));
+            calendar.addJob(new Job(testPark, Job.MAX_VOLUNTEER_NUM, 0, 0,
+                    today, tomorrow, "Uh oh",
+                    "This job should trigger an exception"));
         }
         catch (CalendarWeekFullException | JobToTheFutureException
                 | JobTimeTravelException | CalendarFullException
-                | JobToThePastException | JobTooLongException e)
+                | JobToThePastException | JobTooLongException
+                | JobWorksTooHardException e)
         {
             fail(e.getClass().getName());
         }
     }
-
 }
