@@ -11,6 +11,12 @@ import model.Park;
 import model.UrbanParkCalendar;
 import model.Volunteer;
 
+/**
+ * Implements a variety of functions for the non-primary drivers to reduce code
+ * redundancy.
+ * 
+ * @author Lachezar, Bethany, Robert
+ */
 public abstract class SharedUserDriverFunctions
 {
     /**

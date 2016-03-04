@@ -34,6 +34,11 @@ import model.UrbanParkStaffMember;
 import model.User;
 import model.Volunteer;
 
+/**
+ * Primary Driver for the UrbanPark program.
+ * 
+ * @author Lachezar, Bethany, Robert
+ */
 public class PrimaryDriver
 {
     private static final String EXIT_COMMAND = "quit";
@@ -41,8 +46,8 @@ public class PrimaryDriver
     private static final String DEBUG_COMMAND = "debug";
 
     // Input file name.
-    private static final String[] filePaths = { "calendar.ser", "loginList.ser",
-            "jobList.ser" };
+    private static final String[] filePaths = { "calendar.ser",
+            "loginList.ser", "jobList.ser" };
 
     // Data Structure to store everything in
     private static Map<String, AbstractUser> loginList;
@@ -79,8 +84,8 @@ public class PrimaryDriver
 
             if (currentUser instanceof ParkManager)
             {
-                ParkManagerDriver.run((ParkManager) currentUser, in,
-                        UPCalendar);
+                ParkManagerDriver
+                        .run((ParkManager) currentUser, in, UPCalendar);
                 break;
             }
             else if (currentUser instanceof UrbanParkStaffMember)
@@ -107,8 +112,8 @@ public class PrimaryDriver
             }
             else if (!userInput.equalsIgnoreCase(EXIT_COMMAND))
             {
-                System.out.println(
-                        "Login failed. Please try again or type 'Quit' to terminate the program.");
+                System.out
+                        .println("Login failed. Please try again or type 'Quit' to terminate the program.");
             }
             else
             {
@@ -147,14 +152,14 @@ public class PrimaryDriver
         addUserInformation(ashley);
 
         // Dates so jobs are always in the future.
-        Date tomorrow = new Date(
-                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1));
-        Date dayAfterTomorrow = new Date(
-                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(2));
-        Date twoDaysAfterTomorrow = new Date(
-                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(3));
-        Date threeDaysAfterTomorrow = new Date(
-                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(4));
+        Date tomorrow = new Date(System.currentTimeMillis()
+                + TimeUnit.DAYS.toMillis(1));
+        Date dayAfterTomorrow = new Date(System.currentTimeMillis()
+                + TimeUnit.DAYS.toMillis(2));
+        Date twoDaysAfterTomorrow = new Date(System.currentTimeMillis()
+                + TimeUnit.DAYS.toMillis(3));
+        Date threeDaysAfterTomorrow = new Date(System.currentTimeMillis()
+                + TimeUnit.DAYS.toMillis(4));
 
         // Actual jobs
         Job bigfoot = new Job(dashPoint, 10, 10, 10, tomorrow, tomorrow,
@@ -259,7 +264,8 @@ public class PrimaryDriver
                         for (Job j : UPCalendar.getJobList())
                         {
                             if (p.getParkName().equalsIgnoreCase(
-                                    j.getParkName()) && !p.hasJob(j))
+                                    j.getParkName())
+                                    && !p.hasJob(j))
                             {
                                 p.addJob(j);
                             }
