@@ -8,7 +8,7 @@ import java.util.Date;
 
 /**
  * @author Robert, Bethany
- * @version 02/09/2016
+ * @version 03/02/2016
  */
 public class Job implements Serializable, Comparable<Job>
 {
@@ -24,7 +24,7 @@ public class Job implements Serializable, Comparable<Job>
     private String jobTitle;
     private String jobDescription;
 
-    // work categories
+    
     private Collection<Volunteer> lightVolunteers;
     private Collection<Volunteer> mediumVolunteers;
     private Collection<Volunteer> difficultVolunteers;
@@ -57,6 +57,11 @@ public class Job implements Serializable, Comparable<Job>
 
     }
 
+    /**
+     * Creates a Job. The maximum amount of Volunteers in light, medium, and
+     * difficult work should not exceed the maximum volunteer count. The start
+     * date and end dates for a Job should be in order.
+     */
     public Job(Park thePark, int theMaxLight, int theMaxMed,
             int theMaxDifficult, Date theStartDate, Date theEndDate,
             String theJobTitle, String theJobDescription)
@@ -76,7 +81,9 @@ public class Job implements Serializable, Comparable<Job>
     }
 
     /**
-     * Returns a list of all volunteers from all work categories.
+     * Get all Volunteer's for a Job.
+     * 
+     * @return a Collection of Volunteers for all work categories.
      */
     public Collection<Volunteer> getVolunteers()
     {
@@ -87,16 +94,44 @@ public class Job implements Serializable, Comparable<Job>
         return Collections.unmodifiableCollection(allVolunteers);
     }
 
+    /**
+     * Add a Volunteer into the Collection of Volunteer for light work.
+     * 
+     * @param theVolunteer
+     *            - to be added into the collection of Volunteer's for light
+     *            work.
+     * @return true if the volunteer was successfully added into the Collection.
+     */
     public boolean addLightVolunteer(Volunteer theVolunteer)
     {
         return lightVolunteers.add(theVolunteer);
     }
 
+    /**
+     * Add a Volunteer into the Collection of Volunteer for light work. This
+     * method assumes a Volunteer is not already in the Job's collection of
+     * Volunteers.
+     * 
+     * @param theVolunteer
+     *            - to be added into the collection of Volunteer's for light
+     *            work.
+     * @return true if the volunteer was successfully added into the Collection.
+     */
     public boolean addMediumVolunteer(Volunteer theVolunteer)
     {
         return mediumVolunteers.add(theVolunteer);
     }
 
+    /**
+     * Add a Volunteer into the Collection of Volunteer for light work. This
+     * method assumes a Volunteer is not already in the Job's collection of
+     * Volunteers.
+     * 
+     * @param theVolunteer
+     *            - to be added into the collection of Volunteer's for light
+     *            work.
+     * @return true if the volunteer was successfully added into the Collection.
+     */
     public boolean addDifficultVolunteer(Volunteer theVolunteer)
     {
         return difficultVolunteers.add(theVolunteer);
@@ -254,7 +289,12 @@ public class Job implements Serializable, Comparable<Job>
         return parkName;
     }
 
-    // TODO Change this when WorkCategories are in
+    /**
+     * A boolean check if there are no volunteers in a job, so that the job can
+     * be edited.
+     * 
+     * @return true if a Job can be edited.
+     */
     public boolean canEdit()
     {
         return lightVolunteers.isEmpty() && mediumVolunteers.isEmpty()
@@ -284,7 +324,9 @@ public class Job implements Serializable, Comparable<Job>
     }
 
     /**
-     * Return true if the job already happened.
+     * Check if Job is a past job.
+     * 
+     * @return true if the Job's start date already occurred.
      */
     public boolean isPastJob()
     {
@@ -292,7 +334,9 @@ public class Job implements Serializable, Comparable<Job>
     }
 
     /**
-     * Return true if a job overlaps with another jobs start date.
+     * Check if a job overlaps with another jobs start date.
+     * 
+     * @return true if Job's start date overlaps with another Job.
      */
     public boolean startDayOverlaps(Job theOtherJob)
     {
@@ -301,7 +345,9 @@ public class Job implements Serializable, Comparable<Job>
     }
 
     /**
-     * Return true if a job overlaps with another jobs end date.
+     * Check if a Job's end date overlaps with another Job.
+     * 
+     * @return true if Job's end date overlaps with another Job.
      */
     public boolean endDayOverlaps(Job theOtherJob)
     {
@@ -310,7 +356,9 @@ public class Job implements Serializable, Comparable<Job>
     }
 
     /**
-     * Return true if two jobs share any start or end dates.
+     * Check if jobs share any start or end dates.
+     * 
+     * @return true if jobs share any start or end dates.
      */
     public boolean shareDates(Job theOtherJob)
     {

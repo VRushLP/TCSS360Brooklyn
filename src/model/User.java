@@ -1,5 +1,12 @@
 package model;
 
+/**
+ * An interface which defines methods that all types of users must have. Most of
+ * these are getters and setters.
+ * 
+ * @author Robert
+ * @version 3/1/2016
+ */
 public interface User
 {
     public String toString();

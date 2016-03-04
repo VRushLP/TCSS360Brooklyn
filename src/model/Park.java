@@ -14,12 +14,10 @@ public class Park implements Serializable
     private String parkManagerEmail;
     private Collection<Job> parksJobList;
 
-    public Park(String theParkName)
-    {
-        parkName = theParkName;
-        parksJobList = new ArrayList<Job>();
-    }
-
+    /**
+     * Creates a new park with the given park name, managed by the given Park
+     * Manager.
+     */
     public Park(String theParkName, ParkManager theParkManager)
     {
         parkName = theParkName;
@@ -34,11 +32,19 @@ public class Park implements Serializable
         return parkName;
     }
 
+    /**
+     * @return An unmodifiable version of the parks job Collection
+     */
     public Collection<Job> getJobList()
     {
         return Collections.unmodifiableCollection(parksJobList);
     }
 
+    /**
+     * Adds a job to the park. Error checking is handled through the Calendar.
+     * 
+     * @param theJob
+     */
     public void addJob(Job theJob)
     {
         parksJobList.add(theJob);
@@ -54,6 +60,10 @@ public class Park implements Serializable
         return parksJobList.remove(theJob);
     }
 
+    /**
+     * @return True if the park has the passed job in it already, false
+     *         otherwise.
+     */
     public boolean hasJob(Job theJob)
     {
         return parksJobList.contains(theJob);
@@ -89,6 +99,10 @@ public class Park implements Serializable
         this.parkManagerName = parkManagerName;
     }
 
+    /**
+     * Parks are equal to each other if they have the same name and are managed
+     * by the same Park Manager.
+     */
     @Override
     public boolean equals(Object o)
     {
