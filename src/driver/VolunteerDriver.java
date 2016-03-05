@@ -196,6 +196,6 @@ public class VolunteerDriver extends SharedUserDriverFunctions
     {
         System.out.println("\nWelcome " + myUser.getFirstName() + " "
                 + myUser.getLastName() + "!\n" + "Logged in as: "
-                + myUser.getEmail() + " (Park Manager)\n");
+                + myUser.getEmail() + " (Volunteer!)\n");
     }
 }

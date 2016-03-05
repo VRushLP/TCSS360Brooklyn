@@ -220,17 +220,17 @@ public class Job implements Serializable, Comparable<Job>
         jobDetails.append("\nLocation: ");
         jobDetails.append(parkName);
 
-        jobDetails.append("\nLight Volunteers Needed: ");
+        jobDetails.append("\nLight Volunteers: ");
         jobDetails.append(lightVolunteers.size());
         jobDetails.append("/");
         jobDetails.append(maxLightVolunteers);
 
-        jobDetails.append("\nMedium Volunteers Needed: ");
+        jobDetails.append("\nMedium Volunteers: ");
         jobDetails.append(mediumVolunteers.size());
         jobDetails.append("/");
         jobDetails.append(maxMediumVolunteers);
 
-        jobDetails.append("\nDifficult Volunteers Needed: ");
+        jobDetails.append("\nDifficult Volunteers: ");
         jobDetails.append(difficultVolunteers.size());
         jobDetails.append("/");
         jobDetails.append(maxDifficultVolunteers);

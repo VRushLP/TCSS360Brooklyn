@@ -48,7 +48,10 @@ public class Park implements Serializable
      */
     public void addJob(Job theJob)
     {
-        parksJobList.add(theJob);
+        if (!parksJobList.contains(theJob))
+        {
+            parksJobList.add(theJob);
+        }
     }
 
     /**
