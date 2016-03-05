@@ -9,6 +9,7 @@ import java.util.Collections;
 public class Park implements Serializable
 {
     private static final long serialVersionUID = -4808769468460385164L;
+    
     private String parkName;
     private String parkManagerName;
     private String parkManagerEmail;
@@ -28,19 +29,6 @@ public class Park implements Serializable
         theParkManager.addParkToManager(this);
     }
 
-    public String getParkName()
-    {
-        return parkName;
-    }
-
-    /**
-     * @return An unmodifiable version of the parks job Collection
-     */
-    public Collection<Job> getJobs()
-    {
-        return Collections.unmodifiableCollection(parksJobList);
-    }
-
     /**
      * Adds a job to the park. Error checking is handled through the Calendar.
      * 
@@ -52,55 +40,6 @@ public class Park implements Serializable
         {
             parksJobList.add(theJob);
         }
-    }
-
-    /**
-     * Removes the job from the parks collection of jobs.
-     * 
-     * @return True if the Job was removed successfully, false otherwise.
-     */
-    public boolean removeJob(Job theJob)
-    {
-        return parksJobList.remove(theJob);
-    }
-
-    /**
-     * @return True if the park has the passed job in it already, false
-     *         otherwise.
-     */
-    public boolean hasJob(Job theJob)
-    {
-        return parksJobList.contains(theJob);
-    }
-
-    @Override
-    public String toString()
-    {
-        StringBuilder parkDetails = new StringBuilder();
-        parkDetails.append("Park: ");
-        parkDetails.append(getParkName());
-
-        return parkDetails.toString();
-    }
-
-    public String getParkManagerEmail()
-    {
-        return parkManagerEmail;
-    }
-
-    public void setParkManagerEmail(String parkManagerEmail)
-    {
-        this.parkManagerEmail = parkManagerEmail;
-    }
-
-    public String getParkManagerName()
-    {
-        return parkManagerName;
-    }
-
-    public void setParkManagerName(String parkManagerName)
-    {
-        this.parkManagerName = parkManagerName;
     }
 
     /**
@@ -122,5 +61,67 @@ public class Park implements Serializable
                             .equalsIgnoreCase(compare.parkManagerEmail);
         }
         return false;
+    }
+
+    /**
+     * @return An unmodifiable version of the parks job Collection
+     */
+    public Collection<Job> getJobs()
+    {
+        return Collections.unmodifiableCollection(parksJobList);
+    }
+
+    public String getParkManagerEmail()
+    {
+        return parkManagerEmail;
+    }
+
+    public String getParkManagerName()
+    {
+        return parkManagerName;
+    }
+
+    public String getParkName()
+    {
+        return parkName;
+    }
+
+    /**
+     * @return True if the park has the passed job in it already, false
+     *         otherwise.
+     */
+    public boolean hasJob(Job theJob)
+    {
+        return parksJobList.contains(theJob);
+    }
+
+    /**
+     * Removes the job from the parks collection of jobs.
+     * 
+     * @return True if the Job was removed successfully, false otherwise.
+     */
+    public boolean removeJob(Job theJob)
+    {
+        return parksJobList.remove(theJob);
+    }
+
+    public void setParkManagerEmail(String parkManagerEmail)
+    {
+        this.parkManagerEmail = parkManagerEmail;
+    }
+
+    public void setParkManagerName(String parkManagerName)
+    {
+        this.parkManagerName = parkManagerName;
+    }
+
+    @Override
+    public String toString()
+    {
+        StringBuilder parkDetails = new StringBuilder();
+        parkDetails.append("Park: ");
+        parkDetails.append(getParkName());
+
+        return parkDetails.toString();
     }
 }

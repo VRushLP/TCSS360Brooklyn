@@ -16,12 +16,78 @@ import exception.JobToThePastException;
 public class Volunteer extends AbstractUser
 {
     private static final long serialVersionUID = -3492237092177579789L;
+    
     private Collection<Job> myJobs;
 
     public Volunteer(String theEmail, String theFirstName, String theLastName)
     {
         super(theEmail, theFirstName, theLastName);
         myJobs = new ArrayList<>();
+    }
+
+    /**
+     * Checks if a volunteer has conflicts with a job, and will throw the
+     * appropriate exception if the job has conflicts.
+     * 
+     * @param theJob
+     *            - job to be volunteered for.
+     * @throws AlreadyVolunteeredException
+     *             - thrown if the user has already signed up for this job.
+     * @throws ConflictingJobCommitmentException
+     *             - thrown if the job dates conflict with another job the user
+     *             already has volunteer for.
+     * @throws JobToThePastException
+     *             - thrown if the jobs start date has already passed.
+     */
+    private void checkForConflicts(Job theJob)
+            throws AlreadyVolunteeredException,
+            ConflictingJobCommitmentException, JobToThePastException
+    {
+
+        if (theJob.isPastJob())
+        {
+            throw new JobToThePastException();
+        }
+
+        // make sure user hasn't signed up for job already
+        if (myJobs.contains(theJob))
+        {
+            throw new AlreadyVolunteeredException();
+        }
+
+        // check if user has signed up for job on same day
+        if (!volunteerIsFree(theJob))
+        {
+            throw new ConflictingJobCommitmentException();
+        }
+
+    }
+
+    /**
+     * Get the Volunteer's collection of jobs, will return an empty collection
+     * if the volunteer has not volunteered for any jobs.
+     * 
+     * @return a collection of the volunteers jobs.
+     */
+    public Collection<Job> getVolunteeredForJobs()
+    {
+        return Collections.unmodifiableCollection(myJobs);
+    }
+
+    /**
+     * Removes a job from the volunteer's collection of jobs, if the collection
+     * contains the job. Will also remove the volunteer from the Job's
+     * collection of Volunteers for that job.
+     * 
+     * @param theJob
+     *            - the job to remove from the volunteers collection of jobs.
+     * @return true - if the job was removed successfully from the collection of
+     *         a Volunteer's jobs.
+     */
+    public boolean removeJob(Job theJob)
+    {
+        theJob.removeVolunteer(this);
+        return myJobs.remove(theJob);
     }
 
     /**
@@ -71,71 +137,6 @@ public class Volunteer extends AbstractUser
         }
 
         return myJobs.add(theJob);
-    }
-
-    /**
-     * Removes a job from the volunteer's collection of jobs, if the collection
-     * contains the job. Will also remove the volunteer from the Job's
-     * collection of Volunteers for that job.
-     * 
-     * @param theJob
-     *            - the job to remove from the volunteers collection of jobs.
-     * @return true - if the job was removed successfully from the collection of
-     *         a Volunteer's jobs.
-     */
-    public boolean removeJob(Job theJob)
-    {
-        theJob.removeVolunteer(this);
-        return myJobs.remove(theJob);
-    }
-
-    /**
-     * Get the Volunteer's collection of jobs, will return an empty collection
-     * if the volunteer has not volunteered for any jobs.
-     * 
-     * @return a collection of the volunteers jobs.
-     */
-    public Collection<Job> getVolunteeredForJobs()
-    {
-        return Collections.unmodifiableCollection(myJobs);
-    }
-
-    /**
-     * Checks if a volunteer has conflicts with a job, and will throw the
-     * appropriate exception if the job has conflicts.
-     * 
-     * @param theJob
-     *            - job to be volunteered for.
-     * @throws AlreadyVolunteeredException
-     *             - thrown if the user has already signed up for this job.
-     * @throws ConflictingJobCommitmentException
-     *             - thrown if the job dates conflict with another job the user
-     *             already has volunteer for.
-     * @throws JobToThePastException
-     *             - thrown if the jobs start date has already passed.
-     */
-    private void checkForConflicts(Job theJob)
-            throws AlreadyVolunteeredException,
-            ConflictingJobCommitmentException, JobToThePastException
-    {
-
-        if (theJob.isPastJob())
-        {
-            throw new JobToThePastException();
-        }
-
-        // make sure user hasn't signed up for job already
-        if (myJobs.contains(theJob))
-        {
-            throw new AlreadyVolunteeredException();
-        }
-
-        // check if user has signed up for job on same day
-        if (!volunteerIsFree(theJob))
-        {
-            throw new ConflictingJobCommitmentException();
-        }
-
     }
 
     /**

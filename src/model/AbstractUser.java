@@ -9,6 +9,7 @@ import java.io.Serializable;
 public abstract class AbstractUser implements User, Serializable
 {
     private static final long serialVersionUID = -8113206652437221361L;
+    
     private String lastName;
     private String firstName;
     private String email;
@@ -19,19 +20,6 @@ public abstract class AbstractUser implements User, Serializable
         this.email = theEmail;
         this.firstName = theFirstName;
         this.lastName = theLastName;
-    }
-
-    @Override
-    public String toString()
-    {
-        StringBuilder abstractUserString = new StringBuilder();
-        abstractUserString.append("E-mail: ");
-        abstractUserString.append(email);
-        abstractUserString.append(" Name: ");
-        abstractUserString.append(lastName);
-        abstractUserString.append(", ");
-        abstractUserString.append(firstName);
-        return abstractUserString.toString();
     }
 
     @Override
@@ -48,33 +36,52 @@ public abstract class AbstractUser implements User, Serializable
         return false;
     }
 
-    public String getLastName()
-    {
-        return lastName;
-    }
-
-    public void setLastName(String theLastName)
-    {
-        this.lastName = theLastName;
-    }
-
-    public String getFirstName()
-    {
-        return firstName;
-    }
-
-    public void setFirstName(String theFirstName)
-    {
-        this.firstName = theFirstName;
-    }
-
+    @Override
     public String getEmail()
     {
         return email;
     }
 
+    @Override
+    public String getFirstName()
+    {
+        return firstName;
+    }
+
+    @Override
+    public String getLastName()
+    {
+        return lastName;
+    }
+
+    @Override
     public void setEmail(String theEmail)
     {
         this.email = theEmail;
+    }
+
+    @Override
+    public void setFirstName(String theFirstName)
+    {
+        this.firstName = theFirstName;
+    }
+
+    @Override
+    public void setLastName(String theLastName)
+    {
+        this.lastName = theLastName;
+    }
+
+    @Override
+    public String toString()
+    {
+        StringBuilder abstractUserString = new StringBuilder();
+        abstractUserString.append("E-mail: ");
+        abstractUserString.append(email);
+        abstractUserString.append(" Name: ");
+        abstractUserString.append(lastName);
+        abstractUserString.append(", ");
+        abstractUserString.append(firstName);
+        return abstractUserString.toString();
     }
 }

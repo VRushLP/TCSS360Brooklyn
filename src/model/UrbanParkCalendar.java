@@ -22,6 +22,7 @@ import exception.JobWorksTooHardException;
 public class UrbanParkCalendar implements Serializable
 {
     private static final long serialVersionUID = 3638477910314787711L;
+    
     public static final int MAX_JOBS = 30;
     public static final int MAX_WEEKLY_JOBS = 5;
     public static final int MAX_DATE_FROM_TODAY = 90;
@@ -38,64 +39,6 @@ public class UrbanParkCalendar implements Serializable
         pastJobCollection = new ArrayList<Job>();
         allVolunteers = new ArrayList<>();
         calendar = new GregorianCalendar();
-    }
-
-    /**
-     * Updates an UrbanParkCalendar so that only jobs that have not yet started
-     * are present in the collection of upcoming jobs.<br>
-     * Multiple methods call this method to make sure that the UrbanParkCalendar
-     * is as up to date as possible.
-     */
-    public void updateCalendar()
-    {
-        calendar.setTime(new Date());
-        ArrayList<Job> jobsToCheck = new ArrayList<>(upcomingJobCollection);
-
-        // Attempting to remove elements from a collection while also iterating
-        // through it with a for-each loop causes an exception.
-        for (Job j : jobsToCheck)
-        {
-            if (j.getStartDate().before(calendar.getTime()))
-            {
-                pastJobCollection.add(j);
-                upcomingJobCollection.remove(j);
-            }
-        }
-        Collections.sort((List<Job>) upcomingJobCollection);
-    }
-
-    public Collection<Volunteer> getAllVolunteers()
-    {
-        return Collections.unmodifiableCollection(allVolunteers);
-    }
-
-    /**
-     * Puts a Volunteer in the Volunteer collection, if they are not already in
-     * it.<br>
-     * If a Volunteer is already present in the collection, this method does not
-     * change the collection.
-     * 
-     * @param theVolunteer
-     *            The volunteer to be placed in the collection.
-     * @return True if the volunteer is added, false otherwise.
-     */
-    public boolean addVolunteer(Volunteer theVolunteer)
-    {
-        if (!allVolunteers.contains(theVolunteer))
-        {
-            return allVolunteers.add(theVolunteer);
-        }
-        return false;
-    }
-
-    /**
-     * @return The most up-to-date version of the upcoming job collection. This
-     *         collection is unmodifiable.
-     */
-    public Collection<Job> getJobList()
-    {
-        updateCalendar();
-        return Collections.unmodifiableCollection(upcomingJobCollection);
     }
 
     /**
@@ -147,15 +90,22 @@ public class UrbanParkCalendar implements Serializable
     }
 
     /**
-     * Checks if a JobWorksTooHardException should be thrown. See the
-     * documentation of {@link#addJob} for further details.
+     * Puts a Volunteer in the Volunteer collection, if they are not already in
+     * it.<br>
+     * If a Volunteer is already present in the collection, this method does not
+     * change the collection.
+     * 
+     * @param theVolunteer
+     *            The volunteer to be placed in the collection.
+     * @return True if the volunteer is added, false otherwise.
      */
-    public void checkForJobWorksTooHard(Job theJob)
-            throws JobWorksTooHardException
+    public boolean addVolunteer(Volunteer theVolunteer)
     {
-        if (theJob.getMaxLightVolunteers() + theJob.getMaxMediumVolunteers()
-                + theJob.getMaxDifficultVolunteers() > Job.MAX_VOLUNTEER_NUM)
-            throw new JobWorksTooHardException();
+        if (!allVolunteers.contains(theVolunteer))
+        {
+            return allVolunteers.add(theVolunteer);
+        }
+        return false;
     }
 
     /**
@@ -172,17 +122,15 @@ public class UrbanParkCalendar implements Serializable
     }
 
     /**
-     * Validates the date of a Job.<br>
-     * See the documentation of {@link#addJob} for further details.
+     * Checks if a JobTimeTravelException should be thrown. See the
+     * documentation of {@link#addJob} for further details.
      */
-    public void checkJobDate(Job theJob) throws JobToThePastException,
-            JobToTheFutureException, JobTooLongException, JobTimeTravelException
+    public void checkForJobTimeTravel(Job theJob) throws JobTimeTravelException
     {
-        calendar.setTime(new Date());
-        checkForJobTooLong(theJob);
-        checkForJobToTheFuture(theJob);
-        checkForJobToThePast(theJob);
-        checkForJobTimeTravel(theJob);
+        if (theJob.getEndDate().before(theJob.getStartDate()))
+        {
+            throw new JobTimeTravelException();
+        }
     }
 
     /**
@@ -196,18 +144,6 @@ public class UrbanParkCalendar implements Serializable
                         .toMillis(Job.MAX_JOB_LENGTH))
         {
             throw new JobTooLongException();
-        }
-    }
-
-    /**
-     * Checks if a JobToThePastException should be thrown. See the documentation
-     * of {@link#addJob} for further details.
-     */
-    public void checkForJobToThePast(Job theJob) throws JobToThePastException
-    {
-        if (theJob.getStartDate().before(calendar.getTime()))
-        {
-            throw new JobToThePastException();
         }
     }
 
@@ -227,25 +163,27 @@ public class UrbanParkCalendar implements Serializable
     }
 
     /**
-     * Checks if a JobTimeTravelException should be thrown. See the
-     * documentation of {@link#addJob} for further details.
+     * Checks if a JobToThePastException should be thrown. See the documentation
+     * of {@link#addJob} for further details.
      */
-    public void checkForJobTimeTravel(Job theJob) throws JobTimeTravelException
+    public void checkForJobToThePast(Job theJob) throws JobToThePastException
     {
-        if (theJob.getEndDate().before(theJob.getStartDate()))
+        if (theJob.getStartDate().before(calendar.getTime()))
         {
-            throw new JobTimeTravelException();
+            throw new JobToThePastException();
         }
     }
 
     /**
-     * Checks if a CalendarFullException should thrown. See the documentation of
-     * {@link#addJob} for further details.
+     * Checks if a JobWorksTooHardException should be thrown. See the
+     * documentation of {@link#addJob} for further details.
      */
-    public void checkJobCapacity() throws CalendarFullException
+    public void checkForJobWorksTooHard(Job theJob)
+            throws JobWorksTooHardException
     {
-        if (upcomingJobCollection.size() >= MAX_JOBS)
-            throw new CalendarFullException();
+        if (theJob.getMaxLightVolunteers() + theJob.getMaxMediumVolunteers()
+                + theJob.getMaxDifficultVolunteers() > Job.MAX_VOLUNTEER_NUM)
+            throw new JobWorksTooHardException();
     }
 
     /**
@@ -279,65 +217,27 @@ public class UrbanParkCalendar implements Serializable
     }
 
     /**
-     * Removes a Job from the upcoming job collection.
-     * 
-     * @param theJob
-     *            The job to remove.
-     * @return True if the job is removed, false if there was an unknown error.
+     * Checks if a CalendarFullException should thrown. See the documentation of
+     * {@link#addJob} for further details.
      */
-    public boolean removeJob(Job theJob)
+    public void checkJobCapacity() throws CalendarFullException
     {
-        return upcomingJobCollection.remove(theJob);
+        if (upcomingJobCollection.size() >= MAX_JOBS)
+            throw new CalendarFullException();
     }
 
     /**
-     * Edits the title of a job in the passed park.
-     * 
-     * @return A reference to the editted job.
-     * @throws DuplicateJobExistsException
-     *             If the edit would cause the job to be a duplicate of a job
-     *             that already exists.
+     * Validates the date of a Job.<br>
+     * See the documentation of {@link#addJob} for further details.
      */
-    public Job editJobTitle(Park thePark, Job jobToEdit, String jobTitle)
-            throws DuplicateJobExistsException
+    public void checkJobDate(Job theJob) throws JobToThePastException,
+            JobToTheFutureException, JobTooLongException, JobTimeTravelException
     {
-        Job tempJob = new Job(jobToEdit);
-        tempJob.setJobTitle(jobTitle);
-
-        checkForDuplicates(tempJob);
-
-        upcomingJobCollection.remove(jobToEdit);
-        upcomingJobCollection.add(tempJob);
-
-        thePark.removeJob(jobToEdit);
-        thePark.addJob(tempJob);
-
-        return tempJob;
-    }
-
-    /**
-     * Edits the description of a job in the passed park.
-     * 
-     * @return a reference to the editted job.
-     * @throws DuplicateJobExistsException
-     *             If the edit would cause the job to be a duplicate of a job
-     *             that already exists.
-     */
-    public Job editJobDesc(Park thePark, Job jobToEdit, String jobDescription)
-            throws DuplicateJobExistsException
-    {
-        Job tempJob = new Job(jobToEdit);
-        tempJob.setJobDescription(jobDescription);
-
-        checkForDuplicates(tempJob);
-
-        upcomingJobCollection.remove(jobToEdit);
-        upcomingJobCollection.add(tempJob);
-
-        thePark.removeJob(jobToEdit);
-        thePark.addJob(tempJob);
-
-        return tempJob;
+        calendar.setTime(new Date());
+        checkForJobTooLong(theJob);
+        checkForJobToTheFuture(theJob);
+        checkForJobToThePast(theJob);
+        checkForJobTimeTravel(theJob);
     }
 
     /**
@@ -380,6 +280,56 @@ public class UrbanParkCalendar implements Serializable
     }
 
     /**
+     * Edits the description of a job in the passed park.
+     * 
+     * @return a reference to the editted job.
+     * @throws DuplicateJobExistsException
+     *             If the edit would cause the job to be a duplicate of a job
+     *             that already exists.
+     */
+    public Job editJobDesc(Park thePark, Job jobToEdit, String jobDescription)
+            throws DuplicateJobExistsException
+    {
+        Job tempJob = new Job(jobToEdit);
+        tempJob.setJobDescription(jobDescription);
+
+        checkForDuplicates(tempJob);
+
+        upcomingJobCollection.remove(jobToEdit);
+        upcomingJobCollection.add(tempJob);
+
+        thePark.removeJob(jobToEdit);
+        thePark.addJob(tempJob);
+
+        return tempJob;
+    }
+
+    /**
+     * Edits the title of a job in the passed park.
+     * 
+     * @return A reference to the editted job.
+     * @throws DuplicateJobExistsException
+     *             If the edit would cause the job to be a duplicate of a job
+     *             that already exists.
+     */
+    public Job editJobTitle(Park thePark, Job jobToEdit, String jobTitle)
+            throws DuplicateJobExistsException
+    {
+        Job tempJob = new Job(jobToEdit);
+        tempJob.setJobTitle(jobTitle);
+
+        checkForDuplicates(tempJob);
+
+        upcomingJobCollection.remove(jobToEdit);
+        upcomingJobCollection.add(tempJob);
+
+        thePark.removeJob(jobToEdit);
+        thePark.addJob(tempJob);
+
+        return tempJob;
+    }
+
+    /**
      * Edits a job in the passed park to have new volunteer work load counts.
      * 
      * @return A reference to the editted job.
@@ -406,6 +356,21 @@ public class UrbanParkCalendar implements Serializable
         return tempJob;
     }
 
+    public Collection<Volunteer> getAllVolunteers()
+    {
+        return Collections.unmodifiableCollection(allVolunteers);
+    }
+
+    /**
+     * @return The most up-to-date version of the upcoming job collection. This
+     *         collection is unmodifiable.
+     */
+    public Collection<Job> getJobList()
+    {
+        updateCalendar();
+        return Collections.unmodifiableCollection(upcomingJobCollection);
+    }
+
     /**
      * Forces an override of the current job collection, resetting the upcoming
      * job collection.
@@ -415,6 +380,42 @@ public class UrbanParkCalendar implements Serializable
         upcomingJobCollection = new ArrayList<>(theJobs);
         pastJobCollection = new ArrayList<>();
         updateCalendar();
+    }
+
+    /**
+     * Removes a Job from the upcoming job collection.
+     * 
+     * @param theJob
+     *            The job to remove.
+     * @return True if the job is removed, false if there was an unknown error.
+     */
+    public boolean removeJob(Job theJob)
+    {
+        return upcomingJobCollection.remove(theJob);
+    }
+
+    /**
+     * Updates an UrbanParkCalendar so that only jobs that have not yet started
+     * are present in the collection of upcoming jobs.<br>
+     * Multiple methods call this method to make sure that the UrbanParkCalendar
+     * is as up to date as possible.
+     */
+    public void updateCalendar()
+    {
+        calendar.setTime(new Date());
+        ArrayList<Job> jobsToCheck = new ArrayList<>(upcomingJobCollection);
+
+        // Attempting to remove elements from a collection while also iterating
+        // through it with a for-each loop causes an exception.
+        for (Job j : jobsToCheck)
+        {
+            if (j.getStartDate().before(calendar.getTime()))
+            {
+                pastJobCollection.add(j);
+                upcomingJobCollection.remove(j);
+            }
+        }
+        Collections.sort((List<Job>) upcomingJobCollection);
     }
 
     public void updatePark(Park thePark)

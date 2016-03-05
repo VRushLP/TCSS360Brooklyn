@@ -13,8 +13,9 @@ import java.util.Date;
 public class Job implements Serializable, Comparable<Job>
 {
     private static final long serialVersionUID = 9061001735234100580L;
+
     public static final int MAX_VOLUNTEER_NUM = 30;
-    public static final int MAX_JOB_LENGTH = 2; // 2 days
+    public static final int MAX_JOB_LENGTH = 2; // Meaning 2 days
 
     private String parkName;
 
@@ -79,17 +80,18 @@ public class Job implements Serializable, Comparable<Job>
     }
 
     /**
-     * Get all Volunteer's for a Job.
+     * Add a Volunteer into the Collection of Volunteer for light work. This
+     * method assumes a Volunteer is not already in the Job's collection of
+     * Volunteers.
      * 
-     * @return a Collection of Volunteers for all work categories.
+     * @param theVolunteer
+     *            - to be added into the collection of Volunteer's for light
+     *            work.
+     * @return true if the volunteer was successfully added into the Collection.
      */
-    public Collection<Volunteer> getVolunteers()
+    public boolean addDifficultVolunteer(Volunteer theVolunteer)
     {
-        Collection<Volunteer> allVolunteers = new ArrayList<Volunteer>(
-                lightVolunteers);
-        allVolunteers.addAll(mediumVolunteers);
-        allVolunteers.addAll(difficultVolunteers);
-        return Collections.unmodifiableCollection(allVolunteers);
+        return difficultVolunteers.add(theVolunteer);
     }
 
     /**
@@ -121,18 +123,117 @@ public class Job implements Serializable, Comparable<Job>
     }
 
     /**
-     * Add a Volunteer into the Collection of Volunteer for light work. This
-     * method assumes a Volunteer is not already in the Job's collection of
-     * Volunteers.
+     * A boolean check if there are no volunteers in a job, so that the job can
+     * be edited.
      * 
-     * @param theVolunteer
-     *            - to be added into the collection of Volunteer's for light
-     *            work.
-     * @return true if the volunteer was successfully added into the Collection.
+     * @return true if a Job can be edited.
      */
-    public boolean addDifficultVolunteer(Volunteer theVolunteer)
+    public boolean canEdit()
     {
-        return difficultVolunteers.add(theVolunteer);
+        return lightVolunteers.isEmpty() && mediumVolunteers.isEmpty()
+                && difficultVolunteers.isEmpty();
+    }
+
+    @Override
+    public int compareTo(Job o)
+    {
+        return (int) (startDate.getTime() - o.startDate.getTime());
+    }
+
+    /**
+     * Check if a Job's end date overlaps with another Job.
+     * 
+     * @return true if Job's end date overlaps with another Job.
+     */
+    public boolean endDayOverlaps(Job theOtherJob)
+    {
+        return startDate.before(theOtherJob.getEndDate())
+                && endDate.after(theOtherJob.getEndDate());
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (o instanceof Job)
+        {
+            Job compare = (Job) o;
+            // Should be the bare minimum to determine if a Job is unique or
+            // not.
+            return jobTitle.equalsIgnoreCase(compare.jobTitle)
+                    && jobDescription.equalsIgnoreCase(compare.jobDescription)
+                    && parkName.equals(compare.parkName)
+                    && startDate.equals(compare.startDate);
+        }
+        return false;
+    }
+
+    public int getDifficultVolunteerCount()
+    {
+        return difficultVolunteers.size();
+    }
+
+    public Date getEndDate()
+    {
+        return endDate;
+    }
+
+    public String getJobDescription()
+    {
+        return jobDescription;
+    }
+
+    public String getJobTitle()
+    {
+        return jobTitle;
+    }
+
+    public int getLightVolunteerCount()
+    {
+        return lightVolunteers.size();
+    }
+
+    public int getMaxDifficultVolunteers()
+    {
+        return maxDifficultVolunteers;
+    }
+
+    public int getMaxLightVolunteers()
+    {
+        return maxLightVolunteers;
+    }
+
+    public int getMaxMediumVolunteers()
+    {
+        return maxMediumVolunteers;
+    }
+
+    public int getMediumVolunteerCount()
+    {
+        return mediumVolunteers.size();
+    }
+
+    public String getParkName()
+    {
+        return parkName;
+    }
+
+    public Date getStartDate()
+    {
+        return startDate;
+    }
+
+    /**
+     * Get all Volunteer's for a Job.
+     * 
+     * @return a Collection of Volunteers for all work categories.
+     */
+    public Collection<Volunteer> getVolunteers()
+    {
+        Collection<Volunteer> allVolunteers = new ArrayList<Volunteer>(
+                lightVolunteers);
+        allVolunteers.addAll(mediumVolunteers);
+        allVolunteers.addAll(difficultVolunteers);
+        return Collections.unmodifiableCollection(allVolunteers);
     }
 
     /**
@@ -153,6 +254,16 @@ public class Job implements Serializable, Comparable<Job>
             default:
                 return true;
         }
+    }
+
+    /**
+     * Check if Job is a past job.
+     * 
+     * @return true if the Job's start date already occurred.
+     */
+    public boolean isPastJob()
+    {
+        return startDate.before(new Date());
     }
 
     /**
@@ -178,19 +289,24 @@ public class Job implements Serializable, Comparable<Job>
         return false;
     }
 
-    public int getLightVolunteerCount()
+    public void setEndDate(Date endDate)
     {
-        return lightVolunteers.size();
+        this.endDate = endDate;
     }
 
-    public int getMediumVolunteerCount()
+    public void setJobDescription(String jobDescription)
     {
-        return mediumVolunteers.size();
+        this.jobDescription = jobDescription;
     }
 
-    public int getDifficultVolunteerCount()
+    public void setJobTitle(String jobTitle)
     {
-        return difficultVolunteers.size();
+        this.jobTitle = jobTitle;
+    }
+
+    public void setMaxDifficultVolunteers(int theMax)
+    {
+        maxDifficultVolunteers = theMax;
     }
 
     public void setMaxLightVolunteers(int theMax)
@@ -203,9 +319,33 @@ public class Job implements Serializable, Comparable<Job>
         maxMediumVolunteers = theMax;
     }
 
-    public void setMaxDifficultVolunteers(int theMax)
+    public void setStartDate(Date startDate)
     {
-        maxDifficultVolunteers = theMax;
+        this.startDate = startDate;
+    }
+
+    /**
+     * Check if jobs share any start or end dates.
+     * 
+     * @return true if jobs share any start or end dates.
+     */
+    public boolean shareDates(Job theOtherJob)
+    {
+        return startDate.equals(theOtherJob.getStartDate())
+                || startDate.equals(theOtherJob.getEndDate())
+                || endDate.equals(theOtherJob.getStartDate())
+                || endDate.equals(theOtherJob.getEndDate());
+    }
+
+    /**
+     * Check if a job overlaps with another jobs start date.
+     * 
+     * @return true if Job's start date overlaps with another Job.
+     */
+    public boolean startDayOverlaps(Job theOtherJob)
+    {
+        return startDate.before(theOtherJob.getStartDate())
+                && endDate.after(theOtherJob.getStartDate());
     }
 
     @Override
@@ -240,144 +380,5 @@ public class Job implements Serializable, Comparable<Job>
         jobDetails.append(endDate);
         jobDetails.append("\n");
         return jobDetails.toString();
-    }
-
-    public Date getStartDate()
-    {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate)
-    {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate()
-    {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate)
-    {
-        this.endDate = endDate;
-    }
-
-    public String getJobTitle()
-    {
-        return jobTitle;
-    }
-
-    public void setJobTitle(String jobTitle)
-    {
-        this.jobTitle = jobTitle;
-    }
-
-    public String getJobDescription()
-    {
-        return jobDescription;
-    }
-
-    public void setJobDescription(String jobDescription)
-    {
-        this.jobDescription = jobDescription;
-    }
-
-    public String getParkName()
-    {
-        return parkName;
-    }
-
-    /**
-     * A boolean check if there are no volunteers in a job, so that the job can
-     * be edited.
-     * 
-     * @return true if a Job can be edited.
-     */
-    public boolean canEdit()
-    {
-        return lightVolunteers.isEmpty() && mediumVolunteers.isEmpty()
-                && difficultVolunteers.isEmpty();
-    }
-
-    @Override
-    public boolean equals(Object o)
-    {
-        if (o instanceof Job)
-        {
-            Job compare = (Job) o;
-            // Should be the bare minimum to determine if a Job is unique or
-            // not.
-            return jobTitle.equalsIgnoreCase(compare.jobTitle)
-                    && jobDescription.equalsIgnoreCase(compare.jobDescription)
-                    && parkName.equals(compare.parkName)
-                    && startDate.equals(compare.startDate);
-        }
-        return false;
-    }
-
-    @Override
-    public int compareTo(Job o)
-    {
-        return (int) (startDate.getTime() - ((Job) o).startDate.getTime());
-    }
-
-    /**
-     * Check if Job is a past job.
-     * 
-     * @return true if the Job's start date already occurred.
-     */
-    public boolean isPastJob()
-    {
-        return startDate.before(new Date());
-    }
-
-    /**
-     * Check if a job overlaps with another jobs start date.
-     * 
-     * @return true if Job's start date overlaps with another Job.
-     */
-    public boolean startDayOverlaps(Job theOtherJob)
-    {
-        return startDate.before(theOtherJob.getStartDate())
-                && endDate.after(theOtherJob.getStartDate());
-    }
-
-    /**
-     * Check if a Job's end date overlaps with another Job.
-     * 
-     * @return true if Job's end date overlaps with another Job.
-     */
-    public boolean endDayOverlaps(Job theOtherJob)
-    {
-        return startDate.before(theOtherJob.getEndDate())
-                && endDate.after(theOtherJob.getEndDate());
-    }
-
-    /**
-     * Check if jobs share any start or end dates.
-     * 
-     * @return true if jobs share any start or end dates.
-     */
-    public boolean shareDates(Job theOtherJob)
-    {
-        return startDate.equals(theOtherJob.getStartDate())
-                || startDate.equals(theOtherJob.getEndDate())
-                || endDate.equals(theOtherJob.getStartDate())
-                || endDate.equals(theOtherJob.getEndDate());
-    }
-
-    public int getMaxLightVolunteers()
-    {
-        return maxLightVolunteers;
-    }
-
-    public int getMaxDifficultVolunteers()
-    {
-        return maxDifficultVolunteers;
-    }
-
-    public int getMaxMediumVolunteers()
-    {
-        return maxMediumVolunteers;
     }
 }
