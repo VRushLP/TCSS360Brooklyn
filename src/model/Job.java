@@ -7,8 +7,8 @@ import java.util.Collections;
 import java.util.Date;
 
 /**
- * @author Robert, Bethany
- * @version 03/02/2016
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
  */
 public class Job implements Serializable, Comparable<Job>
 {
