@@ -152,34 +152,58 @@ public class PrimaryDriver
         // Park Managers
         ParkManager theDude = new ParkManager("thedude@aol.com", "Jeff",
                 "Bridges");
-        addUserInformation(theDude);
         Park wildWaves = new Park("Wild Waves Theme Park", theDude);
         Park dashPoint = new Park("Dash Point State Park", theDude);
+        addUserInformation(theDude);
 
-        // TODO Add more ParkManagers here!
+        ParkManager treebeard = new ParkManager("treebeard@wright.com", "John",
+                "Rhys-Davies");
+        Park wrightPark = new Park("Wright Park and Arboretum", treebeard);
+        addUserInformation(treebeard);
 
         // Volunteers
         addUserInformation(
                 new Volunteer("rmfarc@uw.edu", "Robert", "Ferguson"));
         addUserInformation(
                 new Volunteer("arc@gmail.com", "Ashley", "Ferguson"));
-                // TODO Add more Volunteers here!
+
+        // TODO Add more Volunteers here!
 
         // Dates so jobs are always in the future.
         Long dayInMillis = TimeUnit.DAYS.toMillis(1);
+        Long weekInMillis = 7 * dayInMillis;
 
-        Date tomorrow = new Date(
-                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1));
+        // Date to over fill with tree-related jobs
+        Date overfullDay = new Date(116, 2, 21);
+        // Pay no attention to the deprecated constructor
+
+        Date tomorrow = new Date(System.currentTimeMillis() + dayInMillis);
         Date dayAfterTomorrow = new Date(
-                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(2));
+                System.currentTimeMillis() + 2 * dayInMillis);
         Date twoDaysAfterTomorrow = new Date(
-                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(3));
+                System.currentTimeMillis() + 3 * dayInMillis);
         Date threeDaysAfterTomorrow = new Date(
-                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(4));
+                System.currentTimeMillis() + 4 * dayInMillis);
 
-        // Actual jobs // TODO Make 25 more of these fuckers
+        // Actual jobs // TODO Make 20 more of these fuckers
         try
         {
+            UPCalendar.addJob(new Job(wrightPark, 10, 10, 10, overfullDay,
+                    overfullDay, "Water Trees",
+                    "Water the trees in the north of the park"));
+            UPCalendar.addJob(new Job(wrightPark, 10, 10, 10, overfullDay,
+                    overfullDay, "Water Trees",
+                    "Water the trees in the south of the park"));
+            UPCalendar.addJob(new Job(wrightPark, 10, 10, 10, overfullDay,
+                    overfullDay, "Water Trees",
+                    "Water the trees in the east of the park"));
+            UPCalendar.addJob(new Job(wrightPark, 10, 10, 10, overfullDay,
+                    overfullDay, "Water Trees",
+                    "Water the trees in the west of the park"));
+            UPCalendar.addJob(new Job(wrightPark, 10, 10, 10, overfullDay,
+                    overfullDay, "Water Trees",
+                    "Water the trees in the middle of the park"));
+
             UPCalendar.addJob(new Job(dashPoint, 10, 10, 10, tomorrow, tomorrow,
                     "Bigfoot Hunting", "We'll get him this time."));
             UPCalendar.addJob(new Job(dashPoint, 10, 10, 10, dayAfterTomorrow,
