@@ -165,7 +165,6 @@ public class VolunteerDriver extends SharedUserDriverFunctions
             myUser.volunteerForJob(theJob, theWorkLoad);
             System.out.println("Congratulations! You have volunteered for "
                     + theJob.getJobTitle() + "!");
-            System.out.println("You may try to volunteer for another job:");
         }
         catch (AlreadyVolunteeredException e)
         {
@@ -178,12 +177,14 @@ public class VolunteerDriver extends SharedUserDriverFunctions
         }
         catch (JobIsFullException e)
         {
-            System.out.println("Sorry, that Job is full.");
+            System.out.println(
+                    "Sorry, there are no slots left at that work load.");
         }
         catch (JobToThePastException e)
         {
             System.out.println("Sorry, that Job has already occured.");
         }
+        System.out.println("You may try to volunteer for another job:");
     }
 
     /**

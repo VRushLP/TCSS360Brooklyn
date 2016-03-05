@@ -134,6 +134,7 @@ public abstract class SharedUserDriverFunctions
         }
         else
         {
+            System.out.println();
             for (int i = 0; i < allJobs.size(); i++)
             {
                 printJobSummary(i + 1, allJobs.get(i));
@@ -165,6 +166,7 @@ public abstract class SharedUserDriverFunctions
 
         do
         {
+            System.out.print('>');
             String temp = in.nextLine();
             try
             {
@@ -205,6 +207,7 @@ public abstract class SharedUserDriverFunctions
 
         do
         {
+            System.out.print('>');
             String temp = in.nextLine();
             try
             {
@@ -251,6 +254,7 @@ public abstract class SharedUserDriverFunctions
         {
             printVolunteerSummary(i + 1, volunteers.get(i));
         }
+        System.out.println();
     }
 
     /**
@@ -271,6 +275,7 @@ public abstract class SharedUserDriverFunctions
             {
                 printJobSummary(i + 1, jobs.get(i));
             }
+            System.out.println();
         }
     }
 }

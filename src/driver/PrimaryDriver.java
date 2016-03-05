@@ -81,6 +81,7 @@ public class PrimaryDriver
 
         do
         {
+            System.out.print('>');
             userInput = in.nextLine();
             User currentUser = login(userInput);
 
@@ -192,19 +193,19 @@ public class PrimaryDriver
                     overfullDay, "Water Trees",
                     "Water the trees in the north of the park"));
             UPCalendar.addJob(new Job(wrightPark, 10, 10, 10, overfullDay,
-                    overfullDay, "Water Trees",
+                    overfullDay, "Hug Trees",
                     "Water the trees in the south of the park"));
             UPCalendar.addJob(new Job(wrightPark, 10, 10, 10, overfullDay,
-                    overfullDay, "Water Trees",
+                    overfullDay, "Be Sweet to Trees",
                     "Water the trees in the east of the park"));
             UPCalendar.addJob(new Job(wrightPark, 10, 10, 10, overfullDay,
-                    overfullDay, "Water Trees",
+                    overfullDay, "Tell a story to a Tree",
                     "Water the trees in the west of the park"));
             UPCalendar.addJob(new Job(wrightPark, 10, 10, 10, overfullDay,
-                    overfullDay, "Water Trees",
+                    overfullDay, "Paint a tree",
                     "Water the trees in the middle of the park"));
 
-            UPCalendar.addJob(new Job(dashPoint, 10, 10, 10, tomorrow, tomorrow,
+            UPCalendar.addJob(new Job(dashPoint, 0, 15, 15, tomorrow, tomorrow,
                     "Bigfoot Hunting", "We'll get him this time."));
             UPCalendar.addJob(new Job(dashPoint, 10, 10, 10, dayAfterTomorrow,
                     dayAfterTomorrow, "Yeti Extermination",
@@ -216,6 +217,23 @@ public class PrimaryDriver
                     .addJob(new Job(wildWaves, 10, 10, 10, twoDaysAfterTomorrow,
                             threeDaysAfterTomorrow, "Sweeping up the beach",
                             "Getting rid of the sand. It gets /everywhere/"));
+
+            UPCalendar.addJob(new Job(dashPoint, 0, 10, 20,
+                    new Date(System.currentTimeMillis() + weekInMillis
+                            + dayInMillis),
+                    new Date(System.currentTimeMillis() + weekInMillis
+                            + dayInMillis),
+                    "Defeat Tenenberg", "He's gone too far this time"));
+
+            for (int i = 1; i < (UrbanParkCalendar.MAX_JOBS / 2); i++)
+            {
+                UPCalendar.addJob(new Job(wildWaves, 25, 0, 0,
+                        new Date(System.currentTimeMillis() + 3 * weekInMillis
+                                + (2 * i * dayInMillis)),
+                        new Date(System.currentTimeMillis() + 3 * weekInMillis
+                                + (2 * i * dayInMillis)),
+                        "Loitering", "Everyone is good at loitering."));
+            }
         }
         catch (CalendarWeekFullException | CalendarFullException
                 | JobTooLongException | JobTimeTravelException
@@ -225,7 +243,6 @@ public class PrimaryDriver
             System.err.println(
                     "Error in adding jobs to Calendar during reset process.");
             System.err.println(e.getClass().getSimpleName());
-            System.err.println(e.getCause());
             e.printStackTrace();
         }
         System.out.println("Writing data out to files.");
