@@ -254,7 +254,6 @@ public abstract class SharedUserDriverFunctions
         {
             printVolunteerSummary(i + 1, volunteers.get(i));
         }
-        System.out.println();
     }
 
     /**

@@ -202,7 +202,7 @@ public class PrimaryDriver
                     overfullDay, "Tell a story to a Tree",
                     "Water the trees in the west of the park"));
             UPCalendar.addJob(new Job(wrightPark, 10, 10, 10, overfullDay,
-                    overfullDay, "Paint a tree",
+                    overfullDay, "Make friends with a tree",
                     "Water the trees in the middle of the park"));
 
             UPCalendar.addJob(new Job(dashPoint, 0, 15, 15, tomorrow, tomorrow,

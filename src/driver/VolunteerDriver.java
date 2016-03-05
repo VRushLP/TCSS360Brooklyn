@@ -129,7 +129,7 @@ public class VolunteerDriver extends SharedUserDriverFunctions
     {
         // allow user to see details of the job and ask to volunteer for a job
         System.out.println(theJob.toString());
-        System.out.print("Would you like to volunteer for this job? \n"
+        System.out.println("Would you like to volunteer for this job? \n"
                 + "Enter 1 for yes, or 0 for no and to go back to the main menu: ");
 
         choice = getIntegerInput(myInput, 0, 1);

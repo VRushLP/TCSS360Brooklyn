@@ -103,38 +103,38 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         }
         else
         {
-            System.out.println(
+            System.out.print(
                     "Please select one of the parks you manage to add a job for that park");
 
             ArrayList<Park> parks = new ArrayList<Park>(myUser.getParks());
             printParks(parks);
 
-            System.out.print("Enter park number:");
+            System.out.println("Enter park number:");
 
             choice = getIntegerInput(myInput, parks.size());
             Park park = parks.get(choice - 1);
 
-            System.out.print("Please enter job title: ");
+            System.out.print("Please enter the Job title:\n>");
             String jobTitle = myInput.nextLine();
-            System.out.print("Job description: ");
+            System.out.print("Please enter the Job description:\n>");
             String jobDescription = myInput.nextLine();
 
-            System.out.print("Start Date (MM/DD/YYYY): ");
+            System.out.println("Please enter the Start Date (MM/DD/YYYY):");
             Date startDate = getDateInput(myInput);
-            System.out.print("End Date (MM/DD/YYYY): ");
+            System.out.println("Please enter the End Date (MM/DD/YYYY):");
             Date endDate = getDateInput(myInput);
 
             System.out.println(
                     "Please note a job can have a max of 30 Volunteers across all work categories.");
             System.out.print(
                     "Enter the maximum number of volunteers for light work: ");
-            int maxLightVolunteers = getIntegerInput(myInput, 30);
+            int maxLightVolunteers = getIntegerInput(myInput, 0, 30);
             System.out.print(
                     "Enter the maximum number of volunteers for medium work: ");
-            int maxMedVolunteers = getIntegerInput(myInput, 30);
+            int maxMedVolunteers = getIntegerInput(myInput, 0, 30);
             System.out.print(
                     "Enter the maximum number of volunteers for difficult work: ");
-            int maxDifficultVolunteers = getIntegerInput(myInput, 30);
+            int maxDifficultVolunteers = getIntegerInput(myInput, 0, 30);
 
             Job jobToAdd = new Job(park, maxLightVolunteers, maxMedVolunteers,
                     maxDifficultVolunteers, startDate, endDate, jobTitle,
@@ -154,7 +154,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         ArrayList<Park> parks = new ArrayList<Park>(myUser.getParks());
 
         printParks(parks);
-        System.out.print("Enter park number:");
+        System.out.println("Enter park number:");
         choice = getIntegerInput(myInput, parks.size());
 
         Park park = parks.get(choice - 1);
@@ -196,7 +196,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         ArrayList<Park> parks = new ArrayList<Park>(myUser.getParks());
         printParks(parks);
 
-        System.out.print("Enter park number:");
+        System.out.println("Enter park number:");
         choice = getIntegerInput(myInput, parks.size());
 
         Park park = parks.get(choice - 1);
@@ -213,7 +213,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
             System.out.println();
             printJobs(jobs);
 
-            System.out.print("Enter job number:");
+            System.out.println("Enter job number:");
             choice = getIntegerInput(myInput, jobs.size());
 
             // Get desired job to delete
@@ -244,7 +244,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         ArrayList<Park> parks = new ArrayList<Park>(myUser.getParks());
 
         printParks(parks);
-        System.out.print("Enter park number:");
+        System.out.println("Enter park number:");
         choice = getIntegerInput(myInput, parks.size());
         Park park = parks.get(choice - 1);
 
@@ -254,7 +254,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
             System.out.println("Jobs in " + park.getParkName());
             printJobs(jobs);
             System.out.println(
-                    "\nSelect a job to view in greater detail, or enter 0 to go back.");
+                    "Select a job to view in greater detail, or enter 0 to go back.");
             choice = getIntegerInput(myInput, 0, jobs.size());
 
             if (choice != 0)
@@ -277,7 +277,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
 
         ArrayList<Park> parks = new ArrayList<Park>(myUser.getParks());
         printParks(parks);
-        System.out.print("Enter park number:");
+        System.out.println("Enter park number:");
         choice = getIntegerInput(myInput, parks.size());
         Park park = parks.get(choice - 1);
         ArrayList<Job> jobs = new ArrayList<Job>(park.getJobs());
@@ -289,7 +289,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
         else
         {
             printJobs(jobs);
-            System.out.print("Enter job number:");
+            System.out.println("Enter job number:");
             choice = getIntegerInput(myInput, jobs.size());
             Job job = jobs.get(choice - 1);
 
@@ -301,13 +301,6 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
 
     /**
      * Prompts the user for job edits until they are done.
-     * 
-     * @throws DuplicateJobExistsException
-     * @throws JobToThePastException
-     * @throws JobToTheFutureException
-     * @throws JobTooLongException
-     * @throws CalendarWeekFullException
-     * @throws JobTimeTravelException
      */
     private static void attemptToEditJob(Park park, Job jobToEdit)
     {
@@ -330,8 +323,6 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                     {
                         jobToEdit = myUPCalendar.editJobTitle(park, jobToEdit,
                                 newJobTitle);
-                        // Display message to user to indicate that the edit
-                        // was successful
                         System.out.println(
                                 "Job title was modified successfully.");
                     }
@@ -401,14 +392,14 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
                 case 4:
                     System.out.println(
                             "Please enter the a new maximum number of volunteers (Up to 30):");
-                    System.out.println("Light work:");
-                    int newLight = getIntegerInput(myInput,
+                    System.out.print("Light work:\n>");
+                    int newLight = getIntegerInput(myInput, 0,
                             Job.MAX_VOLUNTEER_NUM);
-                    System.out.println("Medium work:");
-                    int newMed = getIntegerInput(myInput,
+                    System.out.println("Medium work:\n>");
+                    int newMed = getIntegerInput(myInput, 0,
                             Job.MAX_VOLUNTEER_NUM);
-                    System.out.println("Hard work:");
-                    int newHard = getIntegerInput(myInput,
+                    System.out.println("Hard work:\n>");
+                    int newHard = getIntegerInput(myInput, 0,
                             Job.MAX_VOLUNTEER_NUM);
 
                     try
@@ -440,15 +431,7 @@ public class ParkManagerDriver extends SharedUserDriverFunctions
     }
 
     /**
-     * @author Robert
-     * @throws CalendarWeekFullException
-     * @throws CalendarFullException
-     * @throws JobTooLongException
-     * @throws JobTimeTravelException
-     * @throws JobToThePastException
-     * @throws JobToTheFutureException
-     * @throws DuplicateJobExistsException
-     * @throws JobWorksTooHardException
+     * Attempts to add a job to the selected park.
      */
     private static void attemptToAddJob(Park park, Job jobToAdd)
     {

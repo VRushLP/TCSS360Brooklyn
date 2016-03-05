@@ -97,6 +97,8 @@ public class UrbanParkStaffMemberDriver extends SharedUserDriverFunctions
                 if (choice != 0)
                 { // user wants to view a jobs details
                     System.out.println((jobs.get(choice - 1)));
+                    System.out.print("Enter anything to continue\n>");
+                    myInput.nextLine();
                 }
             } while (choice != 0);
         }
@@ -115,13 +117,13 @@ public class UrbanParkStaffMemberDriver extends SharedUserDriverFunctions
 
         if (toPrint.isEmpty())
         {
-            System.out.println(
-                    "There are no volunteers with the last name " + toSearch);
+            System.out.println("There are no volunteers with the last name "
+                    + toSearch + ".");
         }
         else
         {
-            System.out.println(
-                    toPrint.size() + " result(s) for last name " + toSearch);
+            System.out.println(toPrint.size() + " result(s) for last name "
+                    + toSearch + ":");
             printVolunteers(toPrint);
         }
     }
