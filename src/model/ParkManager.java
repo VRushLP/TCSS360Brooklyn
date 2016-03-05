@@ -6,13 +6,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * @author Lachezar, Robert
- *
+ * A Kind of user that is able to submit new jobs, as well as edit or remove old
+ * jobs.
+ * 
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
  */
 public class ParkManager extends AbstractUser
 {
     private static final long serialVersionUID = 4121511740399438884L;
-    
+
     private Collection<Park> myParks;
 
     /**

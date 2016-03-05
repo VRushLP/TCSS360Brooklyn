@@ -19,24 +19,30 @@ import exception.JobToTheFutureException;
 import exception.JobTooLongException;
 import exception.JobWorksTooHardException;
 
+/**
+ * A UrbanParkCalendar contains a collection of all jobs that are upcoming, as
+ * well as all Volunteers registered for the service. It also contains most of
+ * the error checking for adding Jobs.
+ * 
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
+ */
 public class UrbanParkCalendar implements Serializable
 {
     private static final long serialVersionUID = 3638477910314787711L;
-    
+
     public static final int MAX_JOBS = 30;
     public static final int MAX_WEEKLY_JOBS = 5;
     public static final int MAX_DATE_FROM_TODAY = 90;
     public static final int DAYS_ON_EITHER_SIDE = 3;
 
     private static Collection<Job> upcomingJobCollection;
-    private static Collection<Job> pastJobCollection;
     private static Collection<Volunteer> allVolunteers;
     private static GregorianCalendar calendar;
 
     public UrbanParkCalendar()
     {
         upcomingJobCollection = new ArrayList<Job>();
-        pastJobCollection = new ArrayList<Job>();
         allVolunteers = new ArrayList<>();
         calendar = new GregorianCalendar();
     }
@@ -378,7 +384,6 @@ public class UrbanParkCalendar implements Serializable
     public void overrideJobCollection(Collection<Job> theJobs)
     {
         upcomingJobCollection = new ArrayList<>(theJobs);
-        pastJobCollection = new ArrayList<>();
         updateCalendar();
     }
 
@@ -411,7 +416,6 @@ public class UrbanParkCalendar implements Serializable
         {
             if (j.getStartDate().before(calendar.getTime()))
             {
-                pastJobCollection.add(j);
                 upcomingJobCollection.remove(j);
             }
         }

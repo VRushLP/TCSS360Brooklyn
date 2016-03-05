@@ -13,6 +13,12 @@ import model.Job;
 import model.Park;
 import model.ParkManager;
 
+/**
+ * JUnit tests to test logic behind parks.
+ * 
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
+ */
 public class ParkTest
 {
     Park park1Duplicate; // duplicate park with park2Duplicate
@@ -44,18 +50,18 @@ public class ParkTest
         parkWithOneJob = new Park("Fremont Park", pm2);
         parkWithSomeJobs = new Park("North Passage Point Park", pm4);
 
-        today = new Date(System.currentTimeMillis()
-                + TimeUnit.HOURS.toMillis(1));
-        tomorrow = new Date(System.currentTimeMillis()
-                + TimeUnit.DAYS.toMillis(1));
-        twoDays = new Date(System.currentTimeMillis()
-                + TimeUnit.DAYS.toMillis(2));
-        threeDays = new Date(System.currentTimeMillis()
-                + TimeUnit.DAYS.toMillis(3));
-        fourDays = new Date(System.currentTimeMillis()
-                + TimeUnit.DAYS.toMillis(4));
-        fiveDays = new Date(System.currentTimeMillis()
-                + TimeUnit.DAYS.toMillis(5));
+        today = new Date(
+                System.currentTimeMillis() + TimeUnit.HOURS.toMillis(1));
+        tomorrow = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1));
+        twoDays = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(2));
+        threeDays = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(3));
+        fourDays = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(4));
+        fiveDays = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(5));
         j1 = new Job(park1Duplicate, 5, 0, 0, tomorrow, twoDays,
                 "Test Job 1 Title", "Test Job 1 Description");
         j2 = new Job(park2, 5, 0, 0, twoDays, threeDays, "Test Job 2 Title",

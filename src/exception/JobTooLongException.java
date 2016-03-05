@@ -5,8 +5,8 @@ package exception;
  * date and a Job's end date is greater than the maximum acceptable length as
  * defined in the Job class.
  * 
- * @author Robert
- * @version 3/1/2016
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
  */
 public class JobTooLongException extends Exception
 {

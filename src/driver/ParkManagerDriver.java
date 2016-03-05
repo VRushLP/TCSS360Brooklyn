@@ -21,7 +21,8 @@ import exception.JobWorksTooHardException;
 /**
  * Driver for the ParkManager class.
  * 
- * @author Lachezar, Bethany, Robert
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
  */
 public class ParkManagerDriver extends SharedUserDriverFunctions
 {

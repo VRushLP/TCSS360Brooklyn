@@ -6,8 +6,8 @@ package model;
  * allows the Primary Driver to display the appropriate menu options to the
  * user.
  * 
- * @author Robert
- * @version 3/1/2016
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
  */
 public class UrbanParkStaffMember extends AbstractUser
 {

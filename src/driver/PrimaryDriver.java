@@ -39,7 +39,8 @@ import model.Volunteer;
 /**
  * Primary Driver for the UrbanPark program.
  * 
- * @author Lachezar, Bethany, Robert
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
  */
 public class PrimaryDriver
 {
@@ -82,7 +83,7 @@ public class PrimaryDriver
         do
         {
             System.out.print('>');
-            userInput = in.nextLine();
+            userInput = in.nextLine().trim();
             User currentUser = login(userInput);
 
             if (currentUser instanceof ParkManager)
@@ -102,7 +103,8 @@ public class PrimaryDriver
                 VolunteerDriver.run((Volunteer) currentUser, in, UPCalendar);
                 break;
             }
-            else if (userInput.equalsIgnoreCase(RESET_COMMAND))
+
+            if (userInput.equalsIgnoreCase(RESET_COMMAND))
             {
                 resetInformation();
                 System.out.println("All information reset.");
@@ -113,14 +115,14 @@ public class PrimaryDriver
                 System.out.println(UPCalendar.getAllVolunteers().size());
                 System.out.println(loginList.keySet());
             }
-            else if (!userInput.equalsIgnoreCase(EXIT_COMMAND))
+            else if (userInput.equalsIgnoreCase(EXIT_COMMAND))
             {
-                System.out.println(
-                        "Login failed. Please try again or type 'Quit' to terminate the program.");
+                System.out.println("Thank you for using Urban Parks.");
             }
             else
             {
-                System.out.println("Thank you for using Urban Parks.");
+                System.out.println(
+                        "Login failed. Please try again or type 'Quit' to terminate the program.");
             }
         } while (!userInput.equalsIgnoreCase(EXIT_COMMAND));
         in.close();
@@ -178,8 +180,6 @@ public class PrimaryDriver
                 new Volunteer("ryankf@microsoft.com", "Ryan", "French"));
         addUserInformation(
                 new Volunteer("c.wallace@mail.com", "Carol", "Wallace"));
-
-        // TODO Add more Volunteers here!
 
         // Dates so jobs are always in the future.
         Long dayInMillis = TimeUnit.DAYS.toMillis(1);
@@ -276,7 +276,7 @@ public class PrimaryDriver
     @SuppressWarnings("unchecked")
     private static void deserializeData()
     {
-        System.out.println("Attempting to read data from files.");
+        System.out.println("Reading data from files...");
         try
         {
             Object readObject = new Object();
@@ -339,6 +339,7 @@ public class PrimaryDriver
                 }
             }
             System.out.println("Files read successfully.");
+            System.out.println();
         }
         catch (ClassNotFoundException | FileNotFoundException e)
         {

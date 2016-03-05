@@ -5,8 +5,8 @@ package exception;
  * job that already exists in the Calendar, or attempts to edit a job into
  * another job that already exists in the Calendar.
  * 
- * @author Robert
- * @version 3/1/2016
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
  */
 public class DuplicateJobExistsException extends Exception
 {

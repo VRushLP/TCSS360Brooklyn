@@ -5,8 +5,8 @@ package exception;
  * sign up for a Job on the same day that another job they were already signed
  * up for is occurring.
  * 
- * @author Robert
- * @version 3/1/2016
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
  */
 public class ConflictingJobCommitmentException extends Exception
 {

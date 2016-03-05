@@ -16,7 +16,8 @@ import model.WorkLoad;
 /**
  * Driver for Volunteer class
  * 
- * @author Lachezar, Bethany, Robert
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
  */
 public class VolunteerDriver extends SharedUserDriverFunctions
 {

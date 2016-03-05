@@ -137,7 +137,7 @@ public class Job implements Serializable, Comparable<Job>
     @Override
     public int compareTo(Job o)
     {
-        return (int) (startDate.getTime() - o.startDate.getTime());
+        return startDate.compareTo(o.startDate);
     }
 
     /**

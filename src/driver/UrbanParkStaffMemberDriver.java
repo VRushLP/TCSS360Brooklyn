@@ -13,8 +13,8 @@ import model.Volunteer;
 /**
  * Driver functionality for the UrbanParkStaffMember class.
  * 
- * @author Lachezar, Bethany, Robert
- *
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
  */
 public class UrbanParkStaffMemberDriver extends SharedUserDriverFunctions
 {
@@ -110,7 +110,7 @@ public class UrbanParkStaffMemberDriver extends SharedUserDriverFunctions
      */
     private static void searchVolunteers()
     {
-        System.out.println("What name would you like to search for?");
+        System.out.print("What name would you like to search for?\n>");
         String toSearch = myInput.nextLine();
         ArrayList<Volunteer> toPrint = new ArrayList<>(
                 scanVolunteers(toSearch));

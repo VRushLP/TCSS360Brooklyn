@@ -3,8 +3,8 @@ package model;
 /**
  * An enum of Light, Medium, and Difficult WorkLoads.
  * 
- * @author Bethany Eastman
- * @version 03/02/2016
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
  */
 public enum WorkLoad
 {

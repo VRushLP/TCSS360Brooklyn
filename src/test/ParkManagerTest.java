@@ -8,6 +8,12 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * JUnit tests to test basics about park managers.
+ * 
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
+ */
 public class ParkManagerTest
 {
     ParkManager testParkmanager;

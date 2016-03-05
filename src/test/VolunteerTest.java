@@ -19,8 +19,10 @@ import exception.JobIsFullException;
 import exception.JobToThePastException;
 
 /**
- * @author Bethany Eastman
- * @version 02/09/2016
+ * JUnit Tests for Volunteers.
+ * 
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
  */
 public class VolunteerTest
 {
@@ -133,9 +135,8 @@ public class VolunteerTest
         try
         {
             sameVolunteer.volunteerForJob(newJob, WorkLoad.LIGHT);
-            sameVolunteer.volunteerForJob(jobToday, WorkLoad.LIGHT); // job
-                                                                     // doesn't
-                                                                     // conflict
+            sameVolunteer.volunteerForJob(jobToday, WorkLoad.LIGHT);
+            // job doesn't conflict
         }
         catch (Exception e)
         {
@@ -308,5 +309,4 @@ public class VolunteerTest
             fail();
         }
     }
-
 }

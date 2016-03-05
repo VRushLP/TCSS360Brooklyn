@@ -16,7 +16,8 @@ import model.Volunteer;
  * Implements a variety of functions for the non-primary drivers to reduce code
  * redundancy.
  * 
- * @author Lachezar, Bethany, Robert
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
  */
 public abstract class SharedUserDriverFunctions
 {
@@ -34,6 +35,8 @@ public abstract class SharedUserDriverFunctions
         SimpleDateFormat dateFormat = new SimpleDateFormat();
 
         jobSummary.append(theJob.getJobTitle());
+        jobSummary.append(' ');
+        jobSummary.append('-');
         jobSummary.append(' ');
         jobSummary.append(theJob.getParkName());
         jobSummary.append(' ');
@@ -56,19 +59,8 @@ public abstract class SharedUserDriverFunctions
      */
     public static void printJobSummary(int index, Job theJob)
     {
-        StringBuilder jobSummary = new StringBuilder();
-        SimpleDateFormat dateFormat = new SimpleDateFormat();
-
-        jobSummary.append(index + ". ");
-        jobSummary.append(theJob.getJobTitle());
-        jobSummary.append(' ');
-        jobSummary.append(theJob.getParkName());
-        jobSummary.append(' ');
-        jobSummary.append(dateFormat.format(theJob.getStartDate()));
-        jobSummary.append('-');
-        jobSummary.append(dateFormat.format(theJob.getEndDate()));
-
-        System.out.println(jobSummary);
+        System.out.print(index + ". ");
+        printJobSummary(theJob);
     }
 
     /**
@@ -103,18 +95,8 @@ public abstract class SharedUserDriverFunctions
      */
     public static void printVolunteerSummary(int index, Volunteer theVolunteer)
     {
-        StringBuilder vSummary = new StringBuilder();
-
-        vSummary.append(index + ". ");
-        vSummary.append(theVolunteer.getLastName());
-        vSummary.append(", ");
-        vSummary.append(theVolunteer.getFirstName());
-        vSummary.append(' ');
-        vSummary.append('(');
-        vSummary.append(theVolunteer.getEmail());
-        vSummary.append(')');
-
-        System.out.println(vSummary);
+        System.out.print(index + ". ");
+        printVolunteerSummary(theVolunteer);
     }
 
     /**

@@ -4,8 +4,8 @@ package exception;
  * A JobTimeTravelException is thrown when a Job's end date is before it's start
  * date.
  * 
- * @author Robert
- * @version 3/1/2016
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
  */
 public class JobTimeTravelException extends Exception
 {

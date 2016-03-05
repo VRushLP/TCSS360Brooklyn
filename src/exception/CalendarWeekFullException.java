@@ -5,8 +5,8 @@ package exception;
  * job to a Calendar that already has the maximum number of jobs in a particular
  * week through the ParkManagerDriver.
  * 
- * @author Robert
- * @version 3/1/2016
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
  */
 public class CalendarWeekFullException extends Exception
 {

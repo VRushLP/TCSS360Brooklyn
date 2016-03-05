@@ -6,10 +6,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * Represents a Park, which is managed by a Park Manager. Contains a list of
+ * jobs that can be found in that park, as well as some information about the
+ * Park Manager.
+ * 
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
+ */
 public class Park implements Serializable
 {
     private static final long serialVersionUID = -4808769468460385164L;
-    
+
     private String parkName;
     private String parkManagerName;
     private String parkManagerEmail;
