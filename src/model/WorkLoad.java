@@ -6,4 +6,7 @@ package model;
  * @author Bethany Eastman
  * @version 03/02/2016
  */
-public enum WorkLoad{LIGHT,MEDIUM,DIFFICULT}
+public enum WorkLoad
+{
+    LIGHT, MEDIUM, DIFFICULT
+}

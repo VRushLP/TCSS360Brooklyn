@@ -36,7 +36,7 @@ public class Park implements Serializable
     /**
      * @return An unmodifiable version of the parks job Collection
      */
-    public Collection<Job> getJobList()
+    public Collection<Job> getJobs()
     {
         return Collections.unmodifiableCollection(parksJobList);
     }

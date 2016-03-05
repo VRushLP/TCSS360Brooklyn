@@ -90,8 +90,8 @@ public class VolunteerDriver extends SharedUserDriverFunctions
             do
             {
                 printAllUpcomingJobs(myUPCalendar);
-                System.out
-                        .println("Enter the number of a job to view more details, or enter "
+                System.out.println(
+                        "Enter the number of a job to view more details, or enter "
                                 + "0 to go back to the main menu.");
 
                 choice = getIntegerInput(myInput, 0, upcomingJobs.size());
@@ -129,15 +129,14 @@ public class VolunteerDriver extends SharedUserDriverFunctions
     {
         // allow user to see details of the job and ask to volunteer for a job
         System.out.println(theJob.toString());
-        System.out
-                .print("Would you like to volunteer for this job? \n"
-                        + "Enter 1 for yes, or 0 for no and to go back to the main menu: ");
+        System.out.print("Would you like to volunteer for this job? \n"
+                + "Enter 1 for yes, or 0 for no and to go back to the main menu: ");
 
         choice = getIntegerInput(myInput, 0, 1);
         if (choice == 1)
         {
-            System.out
-                    .println("Enter 1 to volunteer for light work, 2 for medium work, or 3 for difficult work");
+            System.out.println(
+                    "Enter 1 to volunteer for light work, 2 for medium work, or 3 for difficult work");
             int difficulty = getIntegerInput(myInput, 3);
             System.out.println("Checking if you can volunteer for that job...");
             switch (difficulty)
@@ -174,8 +173,8 @@ public class VolunteerDriver extends SharedUserDriverFunctions
         }
         catch (ConflictingJobCommitmentException e)
         {
-            System.out
-                    .println("Sorry, you already have another Job scheduled for the same date.");
+            System.out.println(
+                    "Sorry, you already have another Job scheduled for the same date.");
         }
         catch (JobIsFullException e)
         {
@@ -196,6 +195,6 @@ public class VolunteerDriver extends SharedUserDriverFunctions
     {
         System.out.println("\nWelcome " + myUser.getFirstName() + " "
                 + myUser.getLastName() + "!\n" + "Logged in as: "
-                + myUser.getEmail() + " (Volunteer!)\n");
+                + myUser.getEmail() + " (Volunteer)\n");
     }
 }

@@ -125,7 +125,7 @@ public class ParkManagerTest
     {
         park.addJob(job);
         p1.addParkToManager(park);
-        assertTrue(p1.getParks().iterator().next().getJobList().contains(job));
+        assertTrue(p1.getParks().iterator().next().getJobs().contains(job));
     }
 
     @Test
@@ -134,7 +134,7 @@ public class ParkManagerTest
         park.addJob(job);
         p1.addParkToManager(park);
         p1.getParks().iterator().next().removeJob(job);
-        assertTrue(!p1.getParks().iterator().next().getJobList().contains(job));
+        assertTrue(!p1.getParks().iterator().next().getJobs().contains(job));
     }
 
     @Test
@@ -142,10 +142,10 @@ public class ParkManagerTest
     {
         park.addJob(job);
         p1.addParkToManager(park);
-        p1.getParks().iterator().next().getJobList().iterator().next()
+        p1.getParks().iterator().next().getJobs().iterator().next()
                 .setJobTitle("Clean bathrroms");
         ;
-        assertTrue(p1.getParks().iterator().next().getJobList().iterator()
+        assertTrue(p1.getParks().iterator().next().getJobs().iterator()
                 .next().getJobTitle().equals("Clean bathrroms"));
     }
 
@@ -161,7 +161,7 @@ public class ParkManagerTest
         p1.addParkToManager(park);
         Park tmp = p1.getParks().iterator().next();
         String result = "";
-        Iterator<Job> jobs = tmp.getJobList().iterator();
+        Iterator<Job> jobs = tmp.getJobs().iterator();
         while (jobs.hasNext())
         {
             Job jobTmp = jobs.next();
@@ -191,7 +191,7 @@ public class ParkManagerTest
         p1.addParkToManager(park);
         Park tmp = p1.getParks().iterator().next();
         String result = "";
-        Iterator<Job> jobs = tmp.getJobList().iterator();
+        Iterator<Job> jobs = tmp.getJobs().iterator();
         Collection<Volunteer> lstVolunteers = new ArrayList<Volunteer>();
         while (jobs.hasNext())
         {

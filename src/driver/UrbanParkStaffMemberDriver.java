@@ -91,8 +91,8 @@ public class UrbanParkStaffMemberDriver extends SharedUserDriverFunctions
             do
             {
                 printAllUpcomingJobs(myUPCalendar);
-                System.out
-                        .println("Enter 0 to go back, or enter a number to view that job in greater detail.");
+                System.out.println(
+                        "Enter 0 to go back, or enter a number to view that job in greater detail.");
                 choice = getIntegerInput(myInput, 0, jobs.size());
                 if (choice != 0)
                 { // user wants to view a jobs details
@@ -110,17 +110,18 @@ public class UrbanParkStaffMemberDriver extends SharedUserDriverFunctions
     {
         System.out.println("What name would you like to search for?");
         String toSearch = myInput.nextLine();
-        ArrayList<Volunteer> toPrint = new ArrayList<>(scanVolunteers(toSearch));
+        ArrayList<Volunteer> toPrint = new ArrayList<>(
+                scanVolunteers(toSearch));
 
         if (toPrint.isEmpty())
         {
-            System.out.println("There are no volunteers with the last name "
-                    + toSearch);
+            System.out.println(
+                    "There are no volunteers with the last name " + toSearch);
         }
         else
         {
-            System.out.println(toPrint.size() + " result(s) for last name "
-                    + toSearch);
+            System.out.println(
+                    toPrint.size() + " result(s) for last name " + toSearch);
             printVolunteers(toPrint);
         }
     }
@@ -142,9 +143,8 @@ public class UrbanParkStaffMemberDriver extends SharedUserDriverFunctions
 
         for (User currentUser : toScan)
         {
-            if (currentUser instanceof Volunteer
-                    && ((Volunteer) currentUser).getLastName()
-                            .equalsIgnoreCase(lastName))
+            if (currentUser instanceof Volunteer && ((Volunteer) currentUser)
+                    .getLastName().equalsIgnoreCase(lastName))
             {
                 toPrint.add((Volunteer) currentUser);
             }

@@ -53,7 +53,6 @@ public class Job implements Serializable, Comparable<Job>
         endDate = toCopy.endDate;
         jobTitle = toCopy.jobTitle;
         jobDescription = toCopy.jobDescription;
-
     }
 
     /**
