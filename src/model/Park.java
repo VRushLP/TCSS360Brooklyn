@@ -25,6 +25,7 @@ public class Park implements Serializable
                 + theParkManager.getLastName();
         parkManagerEmail = theParkManager.getEmail();
         parksJobList = new ArrayList<Job>();
+        theParkManager.addParkToManager(this);
     }
 
     public String getParkName()

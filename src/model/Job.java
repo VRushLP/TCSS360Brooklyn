@@ -24,7 +24,6 @@ public class Job implements Serializable, Comparable<Job>
     private String jobTitle;
     private String jobDescription;
 
-    
     private Collection<Volunteer> lightVolunteers;
     private Collection<Volunteer> mediumVolunteers;
     private Collection<Volunteer> difficultVolunteers;
