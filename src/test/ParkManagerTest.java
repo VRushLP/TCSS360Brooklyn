@@ -1,5 +1,6 @@
 package test;
 
+import model.Park;
 import model.ParkManager;
 
 import static org.junit.Assert.*;
@@ -20,12 +21,20 @@ public class ParkManagerTest
     @Test
     public void testAddParkToManager()
     {
-        fail("Not yet implemented");
+        Park park = new Park("Test park", testParkmanager);
+        assertTrue("The tested Park Manager does not manage the test park!",
+                testParkmanager.getParks().contains(park));
     }
 
     @Test
-    public void testGetParks()
+    public void testAddParksToManager()
     {
-        fail("Not yet implemented.");
+        Park parkOne = new Park("Test park", testParkmanager);
+        Park parkTwo = new Park("Test park", testParkmanager);
+        assertTrue(
+                "The tested Park Manager does not manage both the test parks!",
+                testParkmanager.getParks().contains(parkOne)
+                        && testParkmanager.getParks().contains(parkTwo));
+
     }
 }

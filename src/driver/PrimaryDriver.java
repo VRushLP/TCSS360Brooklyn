@@ -167,6 +167,17 @@ public class PrimaryDriver
                 new Volunteer("rmfarc@uw.edu", "Robert", "Ferguson"));
         addUserInformation(
                 new Volunteer("arc@gmail.com", "Ashley", "Ferguson"));
+        addUserInformation(new Volunteer("beth@uw.edu", "Bethany", "Eastman"));
+        addUserInformation(
+                new Volunteer("efletcher84@gmail.com", "Eliott", "Fletcher"));
+        addUserInformation(
+                new Volunteer("mundyc912@gmail.com", "Cassandra", "Mundy"));
+        addUserInformation(
+                new Volunteer("natjhill@outlook.com", "Natalie", "Hill"));
+        addUserInformation(
+                new Volunteer("ryankf@microsoft.com", "Ryan", "French"));
+        addUserInformation(
+                new Volunteer("c.wallace@mail.com", "Carol", "Wallace"));
 
         // TODO Add more Volunteers here!
 
@@ -186,7 +197,7 @@ public class PrimaryDriver
         Date threeDaysAfterTomorrow = new Date(
                 System.currentTimeMillis() + 4 * dayInMillis);
 
-        // Actual jobs // TODO Make 20 more of these fuckers
+        // Actual jobs // TODO Make 4 more of these fuckers
         try
         {
             UPCalendar.addJob(new Job(wrightPark, 10, 10, 10, overfullDay,
@@ -217,6 +228,9 @@ public class PrimaryDriver
                     .addJob(new Job(wildWaves, 10, 10, 10, twoDaysAfterTomorrow,
                             threeDaysAfterTomorrow, "Sweeping up the beach",
                             "Getting rid of the sand. It gets /everywhere/"));
+            UPCalendar.addJob(new Job(wildWaves, 10, 10, 10,
+                    threeDaysAfterTomorrow, threeDaysAfterTomorrow,
+                    "Sanitize EVERYTHING", "Jesus Christ, it's horrifying"));
 
             UPCalendar.addJob(new Job(dashPoint, 0, 10, 20,
                     new Date(System.currentTimeMillis() + weekInMillis
