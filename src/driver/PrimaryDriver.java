@@ -145,23 +145,29 @@ public class PrimaryDriver
         System.out.println("Resetting data");
         UPCalendar = new UrbanParkCalendar();
 
-        // Users
+        // Staff Member
+        addUserInformation(new UrbanParkStaffMember("potus@whitehouse.gov",
+                "Barack", "Obama"));
+
+        // Park Managers
         ParkManager theDude = new ParkManager("thedude@aol.com", "Jeff",
                 "Bridges");
         addUserInformation(theDude);
         Park wildWaves = new Park("Wild Waves Theme Park", theDude);
         Park dashPoint = new Park("Dash Point State Park", theDude);
 
-        UrbanParkStaffMember obama = new UrbanParkStaffMember(
-                "potus@whitehouse.gov", "Barack", "Obama");
-        addUserInformation(obama);
+        // TODO Add more ParkManagers here!
 
-        Volunteer robert = new Volunteer("rmfarc@uw.edu", "Robert", "Ferguson");
-        addUserInformation(robert);
-        Volunteer ashley = new Volunteer("arc@gmail.com", "Ashley", "Ferguson");
-        addUserInformation(ashley);
+        // Volunteers
+        addUserInformation(
+                new Volunteer("rmfarc@uw.edu", "Robert", "Ferguson"));
+        addUserInformation(
+                new Volunteer("arc@gmail.com", "Ashley", "Ferguson"));
+                // TODO Add more Volunteers here!
 
         // Dates so jobs are always in the future.
+        Long dayInMillis = TimeUnit.DAYS.toMillis(1);
+
         Date tomorrow = new Date(
                 System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1));
         Date dayAfterTomorrow = new Date(
@@ -171,31 +177,29 @@ public class PrimaryDriver
         Date threeDaysAfterTomorrow = new Date(
                 System.currentTimeMillis() + TimeUnit.DAYS.toMillis(4));
 
-        // Actual jobs
-        Job bigfoot = new Job(dashPoint, 10, 10, 10, tomorrow, tomorrow,
-                "Bigfoot Hunting", "We'll get him this time.");
-        Job yetis = new Job(dashPoint, 10, 10, 10, dayAfterTomorrow,
-                dayAfterTomorrow, "Yeti Extermination", "They're everywhere!.");
-        Job garbageCollect = new Job(wildWaves, 10, 10, 10, dayAfterTomorrow,
-                twoDaysAfterTomorrow, "Garbage Collection",
-                "Not as exciting, I know");
-        Job sweep = new Job(wildWaves, 10, 10, 10, twoDaysAfterTomorrow,
-                threeDaysAfterTomorrow, "Sweeping up the beach",
-                "Getting rid of the sand. It gets /everywhere/");
-
+        // Actual jobs // TODO Make 25 more of these fuckers
         try
         {
-            UPCalendar.addJob(bigfoot);
-            UPCalendar.addJob(yetis);
-            UPCalendar.addJob(garbageCollect);
-            UPCalendar.addJob(sweep);
+            UPCalendar.addJob(new Job(dashPoint, 10, 10, 10, tomorrow, tomorrow,
+                    "Bigfoot Hunting", "We'll get him this time."));
+            UPCalendar.addJob(new Job(dashPoint, 10, 10, 10, dayAfterTomorrow,
+                    dayAfterTomorrow, "Yeti Extermination",
+                    "They're everywhere!."));
+            UPCalendar.addJob(new Job(wildWaves, 10, 10, 10, dayAfterTomorrow,
+                    twoDaysAfterTomorrow, "Garbage Collection",
+                    "Not as exciting, I know"));
+            UPCalendar
+                    .addJob(new Job(wildWaves, 10, 10, 10, twoDaysAfterTomorrow,
+                            threeDaysAfterTomorrow, "Sweeping up the beach",
+                            "Getting rid of the sand. It gets /everywhere/"));
         }
         catch (CalendarWeekFullException | CalendarFullException
                 | JobTooLongException | JobTimeTravelException
                 | JobToThePastException | JobToTheFutureException
                 | DuplicateJobExistsException | JobWorksTooHardException e)
         {
-            System.err.println("Error in Fabricating Jobs.");
+            System.err.println(
+                    "Error in adding jobs to Calendar during reset process.");
             System.err.println(e.getClass().getSimpleName());
             System.err.println(e.getCause());
             e.printStackTrace();
@@ -274,7 +278,6 @@ public class PrimaryDriver
             for (ParkManager pm : managers)
             {
                 ArrayList<Park> parks = new ArrayList<>(pm.getParks());
-
                 for (Park p : parks)
                 {
                     UPCalendar.updatePark(p);
@@ -282,11 +285,7 @@ public class PrimaryDriver
             }
             System.out.println("Files read successfully.");
         }
-        catch (ClassNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        catch (FileNotFoundException e)
+        catch (ClassNotFoundException | FileNotFoundException e)
         {
             e.printStackTrace();
         }
