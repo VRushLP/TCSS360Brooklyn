@@ -5,8 +5,8 @@ package exception;
  * load's available is greater than the maximum allowable number of Volunteers,
  * as defined by the Job class.
  * 
- * @author Robert
- * @version 3/1/2016
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
  */
 public class JobWorksTooHardException extends Exception
 {

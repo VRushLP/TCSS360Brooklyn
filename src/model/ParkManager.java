@@ -6,12 +6,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * @author Lachezar, Robert
- *
+ * A Kind of user that is able to submit new jobs, as well as edit or remove old
+ * jobs.
+ * 
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
  */
 public class ParkManager extends AbstractUser
 {
     private static final long serialVersionUID = 4121511740399438884L;
+
     private Collection<Park> myParks;
 
     /**
@@ -22,44 +26,6 @@ public class ParkManager extends AbstractUser
     {
         super(theEmail, theFirstName, theLastName);
         myParks = new ArrayList<Park>();
-    }
-
-    /**
-     * Creates a new ParkManager based on the specified parameters email, first
-     * and last names, and park.
-     */
-    public ParkManager(String theEmail, String theFirstName, String theLastName,
-            Park thePark)
-    {
-        super(theEmail, theFirstName, theLastName);
-        myParks = new ArrayList<Park>();
-        addParkToManager(thePark);
-    }
-
-    /**
-     * 
-     * Constructs a ParkManager given email, first and last names, and
-     * collection of parks.
-     */
-    public ParkManager(String theEmail, String theFirstName, String theLastName,
-            Collection<Park> theParks)
-    {
-        super(theEmail, theFirstName, theLastName);
-        myParks = new ArrayList<Park>(theParks);
-
-        for (Park p : theParks)
-        {
-            addParkToManager(p);
-        }
-    }
-
-    /**
-     * 
-     * @return An unmodifiable version of the parks job Collection
-     */
-    public Collection<Park> getParks()
-    {
-        return Collections.unmodifiableCollection(myParks);
     }
 
     /**
@@ -80,5 +46,14 @@ public class ParkManager extends AbstractUser
         {
             return false;
         }
+    }
+
+    /**
+     * 
+     * @return An unmodifiable version of the parks job Collection
+     */
+    public Collection<Park> getParks()
+    {
+        return Collections.unmodifiableCollection(myParks);
     }
 }

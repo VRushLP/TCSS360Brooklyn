@@ -4,24 +4,26 @@ package model;
  * An interface which defines methods that all types of users must have. Most of
  * these are getters and setters.
  * 
- * @author Robert
- * @version 3/1/2016
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
  */
 public interface User
 {
-    public String toString();
-
+    @Override
     public boolean equals(Object o);
-
-    public String getLastName();
-
-    public void setLastName(String theLastName);
-
-    public String getFirstName();
-
-    public void setFirstName(String theFirstName);
 
     public String getEmail();
 
+    public String getFirstName();
+
+    public String getLastName();
+
     public void setEmail(String theEmail);
+
+    public void setFirstName(String theFirstName);
+
+    public void setLastName(String theLastName);
+
+    @Override
+    public String toString();
 }

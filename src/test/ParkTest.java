@@ -13,6 +13,12 @@ import model.Job;
 import model.Park;
 import model.ParkManager;
 
+/**
+ * JUnit tests to test logic behind parks.
+ * 
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
+ */
 public class ParkTest
 {
     Park park1Duplicate; // duplicate park with park2Duplicate
@@ -44,18 +50,18 @@ public class ParkTest
         parkWithOneJob = new Park("Fremont Park", pm2);
         parkWithSomeJobs = new Park("North Passage Point Park", pm4);
 
-        today = new Date(System.currentTimeMillis()
-                + TimeUnit.HOURS.toMillis(1));
-        tomorrow = new Date(System.currentTimeMillis()
-                + TimeUnit.DAYS.toMillis(1));
-        twoDays = new Date(System.currentTimeMillis()
-                + TimeUnit.DAYS.toMillis(2));
-        threeDays = new Date(System.currentTimeMillis()
-                + TimeUnit.DAYS.toMillis(3));
-        fourDays = new Date(System.currentTimeMillis()
-                + TimeUnit.DAYS.toMillis(4));
-        fiveDays = new Date(System.currentTimeMillis()
-                + TimeUnit.DAYS.toMillis(5));
+        today = new Date(
+                System.currentTimeMillis() + TimeUnit.HOURS.toMillis(1));
+        tomorrow = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1));
+        twoDays = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(2));
+        threeDays = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(3));
+        fourDays = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(4));
+        fiveDays = new Date(
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(5));
         j1 = new Job(park1Duplicate, 5, 0, 0, tomorrow, twoDays,
                 "Test Job 1 Title", "Test Job 1 Description");
         j2 = new Job(park2, 5, 0, 0, twoDays, threeDays, "Test Job 2 Title",
@@ -93,7 +99,7 @@ public class ParkTest
     {
         // park1Duplicate.addJob(j2);
         park1Duplicate.addJob(j1);
-        jobs = new ArrayList<Job>(park1Duplicate.getJobList());
+        jobs = new ArrayList<Job>(park1Duplicate.getJobs());
         // assertTrue(jobs.get(0).equals(j2));
         assertTrue(jobs.get(0).equals(j1));
         assertEquals(jobs.size(), 1);
@@ -103,7 +109,7 @@ public class ParkTest
     public void testAddJobOnJobListWithOneJob()
     {
         parkWithOneJob.addJob(j2);
-        jobs = new ArrayList<Job>(parkWithOneJob.getJobList());
+        jobs = new ArrayList<Job>(parkWithOneJob.getJobs());
         assertFalse(jobs.get(0).equals(j2));
         assertTrue(jobs.get(jobs.size() - 1).equals(j2));
         assertEquals(jobs.size(), 2);
@@ -113,7 +119,7 @@ public class ParkTest
     public void testAddJobOnJobListWithNJobs()
     {
         parkWithSomeJobs.addJob(j5);
-        jobs = new ArrayList<Job>(parkWithSomeJobs.getJobList());
+        jobs = new ArrayList<Job>(parkWithSomeJobs.getJobs());
         assertFalse(jobs.get(0).equals(j2));
         assertFalse(jobs.get(jobs.size() - 2).equals(j2));
         assertTrue(jobs.get(jobs.size() - 1).equals(j5));
@@ -123,13 +129,13 @@ public class ParkTest
     @Test
     public void testGetJobListOnNoJobs()
     {
-        assertTrue(parkWithNoJobs.getJobList().isEmpty());
+        assertTrue(parkWithNoJobs.getJobs().isEmpty());
     }
 
     @Test
     public void testGetJobListOnOneJob()
     {
-        assertTrue(parkWithOneJob.getJobList().size() == 1);
+        assertTrue(parkWithOneJob.getJobs().size() == 1);
     }
 
     @Test
@@ -139,14 +145,14 @@ public class ParkTest
         park2.addJob(j3);
         park2.addJob(j4);
         park2.addJob(j5);
-        assertTrue(park2.getJobList().size() > 1);
+        assertTrue(park2.getJobs().size() > 1);
     }
 
     @Test
     public void testCheckForJobOnParkWithNoJobs()
     {
         assertFalse(parkWithNoJobs.hasJob(j1));
-        assertTrue(parkWithNoJobs.getJobList().isEmpty());
+        assertTrue(parkWithNoJobs.getJobs().isEmpty());
     }
 
     @Test

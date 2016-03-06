@@ -13,8 +13,8 @@ import model.Volunteer;
 /**
  * Driver functionality for the UrbanParkStaffMember class.
  * 
- * @author Lachezar, Bethany, Robert
- *
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
  */
 public class UrbanParkStaffMemberDriver extends SharedUserDriverFunctions
 {
@@ -91,12 +91,14 @@ public class UrbanParkStaffMemberDriver extends SharedUserDriverFunctions
             do
             {
                 printAllUpcomingJobs(myUPCalendar);
-                System.out
-                        .println("Enter 0 to go back, or enter a number to view that job in greater detail.");
+                System.out.println(
+                        "Enter 0 to go back, or enter a number to view that job in greater detail.");
                 choice = getIntegerInput(myInput, 0, jobs.size());
                 if (choice != 0)
                 { // user wants to view a jobs details
                     System.out.println((jobs.get(choice - 1)));
+                    System.out.print("Enter anything to continue\n>");
+                    myInput.nextLine();
                 }
             } while (choice != 0);
         }
@@ -108,19 +110,20 @@ public class UrbanParkStaffMemberDriver extends SharedUserDriverFunctions
      */
     private static void searchVolunteers()
     {
-        System.out.println("What name would you like to search for?");
+        System.out.print("What name would you like to search for?\n>");
         String toSearch = myInput.nextLine();
-        ArrayList<Volunteer> toPrint = new ArrayList<>(scanVolunteers(toSearch));
+        ArrayList<Volunteer> toPrint = new ArrayList<>(
+                scanVolunteers(toSearch));
 
         if (toPrint.isEmpty())
         {
             System.out.println("There are no volunteers with the last name "
-                    + toSearch);
+                    + toSearch + ".");
         }
         else
         {
             System.out.println(toPrint.size() + " result(s) for last name "
-                    + toSearch);
+                    + toSearch + ":");
             printVolunteers(toPrint);
         }
     }
@@ -142,9 +145,8 @@ public class UrbanParkStaffMemberDriver extends SharedUserDriverFunctions
 
         for (User currentUser : toScan)
         {
-            if (currentUser instanceof Volunteer
-                    && ((Volunteer) currentUser).getLastName()
-                            .equalsIgnoreCase(lastName))
+            if (currentUser instanceof Volunteer && ((Volunteer) currentUser)
+                    .getLastName().equalsIgnoreCase(lastName))
             {
                 toPrint.add((Volunteer) currentUser);
             }

@@ -4,8 +4,8 @@ package exception;
  * An AlreadyVolunteeredException occurs when a Volunteer attempts to sign up
  * for a job they are already Volunteered for through the VolunteerDriver.
  * 
- * @author Robert
- * @version 3/1/2016
+ * @author Robert, Bethany, Lachezar, Duong
+ * @version Release
  */
 public class AlreadyVolunteeredException extends Exception
 {
