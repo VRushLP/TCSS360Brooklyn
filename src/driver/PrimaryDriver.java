@@ -52,13 +52,13 @@ public class PrimaryDriver
     private static final String[] filePaths = { "calendar.ser", "loginList.ser",
             "jobList.ser" };
 
-    // Data Structure to store everything in
+    // Data Structures to store everything in
     private static Map<String, AbstractUser> loginList;
+    private static UrbanParkCalendar UPCalendar;
+
+    // File Streams
     private static InputStream inputFileReader;
     private static OutputStream outputFileWriter;
-
-    // A calendar field
-    private static UrbanParkCalendar UPCalendar;
 
     private PrimaryDriver()
     {
@@ -111,8 +111,11 @@ public class PrimaryDriver
             }
             else if (userInput.equalsIgnoreCase(DEBUG_COMMAND))
             {
+                System.out.print("Jobs in Calendar: ");
                 System.out.println(UPCalendar.getJobList().size());
+                System.out.print("Number of Volunteers: ");
                 System.out.println(UPCalendar.getAllVolunteers().size());
+                System.out.print("Acceptable logins:");
                 System.out.println(loginList.keySet());
             }
             else if (userInput.equalsIgnoreCase(EXIT_COMMAND))
@@ -147,6 +150,7 @@ public class PrimaryDriver
     {
         System.out.println("Resetting data");
         UPCalendar = new UrbanParkCalendar();
+        loginList = new HashMap<String, AbstractUser>();
 
         // Staff Member
         addUserInformation(new UrbanParkStaffMember("potus@whitehouse.gov",
@@ -165,27 +169,14 @@ public class PrimaryDriver
         addUserInformation(treebeard);
 
         // Volunteers
-        addUserInformation(
-                new Volunteer("rmfarc@uw.edu", "Robert", "Ferguson"));
-        addUserInformation(
-                new Volunteer("arc@gmail.com", "Ashley", "Ferguson"));
-        addUserInformation(new Volunteer("beth@uw.edu", "Bethany", "Eastman"));
-        addUserInformation(
-                new Volunteer("efletcher84@gmail.com", "Eliott", "Fletcher"));
-        addUserInformation(
-                new Volunteer("mundyc912@gmail.com", "Cassandra", "Mundy"));
-        addUserInformation(
-                new Volunteer("natjhill@outlook.com", "Natalie", "Hill"));
-        addUserInformation(
-                new Volunteer("ryankf@microsoft.com", "Ryan", "French"));
-        addUserInformation(
-                new Volunteer("c.wallace@mail.com", "Carol", "Wallace"));
+        resetVolunteerInformation();
 
         // Dates so jobs are always in the future.
         Long dayInMillis = TimeUnit.DAYS.toMillis(1);
         Long weekInMillis = 7 * dayInMillis;
 
         // Date to over fill with tree-related jobs
+        @SuppressWarnings("deprecation")
         Date overfullDay = new Date(116, 2, 21);
         // Pay no attention to the deprecated constructor
 
@@ -197,9 +188,11 @@ public class PrimaryDriver
         Date threeDaysAfterTomorrow = new Date(
                 System.currentTimeMillis() + 4 * dayInMillis);
 
-        // Actual jobs // TODO Make 4 more of these fuckers
+        // Actual jobs
         try
         {
+            // Group of jobs that will cause overflow errors when you try to add
+            // to 3/21
             UPCalendar.addJob(new Job(wrightPark, 10, 10, 10, overfullDay,
                     overfullDay, "Water Trees",
                     "Water the trees in the north of the park"));
@@ -216,6 +209,7 @@ public class PrimaryDriver
                     overfullDay, "Make friends with a tree",
                     "Water the trees in the middle of the park"));
 
+            // Fun jobs
             UPCalendar.addJob(new Job(dashPoint, 0, 15, 15, tomorrow, tomorrow,
                     "Bigfoot Hunting", "We'll get him this time."));
             UPCalendar.addJob(new Job(dashPoint, 10, 10, 10, dayAfterTomorrow,
@@ -232,6 +226,29 @@ public class PrimaryDriver
                     threeDaysAfterTomorrow, threeDaysAfterTomorrow,
                     "Sanitize EVERYTHING", "Jesus Christ, it's horrifying"));
 
+            UPCalendar.addJob(new Job(dashPoint, 0, 0, 30,
+                    new Date(System.currentTimeMillis() + weekInMillis
+                            + dayInMillis),
+                    new Date(System.currentTimeMillis() + weekInMillis
+                            + dayInMillis),
+                    "Godzilla is attacking",
+                    "Everything is terrible at Dash Point"));
+
+            UPCalendar.addJob(new Job(dashPoint, 0, 0, 30,
+                    new Date(System.currentTimeMillis() + weekInMillis
+                            + dayInMillis),
+                    new Date(System.currentTimeMillis() + weekInMillis
+                            + dayInMillis),
+                    "Feed the Racoons",
+                    "Everything is wonderful in Racoon Town"));
+
+            UPCalendar.addJob(new Job(wrightPark, 0, 0, 30,
+                    new Date(System.currentTimeMillis() + weekInMillis
+                            + dayInMillis),
+                    new Date(System.currentTimeMillis() + weekInMillis
+                            + dayInMillis),
+                    "Defend against Orcs", "[Lord of the Rings Reference]"));
+
             UPCalendar.addJob(new Job(dashPoint, 0, 10, 20,
                     new Date(System.currentTimeMillis() + weekInMillis
                             + dayInMillis),
@@ -239,7 +256,8 @@ public class PrimaryDriver
                             + dayInMillis),
                     "Defeat Tenenberg", "He's gone too far this time"));
 
-            for (int i = 1; i < (UrbanParkCalendar.MAX_JOBS / 2); i++)
+            // Boring jobs added via loop.
+            for (int i = 0; i < (UrbanParkCalendar.MAX_JOBS / 2); i++)
             {
                 UPCalendar.addJob(new Job(wildWaves, 25, 0, 0,
                         new Date(System.currentTimeMillis() + 3 * weekInMillis
@@ -262,6 +280,25 @@ public class PrimaryDriver
         System.out.println("Writing data out to files.");
         serializeData();
         deserializeData();
+    }
+
+    private static void resetVolunteerInformation()
+    {
+        addUserInformation(
+                new Volunteer("rmfarc@uw.edu", "Robert", "Ferguson"));
+        addUserInformation(
+                new Volunteer("arc@gmail.com", "Ashley", "Ferguson"));
+        addUserInformation(new Volunteer("beth@uw.edu", "Bethany", "Eastman"));
+        addUserInformation(
+                new Volunteer("efletcher84@gmail.com", "Eliott", "Fletcher"));
+        addUserInformation(
+                new Volunteer("mundyc912@gmail.com", "Cassandra", "Mundy"));
+        addUserInformation(
+                new Volunteer("natjhill@outlook.com", "Natalie", "Hill"));
+        addUserInformation(
+                new Volunteer("ryankf@microsoft.com", "Ryan", "French"));
+        addUserInformation(
+                new Volunteer("c.wallace@mail.com", "Carol", "Wallace"));
     }
 
     private static void addUserInformation(AbstractUser theUser)
