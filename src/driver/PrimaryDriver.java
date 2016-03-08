@@ -249,12 +249,12 @@ public class PrimaryDriver
                             + dayInMillis),
                     "Defend against Orcs", "[Lord of the Rings Reference]"));
 
-            UPCalendar.addJob(new Job(dashPoint, 0, 10, 20,
+            UPCalendar.addJob(new Job(dashPoint, 0, 0, 4,
                     new Date(System.currentTimeMillis() + weekInMillis
                             + dayInMillis),
                     new Date(System.currentTimeMillis() + weekInMillis
                             + dayInMillis),
-                    "Defeat Tenenberg", "He's gone too far this time"));
+                    "Present TCSS360 Work", "It is a good day to die."));
 
             // Boring jobs added via loop.
             for (int i = 0; i < (UrbanParkCalendar.MAX_JOBS / 2); i++)
